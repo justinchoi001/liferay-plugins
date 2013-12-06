@@ -29,7 +29,7 @@ long calendarBookingId = BeanPropertiesUtil.getLong(calendarBooking, "calendarBo
 
 long calendarId = BeanParamUtil.getLong(calendarBooking, request, "calendarId", userDefaultCalendar.getCalendarId());
 
-long startTime = BeanPropertiesUtil.getLong(calendarBooking, "startTime", ParamUtil.getLong(request, "startTime", nowJCalendar.getTimeInMillis()));
+long startTime = BeanParamUtil.getLong(calendarBooking, request, "startTime", nowJCalendar.getTimeInMillis());
 
 java.util.Calendar startTimeJCalendar = JCalendarUtil.getJCalendar(startTime, userTimeZone);
 
@@ -37,7 +37,7 @@ java.util.Calendar defaultEndTimeJCalendar = (java.util.Calendar)nowJCalendar.cl
 
 defaultEndTimeJCalendar.add(java.util.Calendar.HOUR, 1);
 
-long endTime = BeanPropertiesUtil.getLong(calendarBooking, "endTime", ParamUtil.getLong(request, "endTime", defaultEndTimeJCalendar.getTimeInMillis()));
+long endTime = BeanParamUtil.getLong(calendarBooking, request, "endTime", defaultEndTimeJCalendar.getTimeInMillis());
 
 java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(endTime, userTimeZone);
 
@@ -56,8 +56,9 @@ JSONArray maybeCalendarsJSONArray = JSONFactoryUtil.createJSONArray();
 JSONArray pendingCalendarsJSONArray = JSONFactoryUtil.createJSONArray();
 
 boolean invitable = true;
-boolean recurring = false;
 Recurrence recurrence = null;
+boolean recurring = false;
+boolean reschedulable = true;
 
 Calendar calendar = CalendarServiceUtil.fetchCalendar(calendarId);
 
@@ -76,6 +77,8 @@ if (calendarBooking != null) {
 	}
 
 	recurrence = calendarBooking.getRecurrenceObj();
+
+	reschedulable = calendarBooking.isMasterBooking();
 }
 else if (calendar != null) {
 	JSONObject calendarJSONObject = CalendarUtil.toCalendarJSONObject(themeDisplay, calendar);
@@ -113,17 +116,17 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 		<aui:input name="title" />
 
 		<div class="<%= allDay ? "allday-class-active" : "" %>" id="<portlet:namespace />startDateContainer">
-			<aui:input label="start-date" name="startTime" value="<%= startTimeJCalendar %>" />
+			<aui:input disabled="<%= !reschedulable %>" label="start-date" name="startTime" value="<%= startTimeJCalendar %>" />
 		</div>
 
 		<div class="<%= allDay ? "allday-class-active" : "" %>" id="<portlet:namespace />endDateContainer">
-			<aui:input label="end-date" name="endTime" value="<%= endTimeJCalendar %>" />
+			<aui:input disabled="<%= !reschedulable %>" label="end-date" name="endTime" value="<%= endTimeJCalendar %>" />
 		</div>
 
-		<aui:input checked="<%= allDay %>" name="allDay" />
+		<aui:input checked="<%= allDay %>" disabled="<%= !reschedulable %>" name="allDay" />
 
 		<aui:field-wrapper cssClass="calendar-portlet-recurrence-container" inlineField="<%= true %>" label="">
-			<aui:input checked="<%= recurring %>" name="repeat" type="checkbox" />
+			<aui:input checked="<%= recurring %>" disabled="<%= !reschedulable %>" name="repeat" type="checkbox" />
 
 			<a class="calendar-portlet-recurrence-summary" href="javascript:;" id="<portlet:namespace />summary"></a>
 		</aui:field-wrapper>
@@ -171,7 +174,7 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 				</c:if>
 			</liferay-ui:panel>
 
-			<liferay-ui:panel collapsible="<%= true %>" extended="<%= false %>" id="calendarBookingInvitationPanel" persistState="<%= true %>" title="invitations">
+			<liferay-ui:panel collapsible="<%= true %>" defaultState='<%= BrowserSnifferUtil.isMobile(request) ? "closed" : "open" %>' extended="<%= false %>" id="calendarBookingInvitationPanel" persistState="<%= true %>" title="invitations">
 				<c:if test="<%= invitable %>">
 					<aui:input inputCssClass="calendar-portlet-invite-resources-input" label="" name="inviteResource" placeholder="add-people-groups-rooms" type="text" />
 
@@ -224,7 +227,7 @@ List<Calendar> manageableCalendars = CalendarServiceUtil.search(themeDisplay.get
 
 								<liferay-util:include page="/scheduler.jsp" servletContext="<%= application %>">
 									<liferay-util:param name="activeView" value="<%= activeView %>" />
-									<liferay-util:param name="date" value="<%= String.valueOf(date) %>" />
+									<liferay-util:param name="date" value="<%= String.valueOf(startTime) %>" />
 									<liferay-util:param name="filterCalendarBookings" value='<%= "window." + renderResponse.getNamespace() + "filterCalendarBookings" %>' />
 									<liferay-util:param name="hideAgendaView" value="<%= Boolean.TRUE.toString() %>" />
 									<liferay-util:param name="hideMonthView" value="<%= Boolean.TRUE.toString() %>" />

@@ -87,17 +87,19 @@ String viewCalendarBookingURL = ParamUtil.getString(request, "viewCalendarBookin
 	</c:if>
 
 	<c:if test="<%= !readOnly && (userDefaultCalendar != null) %>">
+		var width = Math.min(Liferay.Util.getWindowWidth(), 550);
+
 		window.<portlet:namespace />eventRecorder = new Liferay.SchedulerEventRecorder(
 			{
-				bodyTemplate: new A.Template(A.one('#<portlet:namespace />eventRecorderBodyTpl').text()),
+				bodyTemplate: new A.Template(A.one('#<portlet:namespace />eventRecorderBodyTpl').html()),
 				calendarId: <%= userDefaultCalendar.getCalendarId() %>,
 				color: '<%= ColorUtil.toHexString(userDefaultCalendar.getColor()) %>',
 				duration: <%= defaultDuration %>,
 				editCalendarBookingURL: '<%= HtmlUtil.escapeJS(editCalendarBookingURL) %>',
-				headerTemplate: new A.Template(A.one('#<portlet:namespace />eventRecorderHeaderTpl').text()),
+				headerTemplate: new A.Template(A.one('#<portlet:namespace />eventRecorderHeaderTpl').html()),
 				permissionsCalendarBookingURL: '<%= HtmlUtil.escapeJS(permissionsCalendarBookingURL) %>',
 				popover: {
-					width: 550
+					width: width
 				},
 				portletNamespace: '<portlet:namespace />',
 				viewCalendarBookingURL: '<%= HtmlUtil.escapeJS(viewCalendarBookingURL) %>'

@@ -445,7 +445,7 @@ public class TasksEntryLocalServiceImpl extends TasksEntryLocalServiceBaseImpl {
 			JSONFactoryUtil.createJSONObject();
 
 		notificationEventJSONObject.put(
-			"tasksEntryId", tasksEntry.getTasksEntryId());
+			"classPK", tasksEntry.getTasksEntryId());
 		notificationEventJSONObject.put("userId", serviceContext.getUserId());
 
 		for (long receiverUserId : receiverUserIds) {
@@ -481,12 +481,7 @@ public class TasksEntryLocalServiceImpl extends TasksEntryLocalServiceBaseImpl {
 				title = "x-modified-the-task";
 			}
 
-			notificationEventJSONObject.put(
-				"title",
-				serviceContext.translate(
-					title,
-					PortalUtil.getUserName(
-						serviceContext.getUserId(), StringPool.BLANK)));
+			notificationEventJSONObject.put("title", title);
 
 			NotificationEvent notificationEvent =
 				NotificationEventFactoryUtil.createNotificationEvent(
