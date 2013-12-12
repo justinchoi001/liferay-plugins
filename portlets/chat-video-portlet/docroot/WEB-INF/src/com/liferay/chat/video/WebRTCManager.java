@@ -14,8 +14,52 @@
 
 package com.liferay.chat.video;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author Philippe Proulx
  */
 public class WebRTCManager {
+
+	public List<Long> getAvailableWebRTCClientIds() {
+		List<Long> availableUserIds = new ArrayList<Long>();
+
+		for (long userId : _webRTCClients.keySet()) {
+			if (hasAvailableWebRTCClient(userId)) {
+				availableUserIds.add(userId);
+			}
+		}
+
+		return availableUserIds;
+	}
+
+	public WebRTCClient getWebRTCClient(long userId) {
+		return _webRTCClients.get(userId);
+	}
+
+	public boolean hasAvailableWebRTCClient(long userId) {
+		WebRTCClient webRTCClient = _webRTCClients.get(userId);
+
+		if (webRTCClient == null) {
+			return false;
+		}
+
+		return webRTCClient.isAvailable();
+	}
+
+	public void removeWebRTCClient(long userId) {
+	}
+
+	protected void addWebRTCClient(long userId) {
+		if (!_webRTCClients.containsKey(userId)) {
+			_webRTCClients.put(userId, new WebRTCClient(userId));
+		}
+	}
+
+	private Map<Long, WebRTCClient> _webRTCClients =
+		new ConcurrentHashMap<Long, WebRTCClient>();
+
 }
