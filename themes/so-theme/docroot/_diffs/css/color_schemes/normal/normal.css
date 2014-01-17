@@ -81,21 +81,29 @@ html.aui {
 			}
 		}
 
-		.info-items, .info-link-container {
-			display: none;
-		}
-
 		.info-items {
 			left: auto;
-			position: absolute;
-			right: 293px;
-			top: 86px;
-			width: 575px;
+			position: relative;
+			right: 0;
+			top: 44px;
+
+			.page-customization-bar .page-customization-bar-text {
+				height: 74px;
+			}
+
+			.btn-link {
+				border-width: inherit;
+				padding: 4px 12px;
+				text-decoration: none;
+				text-shadow: inherit;
+			}
 		}
 
 		.info-link-container {
-			left: 50px;
-			top: 92px;
+			left: auto;
+			position: relative;
+			right: 0;
+			top: 56px;
 		}
 	}
 }
@@ -411,6 +419,54 @@ a {
 	border-left-width: 0;
 }
 
+/* ---------- Announcements ---------- */
+
+.so-announcements-portlet {
+	.unread-entries {
+		.entry-body, .entry-footer {
+			border-color: #F4A425;
+		}
+
+		.entry .title {
+			background: #F4A425;
+			color: #FFF;
+
+			a {
+				color: #FFF;
+				text-decoration: underline;
+			}
+		}
+
+		.important-entry .title {
+			background: #A20F0F;
+		}
+	}
+
+	.read-entries {
+		.title {
+			padding-bottom: 0;
+		}
+
+		.important-entry .title {
+			color: #A20F0F;
+		}
+	}
+
+	.entry-header .scope {
+		color: #8D071F;
+	}
+
+	.entry-footer-toolbar {
+		background: #E7E7E7;
+	}
+
+	.entries .important-entry {
+		.entry-body, .entry-footer {
+			border-color: #A20F0F;
+		}
+	}
+}
+
 /* ---------- Breadcrumbs ---------- */
 
 .breadcrumbs-horizontal {
@@ -523,7 +579,6 @@ a {
 	}
 
 	#toggleDockbar {
-		border-left: 1px solid $defaultBorderColor;
 		display: block;
 		float: right;
 		height: 52px;
@@ -871,6 +926,10 @@ div#navigation {
 
 .portlet-borderless-container {
 	min-height: 0;
+}
+
+.portlet-borderless-bar .portlet-options a {
+	background-image: url(../../../images/portlet/options_borderless.png);
 }
 
 .controls-visible .portlet-borderless-container {
@@ -1598,6 +1657,10 @@ div#navigation {
 /* ---------- Contacts ---------- */
 
 .contacts-portlet {
+	form {
+		margin: 0;
+	}
+
 	.contacts-profile {
 		border-bottom: 1px solid $defaultBorderColor;
 
@@ -1800,11 +1863,14 @@ div#navigation {
 
 	.answer {
 		background-color: #AAD049;
-		margin-right: 91px;
+
+		@include border-radius(4px 0 0 4px);
+
+		margin-right: 82px;
 		padding: 4px;
 		position: absolute;
 		right: 100%;
-		text-align: right;
+		text-align: center;
 		top: 0;
 		width: 79px;
 	}
@@ -1813,6 +1879,7 @@ div#navigation {
 		border-color: $defaultBorderColor;
 		border-width: 0 0 1px 1px;
 		margin: 0;
+		overflow: inherit;
 		padding: 8px 5px;
 
 		&.reply {
@@ -2179,9 +2246,20 @@ div#navigation {
 
 /* ---------- SO portlet sites ---------- */
 
-.aui-dialog-bd .so-sites-directory {
-	.taglib-header {
-		display: none;
+.dialog-iframe-popup, .so-portlet-sites-dialog {
+	.so-sites-directory {
+		.taglib-header {
+			display: none;
+		}
+
+		.buttons-right {
+			width: 100%;
+
+			button {
+				float: left;
+				min-width: 110px;
+			}
+		}
 	}
 }
 
@@ -2273,7 +2351,7 @@ div#navigation {
 /* ---------- Responsive ---------- */
 
 html.aui {
-	@media (max-width:979px) {
+	@media (max-width: 979px) {
 		.navbar .nav-navigation {
 			display: block;
 		}
