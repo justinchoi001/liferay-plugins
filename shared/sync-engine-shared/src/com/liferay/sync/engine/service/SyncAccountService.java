@@ -29,11 +29,12 @@ import org.slf4j.LoggerFactory;
 public class SyncAccountService {
 
 	public static SyncAccount addSyncAccount(
-			String login, String password, String url)
+			String filePath, String login, String password, String url)
 		throws Exception {
 
 		SyncAccount syncAccount = new SyncAccount();
 
+		syncAccount.setFilePath(filePath);
 		syncAccount.setLogin(login);
 		syncAccount.setPassword(Encryptor.encrypt(password));
 		syncAccount.setUrl(url);
@@ -43,19 +44,28 @@ public class SyncAccountService {
 		return syncAccount;
 	}
 
-	public static SyncAccount getSyncAccount(long syncAccountId) {
-		SyncAccount syncAccount = null;
-
+	public static void deleteSyncAccount(long syncAccountId) {
 		try {
-			syncAccount = _syncAccountPersistence.queryForId(syncAccountId);
+			_syncAccountPersistence.deleteById(syncAccountId);
 		}
 		catch (SQLException sqle) {
 			if (_logger.isDebugEnabled()) {
 				_logger.debug(sqle.getMessage(), sqle);
 			}
 		}
+	}
 
-		return syncAccount;
+	public static SyncAccount fetchSyncAccount(long syncAccountId) {
+		try {
+			return _syncAccountPersistence.queryForId(syncAccountId);
+		}
+		catch (SQLException sqle) {
+			if (_logger.isDebugEnabled()) {
+				_logger.debug(sqle.getMessage(), sqle);
+			}
+
+			return null;
+		}
 	}
 
 	public static SyncAccountPersistence getSyncAccountPersistence() {
@@ -75,8 +85,24 @@ public class SyncAccountService {
 		return _syncAccountPersistence;
 	}
 
+	public static SyncAccount update(SyncAccount syncAccount) {
+		try {
+			_syncAccountPersistence.createOrUpdate(syncAccount);
+
+			return syncAccount;
+		}
+		catch (SQLException sqle) {
+			if (_logger.isDebugEnabled()) {
+				_logger.debug(sqle.getMessage(), sqle);
+			}
+
+			return null;
+		}
+	}
+
 	private static Logger _logger = LoggerFactory.getLogger(
 		SyncAccountService.class);
+
 	private static SyncAccountPersistence _syncAccountPersistence =
 		getSyncAccountPersistence();
 

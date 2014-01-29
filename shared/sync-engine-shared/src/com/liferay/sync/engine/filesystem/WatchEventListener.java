@@ -15,19 +15,14 @@
 package com.liferay.sync.engine.filesystem;
 
 import java.nio.file.Path;
-import java.nio.file.WatchEvent;
 
 /**
  * @author Michael Young
  */
 public interface WatchEventListener {
 
-	public void entryCreate(WatchEvent<Path> watchEvent, Path filePath);
+	public long getSyncAccountId();
 
-	public void entryDelete(WatchEvent<Path> watchEvent, Path filePath);
-
-	public void entryModify(WatchEvent<Path> watchEvent, Path filePath);
-
-	public void overflow(WatchEvent<Path> watchEvent, Path filePath);
+	public void watchEvent(Path filePath, String kindName);
 
 }

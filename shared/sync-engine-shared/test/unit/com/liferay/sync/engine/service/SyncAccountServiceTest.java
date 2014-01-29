@@ -16,50 +16,32 @@ package com.liferay.sync.engine.service;
 
 import com.liferay.sync.engine.BaseTestCase;
 import com.liferay.sync.engine.model.SyncAccount;
-import com.liferay.sync.engine.service.persistence.SyncAccountPersistence;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Shinn Lok
  */
-@RunWith(PowerMockRunner.class)
 public class SyncAccountServiceTest extends BaseTestCase {
 
 	@After
 	public void tearDown() {
-		SyncAccountPersistence syncAccountPersistence =
-			SyncAccountService.getSyncAccountPersistence();
-
-		try {
-			syncAccountPersistence.delete(_syncAccount);
-		}
-		catch (Exception e) {
-			_logger.error(e.getMessage(), e);
-		}
+		SyncAccountService.deleteSyncAccount(_syncAccount.getSyncAccountId());
 	}
 
 	@Test
 	public void testAddAccount() throws Exception {
 		SyncAccount syncAccount = SyncAccountService.addSyncAccount(
-			"test@liferay.com", "test", "http://localhost:8080/api/jsonws/");
+			null, "test@liferay.com", "test",
+			"http://localhost:8080/api/jsonws");
 
-		_syncAccount = SyncAccountService.getSyncAccount(
+		_syncAccount = SyncAccountService.fetchSyncAccount(
 			syncAccount.getSyncAccountId());
 
 		Assert.assertNotNull(_syncAccount);
 	}
-
-	private static Logger _logger = LoggerFactory.getLogger(
-		SyncAccountServiceTest.class);
 
 	private SyncAccount _syncAccount;
 

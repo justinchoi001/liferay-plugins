@@ -14,6 +14,8 @@
 
 package com.liferay.sync.engine.util;
 
+import java.io.File;
+
 /**
  * @author Dennis Ju
  */
@@ -31,6 +33,16 @@ public class FilePathUtil {
 		}
 
 		return filePath;
+	}
+
+	public static String getFilePath(String parentFilePath, String fileName) {
+		StringBuilder sb = new StringBuilder(3);
+
+		sb.append(parentFilePath);
+		sb.append(File.separator);
+		sb.append(fileName);
+
+		return fixFilePath(sb.toString());
 	}
 
 }

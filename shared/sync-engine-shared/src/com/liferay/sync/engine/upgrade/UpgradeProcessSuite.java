@@ -21,8 +21,9 @@ public class UpgradeProcessSuite {
 
 	public void upgrade() throws Exception {
 		upgrade(UpgradeSyncAccount.class);
-		upgrade(UpgradeSyncDLObject.class);
-		upgrade(UpgradeSyncGroup.class);
+		upgrade(UpgradeSyncFile.class);
+		upgrade(UpgradeSyncSite.class);
+		upgrade(UpgradeSyncWatchEvent.class);
 	}
 
 	protected void upgrade(Class<?> upgradeProcessClass) throws Exception {

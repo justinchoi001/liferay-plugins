@@ -14,7 +14,7 @@
 
 package com.liferay.sync.engine.documentlibrary.event;
 
-import com.liferay.sync.engine.util.JSONUtil;
+import com.liferay.sync.engine.util.HttpUtil;
 
 import java.util.Map;
 
@@ -27,8 +27,7 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseEvent implements Runnable {
 
 	public BaseEvent(
-		long syncAccountId, String urlPath, 
-		Map<String, Object> parameters) {
+		long syncAccountId, String urlPath, Map<String, Object> parameters) {
 
 		_syncAccountId = syncAccountId;
 		_urlPath = urlPath;
@@ -38,8 +37,7 @@ public abstract class BaseEvent implements Runnable {
 	@Override
 	public void run() {
 		try {
-			String response = JSONUtil.execute(
-				_syncAccountId, _urlPath, _parameters);
+			String response = processRequest();
 
 			processResponse(response);
 		}
@@ -52,13 +50,17 @@ public abstract class BaseEvent implements Runnable {
 		return _syncAccountId;
 	}
 
-	protected abstract void processResponse(String httpResponse)
+	protected String processRequest() throws Exception {
+		return HttpUtil.executePost(_syncAccountId, _urlPath, _parameters);
+	}
+
+	protected abstract void processResponse(String response)
 		throws Exception;
 
 	private static Logger _logger = LoggerFactory.getLogger(BaseEvent.class);
 
 	private Map<String, Object> _parameters;
-	private String _urlPath;
 	private long _syncAccountId;
+	private String _urlPath;
 
 }

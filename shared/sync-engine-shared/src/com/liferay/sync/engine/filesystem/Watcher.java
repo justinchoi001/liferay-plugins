@@ -14,6 +14,8 @@
 
 package com.liferay.sync.engine.filesystem;
 
+import com.liferay.sync.engine.model.SyncWatchEvent;
+
 import java.io.IOException;
 
 import java.nio.file.FileSystem;
@@ -29,55 +31,38 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Michael Young
  */
 public class Watcher implements Runnable {
 
-	public Watcher(Path filePath, boolean recursive) throws IOException {
-		_recursive = recursive;
-
-		register(filePath, recursive);
+	public Watcher(
+			Path filePath, boolean recursive,
+			WatchEventListener watchEventListener)
+		throws IOException {
 
 		FileSystem fileSystem = FileSystems.getDefault();
 
 		_watchService = fileSystem.newWatchService();
-	}
 
-	public void addWatchEventListener(WatchEventListener watchEventListener) {
-		_watchEventListeners.add(watchEventListener);
+		_recursive = recursive;
+
+		register(filePath, recursive);
+
+		_watchEventListener = watchEventListener;
 	}
 
 	public void close() throws IOException {
 		_watchService.close();
-	}
-
-	public void fireWatchEventListeners(
-		WatchEvent<Path> watchEvent, Path filePath) {
-
-		WatchEvent.Kind<?> kind = watchEvent.kind();
-
-		for (WatchEventListener watchEventListener : _watchEventListeners) {
-			if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-				watchEventListener.entryCreate(watchEvent, filePath);
-			}
-			else if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
-				watchEventListener.entryDelete(watchEvent, filePath);
-			}
-			else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
-				watchEventListener.entryModify(watchEvent, filePath);
-			}
-			else if (kind == StandardWatchEventKinds.OVERFLOW) {
-				watchEventListener.overflow(watchEvent, filePath);
-			}
-		}
 	}
 
 	public void processEvents() {
@@ -108,9 +93,12 @@ public class Watcher implements Runnable {
 				WatchEvent<Path> watchEvent = (WatchEvent<Path>)watchEvents.get(
 					i);
 
-				Path childFilePath = parentFilePath.resolve(watchEvent.context());
+				Path childFilePath = parentFilePath.resolve(
+					watchEvent.context());
 
-				fireWatchEventListeners(watchEvent, childFilePath);
+				childFilePath = childFilePath.normalize();
+
+				fireWatchEventListener(childFilePath, watchEvent);
 
 				WatchEvent.Kind<?> kind = watchEvent.kind();
 
@@ -130,7 +118,13 @@ public class Watcher implements Runnable {
 			}
 
 			if (!watchKey.reset()) {
-				_filePaths.remove(watchKey);
+				Path filePath = _filePaths.remove(watchKey);
+
+				if (_logger.isTraceEnabled()) {
+					_logger.trace("Unregistered file path {}", filePath);
+				}
+
+				fireWatchEventListener(filePath, SyncWatchEvent.ENTRY_DELETE);
 
 				if (_filePaths.isEmpty()) {
 					break;
@@ -139,7 +133,21 @@ public class Watcher implements Runnable {
 		}
 	}
 
-	protected void register(Path filePath, boolean recursive) throws IOException {
+	protected void fireWatchEventListener(Path filePath, String kindName) {
+		_watchEventListener.watchEvent(filePath, kindName);
+	}
+
+	protected void fireWatchEventListener(
+		Path filePath, WatchEvent<Path> watchEvent) {
+
+		WatchEvent.Kind<?> kind = watchEvent.kind();
+
+		fireWatchEventListener(filePath, kind.name());
+	}
+
+	protected void register(Path filePath, boolean recursive)
+		throws IOException {
+
 		if (recursive) {
 			Files.walkFileTree(
 				filePath,
@@ -147,7 +155,7 @@ public class Watcher implements Runnable {
 
 					@Override
 					public FileVisitResult preVisitDirectory(
-							Path filePath, 
+							Path filePath,
 							BasicFileAttributes basicFileAttributes)
 						throws IOException {
 
@@ -166,15 +174,22 @@ public class Watcher implements Runnable {
 				StandardWatchEventKinds.ENTRY_MODIFY);
 
 			_filePaths.put(watchKey, filePath);
+
+			fireWatchEventListener(filePath, SyncWatchEvent.ENTRY_CREATE);
+
+			if (_logger.isTraceEnabled()) {
+				_logger.trace("Registered file path {}", filePath);
+			}
 		}
 	}
+
+	private static Logger _logger = LoggerFactory.getLogger(Watcher.class);
 
 	private ExecutorService _executorService =
 		Executors.newSingleThreadExecutor();
 	private Map<WatchKey, Path> _filePaths = new HashMap<WatchKey, Path>();
 	private boolean _recursive;
-	private List<WatchEventListener> _watchEventListeners =
-		new ArrayList<WatchEventListener>();
+	private WatchEventListener _watchEventListener;
 	private WatchService _watchService;
 
 }
