@@ -14,6 +14,9 @@
 
 package com.liferay.chat.video;
 
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +85,63 @@ public class WebRTCManager {
 			_webRTCClients.put(userId, new WebRTCClient(userId));
 		}
 	}
+
+	protected void checkWebRTCConnectionsStates() {
+		for (WebRTCClient webRTCClient : _webRTCClients.values()) {
+			for (WebRTCClient otherWebRTCClient :
+					webRTCClient.getWebRTCClients()) {
+
+				WebRTCConnection webRTCConnection =
+					webRTCClient.getWebRTCConnection(otherWebRTCClient);
+
+				if (webRTCConnection.getState() !=
+						WebRTCConnection.State.INITIATED) {
+
+					continue;
+				}
+
+				long initiatedDurationTime =
+					webRTCConnection.getInitiatedDurationTime();
+
+				if (initiatedDurationTime <= _CONNECTION_TIMEOUT_TIME) {
+					continue;
+				}
+
+				webRTCClient.removeBilateralWebRTCConnection(otherWebRTCClient);
+
+				JSONObject messageJSONObject =
+					JSONFactoryUtil.createJSONObject();
+
+				messageJSONObject.put("reason", "timeout");
+				messageJSONObject.put("status", "lost");
+				messageJSONObject.put("type", "status");
+
+				String messageJSON = messageJSONObject.toString();
+
+				pushConnectionStateWebRTCMail(
+					webRTCClient, otherWebRTCClient, messageJSON);
+
+				pushConnectionStateWebRTCMail(
+					otherWebRTCClient, webRTCClient, messageJSON);
+			}
+		}
+	}
+
+	protected void pushConnectionStateWebRTCMail(
+		WebRTCClient sourceWebRTCClient, WebRTCClient destinationWebRTCClient,
+		String messageJSON) {
+
+		ConnectionStateWebRTCMail connectionStateWebRTCMail =
+			new ConnectionStateWebRTCMail(
+				sourceWebRTCClient.getUserId(), messageJSON);
+
+		WebRTCMailbox destinationWebRTCMailbox =
+			destinationWebRTCClient.getOutgoingWebRTCMailbox();
+
+		destinationWebRTCMailbox.pushWebRTCMail(connectionStateWebRTCMail);
+	}
+
+	private static long _CONNECTION_TIMEOUT_TIME = 60000;
 
 	private static List<WebRTCManager> _webRTCManagers =
 		new CopyOnWriteArrayList<WebRTCManager>();
