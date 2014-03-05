@@ -6,6 +6,7 @@ $text-lightgrey: #8D8D8D;
 
 .lcs-portlet {
 	color: $text-darkgrey;
+	padding: 12px 10px 10px;
 
 	dl {
 		margin: 0;

@@ -6,6 +6,7 @@
 		<portlet-name>1</portlet-name>
 		<control-panel-entry-category>server</control-panel-entry-category>
 		<control-panel-entry-weight>100.0</control-panel-entry-weight>
+		<use-default-template>false</use-default-template>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/js/main.js</footer-portlet-javascript>
 		<css-class-wrapper>lcs-portlet</css-class-wrapper>
