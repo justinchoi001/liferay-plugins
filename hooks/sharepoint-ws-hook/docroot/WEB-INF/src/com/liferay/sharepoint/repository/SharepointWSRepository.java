@@ -590,7 +590,9 @@ public class SharepointWSRepository
 
 	@Override
 	public String getLiferayLogin(String extRepositoryLogin) {
-		return null;
+		int pos = extRepositoryLogin.lastIndexOf(StringPool.BACK_SLASH);
+
+		return extRepositoryLogin.substring(pos + 1);
 	}
 
 	@Override
