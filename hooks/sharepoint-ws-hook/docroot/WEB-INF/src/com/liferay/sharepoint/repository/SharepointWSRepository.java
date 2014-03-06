@@ -232,14 +232,14 @@ public class SharepointWSRepository
 				getSharepointConnection();
 
 			SharepointObject fileSharepointObject =
-					sharepointConnection.getSharepointObject(
-						toSharepointObjectId(extRepositoryFileEntryKey));
+				sharepointConnection.getSharepointObject(
+					toSharepointObjectId(extRepositoryFileEntryKey));
 
 			String filePath = fileSharepointObject.getPath();
 
 			SharepointObject folderSharepointObject =
-					sharepointConnection.getSharepointObject(
-						toSharepointObjectId(newExtRepositoryFolderKey));
+				sharepointConnection.getSharepointObject(
+					toSharepointObjectId(newExtRepositoryFolderKey));
 
 			String folderPath = folderSharepointObject.getPath();
 
@@ -510,7 +510,7 @@ public class SharepointWSRepository
 			String folderPath = folderSharepointObject.getPath();
 
 			ObjectTypeFilter objectTypeFilter = toObjectTypeFilter(
-					extRepositoryObjectType);
+				extRepositoryObjectType);
 
 			List<SharepointObject> sharepointObjects =
 				sharepointConnection.getSharepointObjects(
@@ -577,7 +577,7 @@ public class SharepointWSRepository
 
 			String parentFolderPath = sharepointObject.getFolderPath();
 
-			if ( parentFolderPath == null ) {
+			if (parentFolderPath == null) {
 				return null;
 			}
 			else {
@@ -780,8 +780,8 @@ public class SharepointWSRepository
 			if (!sharepointObject.isFile()) {
 				throw new IllegalArgumentException(
 					"Invalid ext repository object type " +
-						extRepositoryObjectType +
-						" for Sharepoint object " + sharepointObject);
+						extRepositoryObjectType + " for Sharepoint object "
+							+ sharepointObject);
 			}
 
 			return (T)new SharepointWSFileEntry(sharepointObject);
@@ -790,8 +790,8 @@ public class SharepointWSRepository
 			if (!sharepointObject.isFolder()) {
 				throw new IllegalArgumentException(
 					"Invalid ext repository object type " +
-						extRepositoryObjectType +
-						" for Sharepoint object " + sharepointObject);
+						extRepositoryObjectType + " for Sharepoint object " +
+							sharepointObject);
 			}
 
 			return (T)new SharepointWSFolder(sharepointObject);
