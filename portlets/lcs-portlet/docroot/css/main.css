@@ -1,0 +1,159 @@
+@import "compass";
+
+$text-blue: #009AE5;
+$text-darkgrey: #656565;
+$text-lightgrey: #8D8D8D;
+
+.lcs-portlet {
+	color: $text-darkgrey;
+
+	dl {
+		margin: 0;
+
+		dt {
+			color: $text-darkgrey;
+		}
+
+		dd {
+			color: $text-lightgrey;
+			margin: 0 0 25px;
+			min-height: 20px;
+		}
+	}
+
+	h3 {
+		font-size: 20px;
+		line-height: 20px;
+	}
+
+	.aui-field-select {
+		min-width: 200px;
+		width: auto;
+	}
+
+	.environment-section {
+		.field-content {
+			margin-bottom: 0;
+		}
+
+		.environment-input-wrapper {
+			.field-content {
+				margin-top: 0;
+			}
+
+			input, select {
+				margin-left: 22px;
+			}
+		}
+	}
+
+	.lcs-helper-message {
+		display: inline-block;
+		font-size: 11px;
+		margin: 0 0 10px 22px;
+	}
+
+	.lcs-header {
+		color: $text-lightgrey;
+		padding-bottom: 25px;
+
+		&:after {
+			clear: both;
+			content: "";
+			display: block;
+			visibility: hidden;
+		}
+
+		.lcs-connection-status {
+			float: left;
+			margin-right: 25px;
+
+			.lcs-connection-icon {
+				height: 29px;
+				margin: 0 auto 2px;
+				position: relative;
+				width: 29px;
+
+				&.lcs-icon-disconnected {
+					background-image: url(../images/connection_red.png);
+				}
+
+				&.lcs-icon-pending {
+					background-image: url(../images/connection_orange.png);
+				}
+
+				&.lcs-icon-connected {
+					background-image: url(../images/connection_green.png);
+				}
+
+				.taglib-icon-help {
+					position: absolute;
+					right: -20px;
+					top: -2px;
+				}
+			}
+
+			.lcs-connection-label {
+				font-size: 12px;
+				line-height: 12px;
+				text-align: center;
+			}
+		}
+
+		.lcs-header-title {
+			float: left;
+
+			.lcs-account {
+				color: $text-blue;
+				font-size: 20px;
+				line-height: 20px;
+				margin-bottom: 4px;
+			}
+
+			.lcs-portal {
+				font-size: 15px;
+				line-height: 15px;
+			}
+		}
+	}
+
+	.lcs-info {
+		&:after {
+			clear: both;
+			content: "";
+			display: block;
+			visibility: hidden;
+		}
+
+		.lcs-connection-info {
+			float: left;
+			width: 300px;
+			word-wrap: break-word;
+		}
+
+		.lcs-server-info {
+			float: left;
+			width: 300px;
+			word-wrap: break-word;
+		}
+	}
+
+	.lcs-registration-info {
+		display: inline-block;
+		margin-top: 0;
+	}
+
+	.lcs-environment-input-wrapper {
+		display: block;
+
+		.control-group {
+			margin-bottom: 0;
+		}
+	}
+}
+
+/* ---------- Extras ---------- */
+
+.lcs-portlet .lcs-helper-message.disabled {
+	@include opacity(0.5);
+}
