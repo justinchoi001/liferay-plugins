@@ -413,9 +413,8 @@ public class GoogleDriveRepository
 				return (T)new GoogleDriveFolder(
 					files.get(0), getRootFolderKey());
 			}
-			else {
-				return (T)new GoogleDriveFileEntry(files.get(0));
-			}
+
+			return (T)new GoogleDriveFileEntry(files.get(0));
 		}
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
@@ -423,9 +422,8 @@ public class GoogleDriveRepository
 			if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
 				throw new NoSuchFolderException(title);
 			}
-			else {
-				throw new NoSuchFileEntryException(title);
-			}
+
+			throw new NoSuchFileEntryException(title);
 		}
 	}
 
@@ -628,9 +626,8 @@ public class GoogleDriveRepository
 			if (extRepositoryObjectType.equals(ExtRepositoryObjectType.FILE)) {
 				return (T)new GoogleDriveFileEntry(file);
 			}
-			else {
-				return (T)new GoogleDriveFolder(file, getRootFolderKey());
-			}
+
+			return (T)new GoogleDriveFolder(file, getRootFolderKey());
 		}
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
