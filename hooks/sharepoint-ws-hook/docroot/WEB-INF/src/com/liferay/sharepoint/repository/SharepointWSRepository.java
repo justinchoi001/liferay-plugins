@@ -363,7 +363,9 @@ public class SharepointWSRepository
 				sharepointConnection.getSharepointVersions(filePath);
 
 			for (SharepointVersion sharepointVersion : sharepointVersions) {
-				if (sharepointVersion.getVersion().equals(version)) {
+				String curVersion = sharepointVersion.getVersion();
+
+				if (curVersion.equals(version)) {
 					return new SharepointWSFileVersion(sharepointVersion);
 				}
 			}
@@ -471,7 +473,9 @@ public class SharepointWSRepository
 					folderPath, objectTypeFilter);
 
 			for (SharepointObject sharepointObject : sharepointObjects) {
-				if (sharepointObject.getName().equals(title)) {
+				String name = sharepointObject.getName();
+
+				if (name.equals(title)) {
 					return toExtRepositoryObject(
 						extRepositoryObjectType, sharepointObject);
 				}
