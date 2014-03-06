@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.resiliency.spi.servlet;
+package com.liferay.portal.resiliency.spi.messaging;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -33,7 +33,7 @@ import javax.servlet.ServletContextListener;
 /**
  * @author Michael C. Han
  */
-public class SPIAdminServletContextListener
+public class SPIAdminHotDeployMessageListener
 	extends BasePortalLifecycle implements ServletContextListener {
 
 	@Override
@@ -94,6 +94,6 @@ public class SPIAdminServletContextListener
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
-		SPIAdminServletContextListener.class);
+		SPIAdminHotDeployMessageListener.class);
 
 }

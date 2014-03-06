@@ -1616,8 +1616,8 @@
 		</field>
 	</javadoc>
 	<javadoc>
-		<name>SPIAdminServletContextListener</name>
-		<type>com.liferay.portal.resiliency.spi.servlet.SPIAdminServletContextListener</type>
+		<name>SPIAdminHotDeployMessageListener</name>
+		<type>com.liferay.portal.resiliency.spi.messaging.SPIAdminHotDeployMessageListener</type>
 		<author><![CDATA[Michael C. Han]]></author>
 		<method>
 			<name>contextDestroyed</name>
