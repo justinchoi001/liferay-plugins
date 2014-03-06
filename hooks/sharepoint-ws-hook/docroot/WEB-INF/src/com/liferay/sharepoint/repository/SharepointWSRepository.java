@@ -581,10 +581,10 @@ public class SharepointWSRepository
 				return null;
 			}
 			else {
-				SharepointObject parentfolderSharepointObject =
+				SharepointObject parentFolderSharepointObject =
 					sharepointConnection.getSharepointObject(parentFolderPath);
 
-				return new SharepointWSFolder(parentfolderSharepointObject);
+				return new SharepointWSFolder(parentFolderSharepointObject);
 			}
 		}
 		catch (SharepointException se) {
