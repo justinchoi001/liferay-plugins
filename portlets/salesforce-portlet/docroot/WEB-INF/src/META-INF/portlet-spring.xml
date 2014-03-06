@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.liferay.salesforce.service.SalesforceLocalService" class="com.liferay.salesforce.service.impl.SalesforceLocalServiceImpl" />
+	<bean id="com.liferay.salesforce.service.SalesforceAccountLocalService" class="com.liferay.salesforce.service.impl.SalesforceAccountLocalServiceImpl" />
+	<bean id="com.liferay.salesforce.service.SalesforceContactLocalService" class="com.liferay.salesforce.service.impl.SalesforceContactLocalServiceImpl" />
+	<bean id="com.liferay.salesforce.service.SalesforceEventLocalService" class="com.liferay.salesforce.service.impl.SalesforceEventLocalServiceImpl" />
+	<bean id="com.liferay.salesforce.service.SalesforceLeadLocalService" class="com.liferay.salesforce.service.impl.SalesforceLeadLocalServiceImpl" />
+	<bean id="com.liferay.salesforce.service.SalesforceOpportunityLocalService" class="com.liferay.salesforce.service.impl.SalesforceOpportunityLocalServiceImpl" />
+	<bean id="com.liferay.salesforce.service.SalesforceTaskLocalService" class="com.liferay.salesforce.service.impl.SalesforceTaskLocalServiceImpl" />
+</beans>
