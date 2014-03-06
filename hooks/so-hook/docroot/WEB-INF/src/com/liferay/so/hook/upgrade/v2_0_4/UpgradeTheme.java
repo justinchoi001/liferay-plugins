@@ -17,6 +17,7 @@
 
 package com.liferay.so.hook.upgrade.v2_0_4;
 
+import com.liferay.portal.kernel.deploy.DeployManagerUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -26,6 +27,7 @@ public class UpgradeTheme extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
+		DeployManagerUtil.undeploy("so-welcome-theme");
 	}
 
 }
