@@ -67,6 +67,6 @@ public class SharepointWSFileVersion implements ExtRepositoryFileVersion {
 		return _sharepointVersion.getVersion();
 	}
 
-	private final SharepointVersion _sharepointVersion;
+	private SharepointVersion _sharepointVersion;
 
 }
