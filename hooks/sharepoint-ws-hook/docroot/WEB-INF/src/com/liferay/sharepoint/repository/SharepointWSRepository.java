@@ -780,8 +780,8 @@ public class SharepointWSRepository
 			if (!sharepointObject.isFile()) {
 				throw new IllegalArgumentException(
 					"Invalid ext repository object type " +
-						extRepositoryObjectType + " for Sharepoint object "
-							+ sharepointObject);
+						extRepositoryObjectType + " for Sharepoint object " +
+							sharepointObject);
 			}
 
 			return (T)new SharepointWSFileEntry(sharepointObject);
