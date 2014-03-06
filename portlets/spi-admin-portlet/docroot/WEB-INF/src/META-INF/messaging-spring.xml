@@ -16,6 +16,7 @@
 
 	<!-- Listeners -->
 
+	<bean id="messageListener.hot_deploy" class="com.liferay.portal.resiliency.spi.messaging.SPIAdminHotDeployMessageListener" />
 	<bean id="messageListener.spi_background_task_status" class="com.liferay.portal.resiliency.spi.backgroundtask.messaging.SPIBackgroundTaskStatusMessageListener" />
 	<bean id="messageListener.spi_restart" class="com.liferay.portal.resiliency.spi.monitor.messaging.SPIRestartMessageListener" />
 	<bean id="messageListener.spi_status_notification" class="com.liferay.portal.resiliency.spi.monitor.messaging.SPIStatusStoppedNotificationMessageListener" />
@@ -30,6 +31,11 @@
 		</property>
 		<property name="messageListeners">
 			<map key-type="java.lang.String" value-type="java.util.List">
+				<entry key="liferay/hot_deploy">
+					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
+						<ref bean="messageListener.hot_deploy" />
+					</list>
+				</entry>
 				<entry key="liferay/background_task_status">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
 						<ref bean="messageListener.spi_background_task_status" />

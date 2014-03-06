@@ -16,7 +16,8 @@ package com.liferay.portal.resiliency.spi.messaging;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.BasePortalLifecycle;
+import com.liferay.portal.kernel.messaging.HotDeployMessageListener;
+import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.resiliency.spi.model.SPIDefinition;
 import com.liferay.portal.resiliency.spi.monitor.SPIDefinitionMonitorUtil;
@@ -27,50 +28,13 @@ import com.liferay.util.portlet.PortletProps;
 
 import java.util.List;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 /**
  * @author Michael C. Han
  */
-public class SPIAdminHotDeployMessageListener
-	extends BasePortalLifecycle implements ServletContextListener {
+public class SPIAdminHotDeployMessageListener extends HotDeployMessageListener {
 
 	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		portalDestroy();
-	}
-
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		registerPortalLifecycle();
-	}
-
-	@Override
-	protected void doPortalDestroy() throws Exception {
-		SPIDefinitionMonitorUtil.unregister();
-
-		List<SPIDefinition> spiDefinitions =
-			SPIDefinitionLocalServiceUtil.getSPIDefinitions();
-
-		for (SPIDefinition spiDefinition : spiDefinitions) {
-			try {
-				if (spiDefinition.isAlive()) {
-					SPIDefinitionLocalServiceUtil.stopSPI(
-						spiDefinition.getSpiDefinitionId());
-				}
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to stop SPI " + spiDefinition.getName());
-				}
-			}
-		}
-	}
-
-	@Override
-	protected void doPortalInit() throws Exception {
-
+	protected void onDeploy(Message message) throws Exception {
 		List<SPIDefinition> spiDefinitions =
 			SPIDefinitionLocalServiceUtil.getSPIDefinitions();
 
@@ -90,6 +54,28 @@ public class SPIAdminHotDeployMessageListener
 		for (SPIDefinition spiDefinition : spiDefinitions) {
 			SPIDefinitionLocalServiceUtil.startSPIinBackground(
 				0, spiDefinition.getSpiDefinitionId());
+		}
+	}
+
+	@Override
+	protected void onUndeploy(Message message) throws Exception {
+		SPIDefinitionMonitorUtil.unregister();
+
+		List<SPIDefinition> spiDefinitions =
+			SPIDefinitionLocalServiceUtil.getSPIDefinitions();
+
+		for (SPIDefinition spiDefinition : spiDefinitions) {
+			try {
+				if (spiDefinition.isAlive()) {
+					SPIDefinitionLocalServiceUtil.stopSPI(
+						spiDefinition.getSpiDefinitionId());
+				}
+			}
+			catch (Exception e) {
+				if (_log.isWarnEnabled()) {
+					_log.warn("Unable to stop SPI " + spiDefinition.getName());
+				}
+			}
 		}
 	}
 
