@@ -24,6 +24,7 @@ import com.liferay.portal.resiliency.spi.monitor.SPIDefinitionMonitorUtil;
 import com.liferay.portal.resiliency.spi.service.SPIDefinitionLocalServiceUtil;
 import com.liferay.portal.resiliency.spi.util.PortletPropsKeys;
 import com.liferay.portal.resiliency.spi.util.SPIAdminConstants;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.util.portlet.PortletProps;
 
 import java.util.List;
@@ -52,8 +53,11 @@ public class SPIAdminHotDeployMessageListener extends HotDeployMessageListener {
 		}
 
 		for (SPIDefinition spiDefinition : spiDefinitions) {
+			long defaultUserId = UserLocalServiceUtil.getDefaultUserId(
+				spiDefinition.getCompanyId());
+
 			SPIDefinitionLocalServiceUtil.startSPIinBackground(
-				0, spiDefinition.getSpiDefinitionId());
+				defaultUserId, spiDefinition.getSpiDefinitionId());
 		}
 	}
 
