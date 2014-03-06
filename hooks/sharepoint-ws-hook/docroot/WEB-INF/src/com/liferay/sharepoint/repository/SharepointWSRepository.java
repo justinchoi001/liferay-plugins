@@ -143,7 +143,7 @@ public class SharepointWSRepository
 	@Override
 	public ExtRepositoryFileVersion cancelCheckOut(
 			String extRepositoryFileEntryKey)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -168,7 +168,7 @@ public class SharepointWSRepository
 	public void checkInExtRepositoryFileEntry(
 			String extRepositoryFileEntryKey, boolean createMajorVersion,
 			String changeLog)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -199,7 +199,7 @@ public class SharepointWSRepository
 	@Override
 	public ExtRepositoryFileEntry checkOutExtRepositoryFileEntry(
 			String extRepositoryFileEntryKey)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -225,7 +225,7 @@ public class SharepointWSRepository
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryFileEntryKey, String newExtRepositoryFolderKey,
 			String newTitle)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -299,7 +299,7 @@ public class SharepointWSRepository
 	@Override
 	public InputStream getContentStream(
 			ExtRepositoryFileEntry extRepositoryFileEntry)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		SharepointConnection sharepointConnection = getSharepointConnection();
 
@@ -313,7 +313,7 @@ public class SharepointWSRepository
 			return sharepointConnection.getInputStream(fileSharepointObject);
 		}
 		catch (SharepointException se) {
-			throw new PortalException(
+			throw new SystemException(
 				"Unable to retrieve contents of URL " +
 					fileSharepointObject.getURL(), se);
 		}
@@ -322,7 +322,7 @@ public class SharepointWSRepository
 	@Override
 	public InputStream getContentStream(
 			ExtRepositoryFileVersion extRepositoryFileVersion)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		SharepointConnection sharepointConnection = getSharepointConnection();
 
@@ -336,7 +336,7 @@ public class SharepointWSRepository
 			return sharepointConnection.getInputStream(sharepointVersion);
 		}
 		catch (SharepointException se) {
-			throw new PortalException(
+			throw new SystemException(
 				"Unable to retrieve contents of URL " +
 					sharepointVersion.getURL(), se);
 		}
@@ -345,7 +345,7 @@ public class SharepointWSRepository
 	@Override
 	public ExtRepositoryFileVersion getExtRepositoryFileVersion(
 			ExtRepositoryFileEntry extRepositoryFileEntry, String version)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -393,7 +393,7 @@ public class SharepointWSRepository
 	@Override
 	public List<ExtRepositoryFileVersion> getExtRepositoryFileVersions(
 			ExtRepositoryFileEntry extRepositoryFileEntry)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -429,7 +429,7 @@ public class SharepointWSRepository
 	public <T extends ExtRepositoryObject> T getExtRepositoryObject(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryObjectKey)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -493,7 +493,7 @@ public class SharepointWSRepository
 	public <T extends ExtRepositoryObject> List<T> getExtRepositoryObjects(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryFolderKey)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -533,7 +533,7 @@ public class SharepointWSRepository
 			ExtRepositoryObjectType<? extends ExtRepositoryObject>
 				extRepositoryObjectType,
 			String extRepositoryFolderKey)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -559,7 +559,7 @@ public class SharepointWSRepository
 	@Override
 	public ExtRepositoryFolder getExtRepositoryParentFolder(
 			ExtRepositoryObject extRepositoryObject)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -630,7 +630,7 @@ public class SharepointWSRepository
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryObjectKey, String newExtRepositoryFolderKey,
 			String newTitle)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -685,7 +685,7 @@ public class SharepointWSRepository
 	public ExtRepositoryFileEntry updateExtRepositoryFileEntry(
 			String extRepositoryFileEntryKey, String mimeType,
 			InputStream inputStream)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
