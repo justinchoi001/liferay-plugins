@@ -56,6 +56,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
+import com.liferay.portlet.documentlibrary.NoSuchFolderException;
 import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.repository.external.CredentialsProvider;
 import com.liferay.repository.external.ExtRepository;
@@ -418,7 +420,12 @@ public class GoogleDriveRepository
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
-			throw new NoSuchRepositoryEntryException(ioe);
+			if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
+				throw new NoSuchFolderException(title);
+			}
+			else {
+				throw new NoSuchFileEntryException(title);
+			}
 		}
 	}
 
