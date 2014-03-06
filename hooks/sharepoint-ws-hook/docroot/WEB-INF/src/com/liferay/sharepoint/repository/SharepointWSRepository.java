@@ -243,12 +243,12 @@ public class SharepointWSRepository
 
 			String folderPath = folderSharepointObject.getPath();
 
-			String newPath = pathHelper.buildPath(folderPath, newTitle);
+			String newFilePath = pathHelper.buildPath(folderPath, newTitle);
 
-			sharepointConnection.copySharepointObject(filePath, newPath);
+			sharepointConnection.copySharepointObject(filePath, newFilePath);
 
 			SharepointObject newSharepointObject =
-				sharepointConnection.getSharepointObject(newPath);
+				sharepointConnection.getSharepointObject(newFilePath);
 
 			return toExtRepositoryObject(
 				extRepositoryObjectType, newSharepointObject);
