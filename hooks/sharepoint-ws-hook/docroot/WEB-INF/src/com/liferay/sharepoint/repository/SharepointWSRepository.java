@@ -354,9 +354,7 @@ public class SharepointWSRepository
 				sharepointConnection.getSharepointVersions(filePath);
 
 			for (SharepointVersion sharepointVersion : sharepointVersions) {
-				String curVersion = sharepointVersion.getVersion();
-
-				if (curVersion.equals(version)) {
+				if (version.equals(sharepointVersion.getVersion())) {
 					return new SharepointWSFileVersion(sharepointVersion);
 				}
 			}
