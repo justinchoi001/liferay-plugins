@@ -410,7 +410,7 @@ public class SharepointWSRepository
 			for (SharepointVersion sharepointVersion : sharepointVersions) {
 				SharepointWSFileVersion sharepointWSFileVersion =
 					new SharepointWSFileVersion(sharepointVersion);
-				
+
 				sharepointWSVersions.add(sharepointWSFileVersion);
 			}
 
