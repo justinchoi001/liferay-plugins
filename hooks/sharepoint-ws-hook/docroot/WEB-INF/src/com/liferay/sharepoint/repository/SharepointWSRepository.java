@@ -491,9 +491,8 @@ public class SharepointWSRepository
 			if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
 				throw new NoSuchFolderException(title);
 			}
-			else {
-				throw new NoSuchFileEntryException(title);
-			}
+
+			throw new NoSuchFileEntryException(title);
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
