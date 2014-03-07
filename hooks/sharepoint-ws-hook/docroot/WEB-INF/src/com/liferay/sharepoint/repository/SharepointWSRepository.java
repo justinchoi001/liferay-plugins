@@ -15,7 +15,6 @@
 package com.liferay.sharepoint.repository;
 
 import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.search.Query;
@@ -77,7 +76,7 @@ public class SharepointWSRepository
 	public ExtRepositoryFileEntry addExtRepositoryFileEntry(
 			String extRepositoryParentFolderKey, String mimeType, String title,
 			String description, String changeLog, InputStream inputStream)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -100,7 +99,7 @@ public class SharepointWSRepository
 			return new SharepointWSFileEntry(fileSharepointObject);
 		}
 		catch (SharepointException se) {
-			throw new PortalException(se);
+			throw new SystemException(se);
 		}
 		catch (SharepointRuntimeException sre) {
 			throw new SystemException(sre);
@@ -111,7 +110,7 @@ public class SharepointWSRepository
 	public ExtRepositoryFolder addExtRepositoryFolder(
 			String extRepositoryParentFolderKey, String name,
 			String description)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -133,7 +132,7 @@ public class SharepointWSRepository
 			return new SharepointWSFolder(folderSharepointObject);
 		}
 		catch (SharepointException se) {
-			throw new PortalException(se);
+			throw new SystemException(se);
 		}
 		catch (SharepointRuntimeException sre) {
 			throw new SystemException(sre);
@@ -159,6 +158,9 @@ public class SharepointWSRepository
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 
 		return null;
@@ -194,6 +196,9 @@ public class SharepointWSRepository
 		catch (SharepointException se) {
 			throw new SystemException(se);
 		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
+		}
 	}
 
 	@Override
@@ -217,6 +222,9 @@ public class SharepointWSRepository
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -253,8 +261,11 @@ public class SharepointWSRepository
 			return toExtRepositoryObject(
 				extRepositoryObjectType, newSharepointObject);
 		}
-		catch (SharepointException e) {
-			throw new SystemException(e);
+		catch (SharepointException se) {
+			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -263,7 +274,7 @@ public class SharepointWSRepository
 			ExtRepositoryObjectType<? extends ExtRepositoryObject>
 				extRepositoryObjectType,
 			String extRepositoryObjectKey)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		if ((extRepositoryObjectType == ExtRepositoryObjectType.FILE) ||
 			(extRepositoryObjectType == ExtRepositoryObjectType.FOLDER)) {
@@ -283,6 +294,9 @@ public class SharepointWSRepository
 			catch (SharepointException se) {
 				throw new SystemException(se);
 			}
+			catch (SharepointRuntimeException sre) {
+				throw new SystemException(sre);
+			}
 		}
 		else {
 			throw new IllegalArgumentException(
@@ -301,21 +315,23 @@ public class SharepointWSRepository
 			ExtRepositoryFileEntry extRepositoryFileEntry)
 		throws SystemException {
 
-		SharepointConnection sharepointConnection = getSharepointConnection();
-
-		SharepointWSFileEntry sharepointWSFileEntry =
-			(SharepointWSFileEntry)extRepositoryFileEntry;
-
-		SharepointObject fileSharepointObject =
-			sharepointWSFileEntry.getSharepointObject();
-
 		try {
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			SharepointWSFileEntry sharepointWSFileEntry =
+				(SharepointWSFileEntry)extRepositoryFileEntry;
+
+			SharepointObject fileSharepointObject =
+				sharepointWSFileEntry.getSharepointObject();
+
 			return sharepointConnection.getInputStream(fileSharepointObject);
 		}
 		catch (SharepointException se) {
-			throw new SystemException(
-				"Unable to retrieve contents of URL " +
-					fileSharepointObject.getURL(), se);
+			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -324,21 +340,23 @@ public class SharepointWSRepository
 			ExtRepositoryFileVersion extRepositoryFileVersion)
 		throws SystemException {
 
-		SharepointConnection sharepointConnection = getSharepointConnection();
-
-		SharepointWSFileVersion sharepointWSFileVersion =
-			(SharepointWSFileVersion)extRepositoryFileVersion;
-
-		SharepointVersion sharepointVersion =
-			sharepointWSFileVersion.getSharepointVersion();
-
 		try {
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			SharepointWSFileVersion sharepointWSFileVersion =
+				(SharepointWSFileVersion)extRepositoryFileVersion;
+
+			SharepointVersion sharepointVersion =
+				sharepointWSFileVersion.getSharepointVersion();
+
 			return sharepointConnection.getInputStream(sharepointVersion);
 		}
 		catch (SharepointException se) {
-			throw new SystemException(
-				"Unable to retrieve contents of URL " +
-					sharepointVersion.getURL(), se);
+			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -374,6 +392,9 @@ public class SharepointWSRepository
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -425,13 +446,17 @@ public class SharepointWSRepository
 		catch (SharepointException se) {
 			throw new SystemException(se);
 		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
+		}
 	}
 
 	@Override
 	public <T extends ExtRepositoryObject> T getExtRepositoryObject(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryObjectKey)
-		throws SystemException {
+		throws SystemException, NoSuchFileEntryException,
+			NoSuchFolderException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -441,11 +466,23 @@ public class SharepointWSRepository
 				sharepointConnection.getSharepointObject(
 					toSharepointObjectId(extRepositoryObjectKey));
 
+			if (sharepointObject == null) {
+				if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
+					throw new NoSuchFolderException(extRepositoryObjectKey);
+				}
+				else {
+					throw new NoSuchFileEntryException(extRepositoryObjectKey);
+				}
+			}
+
 			return toExtRepositoryObject(
 				extRepositoryObjectType, sharepointObject);
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -453,7 +490,8 @@ public class SharepointWSRepository
 	public <T extends ExtRepositoryObject> T getExtRepositoryObject(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryFolderKey, String title)
-		throws PortalException, SystemException {
+		throws SystemException, NoSuchFileEntryException,
+			NoSuchFolderException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -490,6 +528,9 @@ public class SharepointWSRepository
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -530,6 +571,9 @@ public class SharepointWSRepository
 		catch (SharepointException se) {
 			throw new SystemException(se);
 		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
+		}
 	}
 
 	@Override
@@ -557,6 +601,9 @@ public class SharepointWSRepository
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 
@@ -590,6 +637,9 @@ public class SharepointWSRepository
 		catch (SharepointException se) {
 			throw new SystemException(se);
 		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
+		}
 	}
 
 	@Override
@@ -600,14 +650,14 @@ public class SharepointWSRepository
 	}
 
 	@Override
-	public String getRootFolderKey() throws PortalException, SystemException {
+	public String getRootFolderKey() throws SystemException {
 		return null;
 	}
 
 	@Override
 	public List<String> getSubfolderKeys(
 			String extRepositoryFolderKey, boolean recurse)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		return null;
 	}
@@ -626,7 +676,7 @@ public class SharepointWSRepository
 	public void initRepository(
 			UnicodeProperties typeSettingsProperties,
 			CredentialsProvider credentialsProvider)
-		throws PortalException, SystemException {
+		throws SystemException {
 	}
 
 	@Override
@@ -674,13 +724,16 @@ public class SharepointWSRepository
 		catch (SharepointException se) {
 			throw new SystemException(se);
 		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
+		}
 	}
 
 	@Override
 	public List<ExtRepositorySearchResult<?>> search(
 			SearchContext searchContext, Query query,
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
-		throws PortalException, SystemException {
+		throws SystemException {
 
 		return null;
 	}
@@ -707,6 +760,9 @@ public class SharepointWSRepository
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
 		}
 	}
 

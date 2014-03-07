@@ -35,7 +35,6 @@ import com.liferay.compat.portal.kernel.util.StringUtil;
 import com.liferay.googledrive.repository.model.GoogleDriveFileEntry;
 import com.liferay.googledrive.repository.model.GoogleDriveFileVersion;
 import com.liferay.googledrive.repository.model.GoogleDriveFolder;
-import com.liferay.portal.NoSuchRepositoryEntryException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -144,7 +143,7 @@ public class GoogleDriveRepository
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryFileEntryKey, String newExtRepositoryFolderKey,
 			String newTitle)
-		throws PortalException {
+		throws PortalException, SystemException {
 
 		try {
 			Drive drive = getDrive();
@@ -181,7 +180,7 @@ public class GoogleDriveRepository
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
-			throw new PortalException(ioe);
+			throw new SystemException(ioe);
 		}
 	}
 
@@ -190,7 +189,7 @@ public class GoogleDriveRepository
 			ExtRepositoryObjectType<? extends ExtRepositoryObject>
 				extRepositoryObjectType,
 			String extRepositoryObjectKey)
-		throws PortalException {
+		throws PortalException, SystemException {
 
 		try {
 			Drive drive = getDrive();
@@ -209,7 +208,7 @@ public class GoogleDriveRepository
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
-			throw new PortalException(ioe);
+			throw new SystemException(ioe);
 		}
 	}
 
@@ -361,7 +360,11 @@ public class GoogleDriveRepository
 			return extRepositoryObject;
 		}
 		catch (IOException ioe) {
-			throw new NoSuchRepositoryEntryException(ioe);
+			if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
+				throw new NoSuchFolderException(ioe);
+			}
+
+			throw new NoSuchFileEntryException(ioe);
 		}
 	}
 
@@ -369,7 +372,7 @@ public class GoogleDriveRepository
 	public <T extends ExtRepositoryObject> T getExtRepositoryObject(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryFolderKey, String title)
-		throws PortalException {
+		throws PortalException, SystemException {
 
 		try {
 			StringBundler sb = new StringBundler();
@@ -404,7 +407,11 @@ public class GoogleDriveRepository
 			List<File> files = fileList.getItems();
 
 			if (files.isEmpty()) {
-				throw new NoSuchRepositoryEntryException();
+				if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
+					throw new NoSuchFolderException(title);
+				}
+
+				throw new NoSuchFileEntryException(title);
 			}
 
 			if (extRepositoryObjectType.equals(
@@ -419,11 +426,7 @@ public class GoogleDriveRepository
 		catch (IOException ioe) {
 			_log.error(ioe, ioe);
 
-			if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
-				throw new NoSuchFolderException(title);
-			}
-
-			throw new NoSuchFileEntryException(title);
+			throw new SystemException(ioe);
 		}
 	}
 
@@ -774,7 +777,9 @@ public class GoogleDriveRepository
 		}
 	}
 
-	protected GoogleDriveSession buildGoogleDriveSession() throws Exception {
+	protected GoogleDriveSession buildGoogleDriveSession()
+		throws IOException, PortalException, SystemException {
+
 		long userId = PrincipalThreadLocal.getUserId();
 
 		User user = UserLocalServiceUtil.getUser(userId);
