@@ -408,8 +408,10 @@ public class SharepointWSRepository
 				new ArrayList<ExtRepositoryFileVersion>();
 
 			for (SharepointVersion sharepointVersion : sharepointVersions) {
-				sharepointWSVersions.add(
-					new SharepointWSFileVersion(sharepointVersion));
+				SharepointWSFileVersion sharepointWSFileVersion =
+					new SharepointWSFileVersion(sharepointVersion);
+				
+				sharepointWSVersions.add(sharepointWSFileVersion);
 			}
 
 			return sharepointWSVersions;
