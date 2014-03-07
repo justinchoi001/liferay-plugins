@@ -482,9 +482,7 @@ public class SharepointWSRepository
 					folderPath, objectTypeFilter);
 
 			for (SharepointObject sharepointObject : sharepointObjects) {
-				String name = sharepointObject.getName();
-
-				if (name.equals(title)) {
+				if (title.equals(sharepointObject.getName())) {
 					return toExtRepositoryObject(
 						extRepositoryObjectType, sharepointObject);
 				}
