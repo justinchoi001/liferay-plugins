@@ -65,7 +65,7 @@
 	List<LCSClusterEntry> lcsClusterEntries = LCSClusterEntryServiceUtil.getCorpEntryLCSClusterEntries(corpEntryId);
 	%>
 
-	<aui:field-wrapper cssClass="environment-section" label="environment">
+	<aui:field-wrapper cssClass="environment-section" helpMessage="environment-help" label="environment">
 		<aui:input checked="<%= true %>" id="lcsDefaultCluster" inlineLabel="right" label="use-default-environment" name="environment" type="radio" value="0" />
 
 		<span class="lcs-helper-message">
