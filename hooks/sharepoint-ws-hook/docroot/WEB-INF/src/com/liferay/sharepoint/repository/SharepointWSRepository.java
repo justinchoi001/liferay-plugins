@@ -276,34 +276,6 @@ public class SharepointWSRepository
 				extRepositoryObjectType,
 			String extRepositoryObjectKey)
 		throws SystemException {
-
-		if ((extRepositoryObjectType == ExtRepositoryObjectType.FILE) ||
-			(extRepositoryObjectType == ExtRepositoryObjectType.FOLDER)) {
-
-			try {
-				SharepointConnection sharepointConnection =
-					getSharepointConnection();
-
-				SharepointObject sharepointObject =
-					sharepointConnection.getSharepointObject(
-						toSharepointObjectId(extRepositoryObjectKey));
-
-				String path = sharepointObject.getPath();
-
-				sharepointConnection.deleteSharepointObject(path);
-			}
-			catch (SharepointException se) {
-				throw new SystemException(se);
-			}
-			catch (SharepointRuntimeException sre) {
-				throw new SystemException(sre);
-			}
-		}
-		else {
-			throw new IllegalArgumentException(
-				"Invalid ext repository object type: " +
-					extRepositoryObjectType);
-		}
 	}
 
 	@Override
