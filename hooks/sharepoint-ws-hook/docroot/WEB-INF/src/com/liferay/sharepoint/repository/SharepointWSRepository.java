@@ -15,6 +15,7 @@
 package com.liferay.sharepoint.repository;
 
 import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.search.Query;
@@ -455,8 +456,7 @@ public class SharepointWSRepository
 	public <T extends ExtRepositoryObject> T getExtRepositoryObject(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryObjectKey)
-		throws SystemException, NoSuchFileEntryException,
-			NoSuchFolderException {
+		throws PortalException, SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
@@ -490,8 +490,7 @@ public class SharepointWSRepository
 	public <T extends ExtRepositoryObject> T getExtRepositoryObject(
 			ExtRepositoryObjectType<T> extRepositoryObjectType,
 			String extRepositoryFolderKey, String title)
-		throws SystemException, NoSuchFileEntryException,
-			NoSuchFolderException {
+		throws PortalException, SystemException {
 
 		try {
 			SharepointConnection sharepointConnection =
