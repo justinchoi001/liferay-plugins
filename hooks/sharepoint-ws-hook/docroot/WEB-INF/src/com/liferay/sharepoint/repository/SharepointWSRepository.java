@@ -611,9 +611,9 @@ public class SharepointWSRepository
 
 	@Override
 	public String getLiferayLogin(String extRepositoryLogin) {
-		int pos = extRepositoryLogin.lastIndexOf(StringPool.BACK_SLASH);
+		int index = extRepositoryLogin.lastIndexOf(StringPool.BACK_SLASH);
 
-		return extRepositoryLogin.substring(pos + 1);
+		return extRepositoryLogin.substring(index + 1);
 	}
 
 	@Override
@@ -794,15 +794,14 @@ public class SharepointWSRepository
 		return sharepointConnection;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected <T extends ExtRepositoryObject> T toExtRepositoryObject(
-			ExtRepositoryObjectType<T> extRepositoryObjectType,
-			SharepointObject sharepointObject) {
+		ExtRepositoryObjectType<T> extRepositoryObjectType,
+		SharepointObject sharepointObject) {
 
 		if (extRepositoryObjectType == ExtRepositoryObjectType.FILE) {
 			if (!sharepointObject.isFile()) {
 				throw new IllegalArgumentException(
-					"Invalid ext repository object type " +
+					"Invalid external repository object type " +
 						extRepositoryObjectType + " for Sharepoint object " +
 							sharepointObject);
 			}
@@ -812,7 +811,7 @@ public class SharepointWSRepository
 		else if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
 			if (!sharepointObject.isFolder()) {
 				throw new IllegalArgumentException(
-					"Invalid ext repository object type " +
+					"Invalid external repository object type " +
 						extRepositoryObjectType + " for Sharepoint object " +
 							sharepointObject);
 			}
@@ -821,7 +820,7 @@ public class SharepointWSRepository
 		}
 		else {
 			throw new IllegalArgumentException(
-				"Invalid ext repository object type " +
+				"Invalid external repository object type " +
 					extRepositoryObjectType);
 		}
 	}
@@ -835,7 +834,7 @@ public class SharepointWSRepository
 
 		if (objectTypeFilter == null) {
 			throw new IllegalArgumentException(
-				"Invalid ext repository object type: " +
+				"Invalid external repository object type " +
 					extRepositoryObjectType);
 		}
 
