@@ -53,11 +53,11 @@ public class SPIAdminHotDeployMessageListener extends HotDeployMessageListener {
 		}
 
 		for (SPIDefinition spiDefinition : spiDefinitions) {
-			long defaultUserId = UserLocalServiceUtil.getDefaultUserId(
+			long userId = UserLocalServiceUtil.getDefaultUserId(
 				spiDefinition.getCompanyId());
 
 			SPIDefinitionLocalServiceUtil.startSPIinBackground(
-				defaultUserId, spiDefinition.getSpiDefinitionId());
+				userId, spiDefinition.getSpiDefinitionId());
 		}
 	}
 

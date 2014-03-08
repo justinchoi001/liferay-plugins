@@ -31,14 +31,14 @@
 		</property>
 		<property name="messageListeners">
 			<map key-type="java.lang.String" value-type="java.util.List">
-				<entry key="liferay/hot_deploy">
-					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.hot_deploy" />
-					</list>
-				</entry>
 				<entry key="liferay/background_task_status">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
 						<ref bean="messageListener.spi_background_task_status" />
+					</list>
+				</entry>
+				<entry key="liferay/hot_deploy">
+					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
+						<ref bean="messageListener.hot_deploy" />
 					</list>
 				</entry>
 				<entry key="liferay/spi_status">
