@@ -15,6 +15,7 @@
 package com.liferay.sharepoint.repository;
 
 import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.RepositoryException;
@@ -49,12 +50,16 @@ import com.liferay.sharepoint.connector.SharepointObject;
 import com.liferay.sharepoint.connector.SharepointRuntimeException;
 import com.liferay.sharepoint.connector.SharepointVersion;
 import com.liferay.sharepoint.connector.operation.PathHelper;
+import com.liferay.sharepoint.connector.operation.URLHelper;
 import com.liferay.sharepoint.repository.model.SharepointWSFileEntry;
 import com.liferay.sharepoint.repository.model.SharepointWSFileVersion;
 import com.liferay.sharepoint.repository.model.SharepointWSFolder;
 import com.liferay.sharepoint.repository.model.SharepointWSObject;
+import com.liferay.sharepoint.repository.search.SharepointQueryBuilder;
 
 import java.io.InputStream;
+
+import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -630,14 +635,14 @@ public class SharepointWSRepository
 
 	@Override
 	public String getLiferayLogin(String extRepositoryLogin) {
-		int index = extRepositoryLogin.lastIndexOf(StringPool.BACK_SLASH);
+		int pos = extRepositoryLogin.lastIndexOf(StringPool.BACK_SLASH);
 
-		return extRepositoryLogin.substring(index + 1);
+		return extRepositoryLogin.substring(pos + 1);
 	}
 
 	@Override
 	public String getRootFolderKey() throws SystemException {
-		return null;
+		return _rootFolderKey;
 	}
 
 	@Override
@@ -645,7 +650,25 @@ public class SharepointWSRepository
 			String extRepositoryFolderKey, boolean recurse)
 		throws SystemException {
 
-		return null;
+		try {
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			SharepointObject folderSharepointObject =
+				sharepointConnection.getSharepointObject(
+					toSharepointObjectId(extRepositoryFolderKey));
+
+			String folderPath = folderSharepointObject.getPath();
+
+			List<String> extRepositoryFolderKeys = new ArrayList<String>();
+
+			recursiveGetSubfolderKeys(folderPath, extRepositoryFolderKeys);
+
+			return extRepositoryFolderKeys;
+		}
+		catch (SharepointException se) {
+			throw new SystemException(se);
+		}
 	}
 
 	@Override
@@ -663,6 +686,34 @@ public class SharepointWSRepository
 			UnicodeProperties typeSettingsProperties,
 			CredentialsProvider credentialsProvider)
 		throws SystemException {
+
+		try {
+			_credentialsProvider = credentialsProvider;
+
+			_libraryName = typeSettingsProperties.getProperty(_LIBRARY_NAME);
+
+			String siteURL = typeSettingsProperties.getProperty(_SITE_URL);
+
+			URL url = urlHelper.toURL(siteURL);
+
+			_protocol = url.getProtocol();
+
+			_host = url.getHost();
+
+			_sitePath = url.getPath();
+
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			SharepointObject rootFolderSharepointObject =
+				sharepointConnection.getSharepointObject(StringPool.SLASH);
+
+			_rootFolderKey = Long.toString(
+				rootFolderSharepointObject.getSharepointObjectId());
+		}
+		catch (SharepointException se) {
+			throw new SystemException(se);
+		}
 	}
 
 	@Override
@@ -721,7 +772,26 @@ public class SharepointWSRepository
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
 		throws SystemException {
 
-		return null;
+		List<SharepointObject> sharepointObjects = doSearch(
+			searchContext, query, extRepositoryQueryMapper);
+
+		sharepointObjects = filter(searchContext, sharepointObjects);
+
+		List<ExtRepositorySearchResult<?>> extRepositorySearchResults =
+				new ArrayList<ExtRepositorySearchResult<?>>();
+
+		for (SharepointObject sharepointObject : sharepointObjects) {
+			ExtRepositoryObject extRepositoryObject = toExtRepositoryObject(
+				ExtRepositoryObjectType.OBJECT, sharepointObject);
+
+			ExtRepositorySearchResult<?> extRepositorySearchResult =
+				new ExtRepositorySearchResult<ExtRepositoryObject>(
+					extRepositoryObject, 1, StringPool.BLANK);
+
+			extRepositorySearchResults.add(extRepositorySearchResult);
+		}
+
+		return extRepositorySearchResults;
 	}
 
 	@Override
@@ -773,6 +843,51 @@ public class SharepointWSRepository
 		}
 	}
 
+	protected List<SharepointObject> doSearch(
+			SearchContext searchContext, Query query,
+			ExtRepositoryQueryMapper extRepositoryQueryMapper)
+		throws SystemException {
+
+		try {
+			SharepointQueryBuilder queryBuilder =
+				new SharepointQueryBuilder(
+					searchContext, query, this, extRepositoryQueryMapper);
+
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			List<SharepointObject> sharepointObjects =
+				sharepointConnection.getSharepointObjects(
+					queryBuilder.getQuery(),
+					queryBuilder.getQueryOptionsList());
+
+			return sharepointObjects;
+		}
+		catch (SharepointException se) {
+			throw new SystemException(se);
+		}
+	}
+
+	protected List<SharepointObject> filter(
+		SearchContext searchContext, List<SharepointObject> sharepointObjects) {
+
+		int start = searchContext.getStart();
+
+		if ((start == QueryUtil.ALL_POS) || (start < 0)) {
+			start = 0;
+		}
+
+		int end = searchContext.getEnd();
+
+		if ((end == QueryUtil.ALL_POS) || (end > sharepointObjects.size())) {
+			end = sharepointObjects.size();
+		}
+
+		sharepointObjects = sharepointObjects.subList(start, end);
+
+		return sharepointObjects;
+	}
+
 	protected SharepointConnection getSharepointConnection()
 		throws RepositoryException {
 
@@ -813,34 +928,59 @@ public class SharepointWSRepository
 		return sharepointConnection;
 	}
 
+	protected void recursiveGetSubfolderKeys(
+			String path, List<String> extRepositoryFolderKeys)
+		throws SystemException {
+
+		try {
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			List<SharepointObject> folderSharepointObjects =
+				sharepointConnection.getSharepointObjects(
+					path, ObjectTypeFilter.FOLDERS);
+
+			for (
+				SharepointObject folderSharepointObject :
+					folderSharepointObjects) {
+
+				String extRepositoryFolderKey = Long.toString(
+					folderSharepointObject.getSharepointObjectId());
+
+				extRepositoryFolderKeys.add(extRepositoryFolderKey);
+
+				recursiveGetSubfolderKeys(
+					folderSharepointObject.getPath(), extRepositoryFolderKeys);
+			}
+		}
+		catch (SharepointException se) {
+			throw new SystemException(se);
+		}
+	}
+
 	protected <T extends ExtRepositoryObject> T toExtRepositoryObject(
 		ExtRepositoryObjectType<T> extRepositoryObjectType,
 		SharepointObject sharepointObject) {
 
-		if (extRepositoryObjectType == ExtRepositoryObjectType.FILE) {
-			if (!sharepointObject.isFile()) {
+		if (sharepointObject.isFile()) {
+			if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
 				throw new IllegalArgumentException(
 					"Invalid external repository object type " +
 						extRepositoryObjectType + " for Sharepoint object " +
-							sharepointObject);
+						sharepointObject);
 			}
 
 			return (T)new SharepointWSFileEntry(sharepointObject);
 		}
-		else if (extRepositoryObjectType == ExtRepositoryObjectType.FOLDER) {
-			if (!sharepointObject.isFolder()) {
+		else {
+			if (extRepositoryObjectType == ExtRepositoryObjectType.FILE) {
 				throw new IllegalArgumentException(
 					"Invalid external repository object type " +
 						extRepositoryObjectType + " for Sharepoint object " +
-							sharepointObject);
+						sharepointObject);
 			}
 
 			return (T)new SharepointWSFolder(sharepointObject);
-		}
-		else {
-			throw new IllegalArgumentException(
-				"Invalid external repository object type " +
-					extRepositoryObjectType);
 		}
 	}
 
@@ -865,6 +1005,7 @@ public class SharepointWSRepository
 	}
 
 	protected static PathHelper pathHelper = new PathHelper();
+	protected static URLHelper urlHelper = new URLHelper();
 
 	private static final String _CONFIGURATION_WS = "SHAREPOINT_WS";
 
@@ -895,6 +1036,7 @@ public class SharepointWSRepository
 	private String _host;
 	private String _libraryName;
 	private String _protocol;
+	private String _rootFolderKey;
 	private AutoResetThreadLocal<SharepointConnection>
 		_sharepointConnectionThreadLocal =
 			new AutoResetThreadLocal<SharepointConnection>(
