@@ -276,6 +276,25 @@ public class SharepointWSRepository
 				extRepositoryObjectType,
 			String extRepositoryObjectKey)
 		throws SystemException {
+
+		try {
+			SharepointConnection sharepointConnection =
+				getSharepointConnection();
+
+			SharepointObject sharepointObject =
+				sharepointConnection.getSharepointObject(
+					toSharepointObjectId(extRepositoryObjectKey));
+
+			String path = sharepointObject.getPath();
+
+			sharepointConnection.deleteSharepointObject(path);
+		}
+		catch (SharepointException se) {
+			throw new SystemException(se);
+		}
+		catch (SharepointRuntimeException sre) {
+			throw new SystemException(sre);
+		}
 	}
 
 	@Override
