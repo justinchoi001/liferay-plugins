@@ -34,6 +34,10 @@ import java.util.List;
  */
 public class SPIAdminHotDeployMessageListener extends HotDeployMessageListener {
 
+	public SPIAdminHotDeployMessageListener(String... servletContextNames) {
+		super(servletContextNames);
+	}
+
 	@Override
 	protected void onDeploy(Message message) throws Exception {
 		List<SPIDefinition> spiDefinitions =
