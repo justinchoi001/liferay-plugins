@@ -662,7 +662,7 @@ public class SharepointWSRepository
 
 			List<String> extRepositoryFolderKeys = new ArrayList<String>();
 
-			recursiveGetSubfolderKeys(folderPath, extRepositoryFolderKeys);
+			getSubfolderKeys(folderPath, extRepositoryFolderKeys);
 
 			return extRepositoryFolderKeys;
 		}
@@ -708,7 +708,7 @@ public class SharepointWSRepository
 			SharepointObject rootFolderSharepointObject =
 				sharepointConnection.getSharepointObject(StringPool.SLASH);
 
-			_rootFolderKey = Long.toString(
+			_rootFolderKey = String.valueOf(
 				rootFolderSharepointObject.getSharepointObjectId());
 		}
 		catch (SharepointException se) {
@@ -778,7 +778,7 @@ public class SharepointWSRepository
 		sharepointObjects = filter(searchContext, sharepointObjects);
 
 		List<ExtRepositorySearchResult<?>> extRepositorySearchResults =
-				new ArrayList<ExtRepositorySearchResult<?>>();
+			new ArrayList<ExtRepositorySearchResult<?>>();
 
 		for (SharepointObject sharepointObject : sharepointObjects) {
 			ExtRepositoryObject extRepositoryObject = toExtRepositoryObject(
@@ -849,9 +849,8 @@ public class SharepointWSRepository
 		throws SystemException {
 
 		try {
-			SharepointQueryBuilder queryBuilder =
-				new SharepointQueryBuilder(
-					searchContext, query, this, extRepositoryQueryMapper);
+			SharepointQueryBuilder queryBuilder = new SharepointQueryBuilder(
+				searchContext, query, this, extRepositoryQueryMapper);
 
 			SharepointConnection sharepointConnection =
 				getSharepointConnection();
@@ -928,7 +927,7 @@ public class SharepointWSRepository
 		return sharepointConnection;
 	}
 
-	protected void recursiveGetSubfolderKeys(
+	protected void getSubfolderKeys(
 			String path, List<String> extRepositoryFolderKeys)
 		throws SystemException {
 
@@ -944,12 +943,12 @@ public class SharepointWSRepository
 				SharepointObject folderSharepointObject :
 					folderSharepointObjects) {
 
-				String extRepositoryFolderKey = Long.toString(
+				String extRepositoryFolderKey = String.valueOf(
 					folderSharepointObject.getSharepointObjectId());
 
 				extRepositoryFolderKeys.add(extRepositoryFolderKey);
 
-				recursiveGetSubfolderKeys(
+				getSubfolderKeys(
 					folderSharepointObject.getPath(), extRepositoryFolderKeys);
 			}
 		}
@@ -967,7 +966,7 @@ public class SharepointWSRepository
 				throw new IllegalArgumentException(
 					"Invalid external repository object type " +
 						extRepositoryObjectType + " for Sharepoint object " +
-						sharepointObject);
+							sharepointObject);
 			}
 
 			return (T)new SharepointWSFileEntry(sharepointObject);
@@ -977,7 +976,7 @@ public class SharepointWSRepository
 				throw new IllegalArgumentException(
 					"Invalid external repository object type " +
 						extRepositoryObjectType + " for Sharepoint object " +
-						sharepointObject);
+							sharepointObject);
 			}
 
 			return (T)new SharepointWSFolder(sharepointObject);
