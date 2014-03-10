@@ -21,6 +21,7 @@ import com.liferay.portal.resiliency.spi.model.SPIDefinition;
 import com.liferay.portal.resiliency.spi.service.SPIDefinitionLocalServiceUtil;
 import com.liferay.portal.resiliency.spi.util.SPIAdminConstants;
 import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.UserLocalServiceUtil;
 
 import javax.portlet.PortletPreferences;
 
@@ -77,8 +78,11 @@ public class SPIRestartMessageListener extends BaseSPIStatusMessageListener {
 			spiDefinition.getUserId(), spiDefinition.getSpiDefinitionId(),
 			spiDefinition.getTypeSettings(), new ServiceContext());
 
-		SPIDefinitionLocalServiceUtil.startSPI(
-			spiDefinition.getSpiDefinitionId());
+		long userId = UserLocalServiceUtil.getDefaultUserId(
+			spiDefinition.getCompanyId());
+
+		SPIDefinitionLocalServiceUtil.startSPIinBackground(
+			userId, spiDefinition.getSpiDefinitionId());
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
