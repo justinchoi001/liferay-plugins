@@ -8,6 +8,9 @@
 	<info module="sharepoint-connector-shared" organisation="com.liferay" />
 
 	<dependencies defaultconf="default">
+		<dependency name="commons-codec" org="commons-codec" rev="1.5" />
+		<dependency name="commons-discovery" org="commons-discovery" rev="0.4" />
 		<dependency name="commons-httpclient" org="commons-httpclient" rev="3.1" />
+		<dependency name="wsdl4j" org="wsdl4j" rev="1.6.1" />
 	</dependencies>
 </ivy-module>

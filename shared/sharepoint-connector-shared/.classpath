@@ -24,8 +24,11 @@
 	<classpathentry kind="lib" path="/portal-6.2.x/util-taglib/util-taglib.jar" />
 	<classpathentry kind="lib" path="lib/axis-jaxrpc.jar" />
 	<classpathentry kind="lib" path="lib/axis.jar" />
+	<classpathentry kind="lib" path="lib/commons-codec.jar" />
+	<classpathentry kind="lib" path="lib/commons-discovery.jar" />
 	<classpathentry kind="lib" path="lib/commons-httpclient.jar" />
 	<classpathentry kind="lib" path="lib/portal-compat-shared.jar" />
 	<classpathentry kind="lib" path="lib/sharepoint-ws-shared.jar" />
+	<classpathentry kind="lib" path="lib/wsdl4j.jar" />
 	<classpathentry kind="output" path="bin" />
 </classpath>
