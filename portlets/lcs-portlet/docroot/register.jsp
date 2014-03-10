@@ -65,34 +65,24 @@
 	List<LCSClusterEntry> lcsClusterEntries = LCSClusterEntryServiceUtil.getCorpEntryLCSClusterEntries(corpEntryId);
 	%>
 
-	<aui:field-wrapper cssClass="environment-section" helpMessage="environment-help" label="environment">
-		<aui:input checked="<%= true %>" id="lcsDefaultCluster" inlineLabel="right" label="use-default-environment" name="environment" type="radio" value="0" />
-
-		<span class="lcs-helper-message">
-			<liferay-ui:message key="you-will-be-able-to-edit-it-on-your-cloud-dashboard" />
-		</span>
-
-		<aui:input id="lcsClusterEntry" inlineLabel="right" label='<%= lcsClusterEntries.isEmpty() ? "there-are-no-environments-created-yet" : "choose-an-environment" %>' name="environment" type="radio" value='<%= lcsClusterEntries.isEmpty() ? "1" : "2" %>' />
-
-		<span class="lcs-environment-input-wrapper" id="<portlet:namespace />environmentInputWrapper">
+	<aui:field-wrapper helpMessage="environment-help" label="environment-required">
+		<span id="<portlet:namespace />lcsClusterEntryInputWrapper">
 			<c:choose>
+				<c:when test="<%= lcsClusterEntries.isEmpty() %>">
+					<liferay-ui:message key="there-are-no-environments-created-yet" />
+				</c:when>
 				<c:when test="<%= lcsClusterEntries.size() == 1 %>">
 
 					<%
 					LCSClusterEntry lcsClusterEntry = lcsClusterEntries.get(0);
 					%>
 
-					<aui:input disabled="<%= true %>" id="lcsClusterEntryId" name="lcsClusterEntryId" type="hidden" value="<%= lcsClusterEntry.getLcsClusterEntryId() %>" />
+					<aui:input id="lcsClusterEntryId" name="lcsClusterEntryId" type="hidden" value="<%= lcsClusterEntry.getLcsClusterEntryId() %>" />
 
-					<aui:input disabled="<%= true %>" label="" name="lcsClusterEntryName" type="text" value="<%= lcsClusterEntry.getName() %>" />
+					<aui:input label="" name="lcsClusterEntryName" type="text" value="<%= lcsClusterEntry.getName() %>" />
 				</c:when>
 				<c:when test="<%= lcsClusterEntries.size() > 1 %>">
-
-					<%
-					int lcsClusterEntryMethod = ParamUtil.getInteger(request, "lcsClusterEntryMethod");
-					%>
-
-					<aui:select disabled="<%= lcsClusterEntryMethod != 2 %>" id="lcsClusterEntryId" label="" name="lcsClusterEntryId">
+					<aui:select id="lcsClusterEntryId" label="" name="lcsClusterEntryId">
 
 						<%
 						long lcsClusterEntryId = ParamUtil.getLong(request, "lcsClusterEntryId");
@@ -111,9 +101,9 @@
 			</c:choose>
 		</span>
 
-		<span class="disabled lcs-helper-message" id="<portlet:namespace />addEntryLink">
-			<liferay-ui:message arguments="javascript:" key="do-you-want-to-add-a-new-environment" />
-		</span>
+		<aui:button-row>
+			<aui:button name="addEnvironmentButton" value="add-new-environment" />
+		</aui:button-row>
 	</aui:field-wrapper>
 
 	<aui:input name="name" />
@@ -133,7 +123,7 @@
 	</portlet:actionURL>
 
 	<aui:button-row>
-		<aui:button cssClass="btn-info" href="<%= resetCredentialsURL.toString() %>" name="previous" value="previous" />
+		<aui:button href="<%= resetCredentialsURL.toString() %>" name="back" value="back" />
 
 		<aui:button cssClass="btn-success" disabled="<%= true %>" name="register" type="submit" value="register" />
 	</aui:button-row>

@@ -32,28 +32,6 @@ $text-lightgrey: #8D8D8D;
 		width: auto;
 	}
 
-	.environment-section {
-		.field-content {
-			margin-bottom: 0;
-		}
-
-		.environment-input-wrapper {
-			.field-content {
-				margin-top: 0;
-			}
-
-			input, select {
-				margin-left: 22px;
-			}
-		}
-	}
-
-	.lcs-helper-message {
-		display: inline-block;
-		font-size: 11px;
-		margin: 0 0 10px 22px;
-	}
-
 	.lcs-header {
 		color: $text-lightgrey;
 		padding-bottom: 25px;
@@ -143,18 +121,4 @@ $text-lightgrey: #8D8D8D;
 		display: inline-block;
 		margin-top: 0;
 	}
-
-	.lcs-environment-input-wrapper {
-		display: block;
-
-		.control-group {
-			margin-bottom: 0;
-		}
-	}
-}
-
-/* ---------- Extras ---------- */
-
-.lcs-portlet .lcs-helper-message.disabled {
-	@include opacity(0.5);
 }
