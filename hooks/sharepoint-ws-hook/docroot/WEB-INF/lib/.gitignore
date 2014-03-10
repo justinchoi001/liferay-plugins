@@ -1,5 +1,8 @@
+/.DS_Store
 /axis-jaxrpc.jar
 /axis.jar
+/commons-codec.jar
+/commons-discovery.jar
 /commons-httpclient.jar
 /commons-logging.jar
 /dl-repository-shared.jar
@@ -10,3 +13,4 @@
 /util-bridges.jar
 /util-java.jar
 /util-taglib.jar
+/wsdl4j.jar

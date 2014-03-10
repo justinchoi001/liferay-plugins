@@ -17,11 +17,13 @@
 	<classpathentry kind="lib" path="/portal-6.2.x/util-java/util-java.jar" />
 	<classpathentry kind="lib" path="/portal-6.2.x/util-taglib/util-taglib.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/axis-jaxrpc.jar" />
-	<classpathentry kind="lib" path="docroot/WEB-INF/lib/axis.jar" />
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/commons-codec.jar" />
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/commons-discovery.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/commons-httpclient.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/dl-repository-shared.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/portal-compat-shared.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/sharepoint-connector-shared.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/sharepoint-ws-shared.jar" />
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/wsdl4j.jar" />
 	<classpathentry kind="output" path="bin" />
 </classpath>
