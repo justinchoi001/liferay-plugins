@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.TransientValue;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -641,7 +642,7 @@ public class SharepointWSRepository
 	}
 
 	@Override
-	public String getRootFolderKey() throws SystemException {
+	public String getRootFolderKey() {
 		return _rootFolderKey;
 	}
 
@@ -866,21 +867,9 @@ public class SharepointWSRepository
 	protected List<SharepointObject> filter(
 		SearchContext searchContext, List<SharepointObject> sharepointObjects) {
 
-		int start = searchContext.getStart();
-
-		if ((start == QueryUtil.ALL_POS) || (start < 0)) {
-			start = 0;
-		}
-
-		int end = searchContext.getEnd();
-
-		if ((end == QueryUtil.ALL_POS) || (end > sharepointObjects.size())) {
-			end = sharepointObjects.size();
-		}
-
-		sharepointObjects = sharepointObjects.subList(start, end);
-
-		return sharepointObjects;
+		return ListUtil.subList(
+			sharepointObjects, searchContext.getStart(),
+			searchContext.getEnd());
 	}
 
 	protected SharepointConnection getSharepointConnection()
