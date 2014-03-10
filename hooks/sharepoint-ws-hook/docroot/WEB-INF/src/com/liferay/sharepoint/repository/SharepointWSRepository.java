@@ -696,10 +696,8 @@ public class SharepointWSRepository
 
 			URL url = urlHelper.toURL(siteURL);
 
-			_protocol = url.getProtocol();
-
 			_host = url.getHost();
-
+			_protocol = url.getProtocol();
 			_sitePath = url.getPath();
 
 			SharepointConnection sharepointConnection =
@@ -772,13 +770,13 @@ public class SharepointWSRepository
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
 		throws SystemException {
 
+		List<ExtRepositorySearchResult<?>> extRepositorySearchResults =
+			new ArrayList<ExtRepositorySearchResult<?>>();
+
 		List<SharepointObject> sharepointObjects = doSearch(
 			searchContext, query, extRepositoryQueryMapper);
 
 		sharepointObjects = filter(searchContext, sharepointObjects);
-
-		List<ExtRepositorySearchResult<?>> extRepositorySearchResults =
-			new ArrayList<ExtRepositorySearchResult<?>>();
 
 		for (SharepointObject sharepointObject : sharepointObjects) {
 			ExtRepositoryObject extRepositoryObject = toExtRepositoryObject(
@@ -849,18 +847,16 @@ public class SharepointWSRepository
 		throws SystemException {
 
 		try {
-			SharepointQueryBuilder queryBuilder = new SharepointQueryBuilder(
-				searchContext, query, this, extRepositoryQueryMapper);
+			SharepointQueryBuilder sharepointQueryBuilder =
+				new SharepointQueryBuilder(
+					this, searchContext, query, extRepositoryQueryMapper);
 
 			SharepointConnection sharepointConnection =
 				getSharepointConnection();
 
-			List<SharepointObject> sharepointObjects =
-				sharepointConnection.getSharepointObjects(
-					queryBuilder.getQuery(),
-					queryBuilder.getQueryOptionsList());
-
-			return sharepointObjects;
+			return sharepointConnection.getSharepointObjects(
+				sharepointQueryBuilder.getQuery(),
+				sharepointQueryBuilder.getQueryOptionsList());
 		}
 		catch (SharepointException se) {
 			throw new SystemException(se);

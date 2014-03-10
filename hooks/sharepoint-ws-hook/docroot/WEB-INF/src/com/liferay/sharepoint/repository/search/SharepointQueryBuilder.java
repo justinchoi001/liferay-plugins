@@ -26,8 +26,8 @@ import com.liferay.sharepoint.repository.SharepointWSRepository;
 public class SharepointQueryBuilder {
 
 	public SharepointQueryBuilder(
-		SearchContext searchContext, Query query,
 		SharepointWSRepository sharepointWSRepository,
+		SearchContext searchContext, Query query,
 		ExtRepositoryQueryMapper extRepositoryQueryMapper) {
 	}
 
