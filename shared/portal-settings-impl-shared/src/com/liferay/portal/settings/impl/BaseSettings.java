@@ -21,10 +21,13 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.settings.Settings;
 import com.liferay.util.xml.XMLFormatter;
 
+import java.io.IOException;
+
 import java.util.Properties;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.ReadOnlyException;
+import javax.portlet.ValidatorException;
 
 /**
  * @author Raymond Augé
@@ -50,6 +53,10 @@ public abstract class BaseSettings implements Settings {
 
 		if (_isNull(value) && (companyPortletPreferences != null)) {
 			value = companyPortletPreferences.getValue(key, null);
+		}
+
+		if (_isNull(value) && (portalPreferences != null)) {
+			value = portalPreferences.getValue(key, null);
 		}
 
 		if (_isNull(value) && (portalProperties != null)) {
@@ -81,6 +88,10 @@ public abstract class BaseSettings implements Settings {
 
 		if (ArrayUtil.isEmpty(values) && (companyPortletPreferences != null)) {
 			values = companyPortletPreferences.getValues(key, null);
+		}
+
+		if (ArrayUtil.isEmpty(values) && (portalPreferences != null)) {
+			values = portalPreferences.getValues(key, null);
 		}
 
 		if (ArrayUtil.isEmpty(values) && (portalProperties != null)) {
@@ -124,6 +135,13 @@ public abstract class BaseSettings implements Settings {
 		return this;
 	}
 
+	public void store() throws IOException, ValidatorException {
+		PortletPreferences writeablePortletPreferences =
+			getWriteablePortletPreferences();
+
+		writeablePortletPreferences.store();
+	}
+
 	protected BaseSettings() {
 	}
 
@@ -163,6 +181,7 @@ public abstract class BaseSettings implements Settings {
 
 	protected PortletPreferences companyPortletPreferences;
 	protected PortletPreferences groupPortletPreferences;
+	protected PortletPreferences portalPreferences;
 	protected Properties portalProperties;
 	protected PortletPreferences portletInstancePortletPreferences;
 

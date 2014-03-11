@@ -33,6 +33,10 @@ public class SyncAccount extends StateAwareModel {
 
 	public static final int UI_EVENT_CONNECTION_EXCEPTION = 2;
 
+	public boolean getActive() {
+		return active;
+	}
+
 	public String getFilePathName() {
 		return filePathName;
 	}
@@ -53,8 +57,24 @@ public class SyncAccount extends StateAwareModel {
 		return syncAccountId;
 	}
 
+	public boolean getTrustSelfSigned() {
+		return trustSelfSigned;
+	}
+
 	public String getUrl() {
 		return url;
+	}
+
+	public boolean isActive() {
+		return getActive();
+	}
+
+	public boolean isTrustSelfSigned() {
+		return getTrustSelfSigned();
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public void setFilePathName(String filePathName) {
@@ -77,9 +97,16 @@ public class SyncAccount extends StateAwareModel {
 		this.syncAccountId = syncAccountId;
 	}
 
+	public void setTrustSelfSigned(boolean trustSelfSigned) {
+		this.trustSelfSigned = trustSelfSigned;
+	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	@DatabaseField(useGetSet = true)
+	protected boolean active;
 
 	@DatabaseField(useGetSet = true, width = 16777216)
 	protected String filePathName;
@@ -95,6 +122,9 @@ public class SyncAccount extends StateAwareModel {
 
 	@DatabaseField(generatedId = true, useGetSet = true)
 	protected long syncAccountId;
+
+	@DatabaseField(useGetSet = true)
+	protected boolean trustSelfSigned;
 
 	@DatabaseField(useGetSet = true, width = 16777216)
 	protected String url;
