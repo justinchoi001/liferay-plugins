@@ -15,12 +15,12 @@
 package com.liferay.sharepoint.repository;
 
 import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -646,6 +646,46 @@ public class SharepointWSRepository
 		return _rootFolderKey;
 	}
 
+	public SharepointConnection getSharepointConnection()
+		throws RepositoryException {
+
+		SharepointConnection sharepointConnection = null;
+
+		HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
+
+		if (httpSession != null) {
+			TransientValue<SharepointConnection> transientValue =
+				(TransientValue<SharepointConnection>)
+					httpSession.getAttribute(
+						SharepointWSRepository.class.getName());
+
+			if (transientValue != null) {
+				sharepointConnection = transientValue.getValue();
+			}
+		}
+		else {
+			sharepointConnection = _sharepointConnectionThreadLocal.get();
+		}
+
+		if (sharepointConnection != null) {
+			return sharepointConnection;
+		}
+
+		sharepointConnection = buildSharepointConnection();
+
+		if (httpSession != null) {
+			TransientValue<SharepointConnection> transientValue =
+				new TransientValue<SharepointConnection>(sharepointConnection);
+
+			httpSession.setAttribute(
+				SharepointWSRepository.class.getName(), transientValue);
+		}
+
+		_sharepointConnectionThreadLocal.set(sharepointConnection);
+
+		return sharepointConnection;
+	}
+
 	@Override
 	public List<String> getSubfolderKeys(
 			String extRepositoryFolderKey, boolean recurse)
@@ -769,7 +809,7 @@ public class SharepointWSRepository
 	public List<ExtRepositorySearchResult<?>> search(
 			SearchContext searchContext, Query query,
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
-		throws SystemException {
+		throws SearchException, SystemException {
 
 		List<ExtRepositorySearchResult<?>> extRepositorySearchResults =
 			new ArrayList<ExtRepositorySearchResult<?>>();
@@ -845,12 +885,12 @@ public class SharepointWSRepository
 	protected List<SharepointObject> doSearch(
 			SearchContext searchContext, Query query,
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
-		throws SystemException {
+		throws SearchException, SystemException {
 
 		try {
 			SharepointQueryBuilder sharepointQueryBuilder =
 				new SharepointQueryBuilder(
-					this, searchContext, query, extRepositoryQueryMapper);
+					this, extRepositoryQueryMapper, searchContext, query);
 
 			SharepointConnection sharepointConnection =
 				getSharepointConnection();
@@ -870,46 +910,6 @@ public class SharepointWSRepository
 		return ListUtil.subList(
 			sharepointObjects, searchContext.getStart(),
 			searchContext.getEnd());
-	}
-
-	protected SharepointConnection getSharepointConnection()
-		throws RepositoryException {
-
-		SharepointConnection sharepointConnection = null;
-
-		HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
-
-		if (httpSession != null) {
-			TransientValue<SharepointConnection> transientValue =
-				(TransientValue<SharepointConnection>)
-					httpSession.getAttribute(
-						SharepointWSRepository.class.getName());
-
-			if (transientValue != null) {
-				sharepointConnection = transientValue.getValue();
-			}
-		}
-		else {
-			sharepointConnection = _sharepointConnectionThreadLocal.get();
-		}
-
-		if (sharepointConnection != null) {
-			return sharepointConnection;
-		}
-
-		sharepointConnection = buildSharepointConnection();
-
-		if (httpSession != null) {
-			TransientValue<SharepointConnection> transientValue =
-				new TransientValue<SharepointConnection>(sharepointConnection);
-
-			httpSession.setAttribute(
-				SharepointWSRepository.class.getName(), transientValue);
-		}
-
-		_sharepointConnectionThreadLocal.set(sharepointConnection);
-
-		return sharepointConnection;
 	}
 
 	protected void getSubfolderKeys(
