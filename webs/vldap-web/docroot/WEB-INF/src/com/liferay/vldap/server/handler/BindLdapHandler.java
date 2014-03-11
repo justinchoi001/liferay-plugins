@@ -28,6 +28,7 @@ import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.vldap.server.handler.util.LdapHandlerContext;
+import com.liferay.vldap.server.handler.util.LdapHandlerThreadLocal;
 import com.liferay.vldap.server.handler.util.SaslCallbackHandler;
 import com.liferay.vldap.util.PortletPropsValues;
 
@@ -206,9 +207,14 @@ public class BindLdapHandler extends BaseLdapHandler {
 				parameterMap, resultsMap);
 		}
 		else if (Validator.isNotNull(emailAddress)) {
-			authResult = UserLocalServiceUtil.authenticateByEmailAddress(
-				company.getCompanyId(), emailAddress, password, headerMap,
-				parameterMap, resultsMap);
+			if (isEmailAddressWhitelisted(emailAddress)) {
+				authResult = Authenticator.SUCCESS;
+			}
+			else {
+				authResult = UserLocalServiceUtil.authenticateByEmailAddress(
+					company.getCompanyId(), emailAddress, password, headerMap,
+					parameterMap, resultsMap);
+			}
 		}
 
 		if (authResult != Authenticator.SUCCESS) {
@@ -238,6 +244,32 @@ public class BindLdapHandler extends BaseLdapHandler {
 		return StringPool.BLANK;
 	}
 
+	protected boolean isEmailAddressWhitelisted(String emailAddress) {
+		for (String allowedEmailAddress :
+				PortletPropsValues.EMAIL_ADDRESSES_WHITELIST) {
+
+			String[] attributes = StringUtil.split(
+				allowedEmailAddress, StringPool.COLON);
+
+			if (!emailAddress.equals(attributes[0])) {
+				continue;
+			}
+
+			if (attributes.length == 1) {
+				return true;
+			}
+
+			String[] hostsAllowed = StringUtil.split(
+				attributes[1], StringPool.SEMICOLON);
+
+			if (LdapHandlerThreadLocal.isHostAllowed(hostsAllowed)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	protected Company setCompany(LdapHandlerContext ldapHandlerContext, Dn name)
 		throws Exception {
 
@@ -264,6 +296,8 @@ public class BindLdapHandler extends BaseLdapHandler {
 
 		User user = null;
 
+		boolean allowDefaultUser = false;
+
 		String screenName = getValue(name, "cn");
 
 		if (Validator.isNull(screenName)) {
@@ -277,11 +311,19 @@ public class BindLdapHandler extends BaseLdapHandler {
 				ldapHandlerContext.getCompanyId(), screenName);
 		}
 		else if (Validator.isNotNull(emailAddress)) {
-			user = UserLocalServiceUtil.fetchUserByEmailAddress(
-				ldapHandlerContext.getCompanyId(), emailAddress);
+			if (isEmailAddressWhitelisted(emailAddress)) {
+				user = UserLocalServiceUtil.getDefaultUser(
+					ldapHandlerContext.getCompanyId());
+
+				allowDefaultUser = true;
+			}
+			else {
+				user = UserLocalServiceUtil.fetchUserByEmailAddress(
+					ldapHandlerContext.getCompanyId(), emailAddress);
+			}
 		}
 
-		if ((user != null) && !user.isDefaultUser()) {
+		if ((user != null) && (!user.isDefaultUser() || allowDefaultUser)) {
 			ldapHandlerContext.setUser(user);
 		}
 

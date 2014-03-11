@@ -28,6 +28,9 @@ public class PortletPropsValues {
 	public static final String BIND_SASL_HOSTNAME = GetterUtil.getString(
 		PortletProps.get(PortletPropsKeys.BIND_SASL_HOSTNAME));
 
+	public static final String[] EMAIL_ADDRESSES_WHITELIST =
+		PortletProps.getArray(PortletPropsKeys.EMAIL_ADDRESSES_WHITELIST);
+
 	public static final String[] HOSTS_ALLOWED = PortletProps.getArray(
 		PortletPropsKeys.HOSTS_ALLOWED);
 

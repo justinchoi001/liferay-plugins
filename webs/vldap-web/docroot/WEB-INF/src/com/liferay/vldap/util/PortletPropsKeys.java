@@ -23,6 +23,9 @@ public class PortletPropsKeys {
 
 	public static final String BIND_SASL_HOSTNAME = "bind.sasl.hostname";
 
+	public static final String EMAIL_ADDRESSES_WHITELIST =
+		"email.addresses.whitelist";
+
 	public static final String HOSTS_ALLOWED = "hosts.allowed";
 
 	public static final String POSIX_GROUP_ID = "posix.group.id";
