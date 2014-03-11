@@ -493,9 +493,11 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 													</c:if>
 
 													<div class="actions">
-														<div class="btn-group">
-															<aui:button cssClass="btn" icon="icon-download" onClick="<%= DLUtil.getPreviewURL(fileEntry, curFileVersion, themeDisplay, StringPool.BLANK) %>" value="download" />
-														</div>
+														<liferay-ui:icon
+															image="download"
+															label="<%= true %>"
+															url="<%= DLUtil.getPreviewURL(fileEntry, curFileVersion, themeDisplay, StringPool.BLANK) %>"
+														/>
 
 														<portlet:renderURL var="viewFileVersionURL">
 															<portlet:param name="struts_action" value="/document_library/view_file_entry" />
@@ -504,9 +506,11 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 															<portlet:param name="version" value="<%= curFileVersion.getVersion() %>" />
 														</portlet:renderURL>
 
-														<div class="btn-group">
-															<aui:button cssClass="btn" icon="icon-file" onClick="<%= viewFileVersionURL %>" value="view" />
-														</div>
+														<liferay-ui:icon
+															image="view"
+															label="<%= true %>"
+															url="<%= viewFileVersionURL %>"
+														/>
 
 														<c:if test="<%= (!fileEntry.isCheckedOut() || fileEntry.hasLock()) && showActions && (index != 0) && (curFileVersion.getStatus() == WorkflowConstants.STATUS_APPROVED) && DLFileEntryPermission.contains(permissionChecker, fileEntry, ActionKeys.UPDATE) %>">
 															<portlet:actionURL var="revertURL">
