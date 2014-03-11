@@ -163,7 +163,11 @@ AUI.add(
 
 										var tempNode = A.Node.create(responseData);
 
-										var dropdownMenuFragment = tempNode.one('#p_p_id' + instance.NS + ' .portlet-body ' + CSS_DROPDOWN_MENU + '.lfr-menu-list');
+										var tempNodeMatchingLabel = tempNode.one('#p_p_id' + instance.NS + ' .portlet-body [data-id="' + spiDefinitionId + '"]');
+
+										var tempNodeRow = tempNodeMatchingLabel.ancestor('tr');
+
+										var dropdownMenuFragment = tempNodeRow.one(CSS_DROPDOWN_MENU + '.lfr-menu-list');
 
 										actionsMenuNode.html(dropdownMenuFragment.html());
 
