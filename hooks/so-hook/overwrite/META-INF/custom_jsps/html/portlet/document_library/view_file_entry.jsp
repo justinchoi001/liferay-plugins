@@ -494,8 +494,9 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 
 													<div class="actions">
 														<liferay-ui:icon
-															image="download"
+															iconCssClass="icon-download"
 															label="<%= true %>"
+															message="download"
 															url="<%= DLUtil.getPreviewURL(fileEntry, curFileVersion, themeDisplay, StringPool.BLANK) %>"
 														/>
 
@@ -507,8 +508,9 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 														</portlet:renderURL>
 
 														<liferay-ui:icon
-															image="view"
+															iconCssClass="icon-file"
 															label="<%= true %>"
+															message="view"
 															url="<%= viewFileVersionURL %>"
 														/>
 
@@ -522,7 +524,7 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 															</portlet:actionURL>
 
 															<liferay-ui:icon
-																image="undo"
+																iconCssClass="icon-undo"
 																label="<%= true %>"
 																message="revert"
 																url="<%= revertURL %>"
@@ -538,7 +540,8 @@ request.setAttribute("view_file_entry.jsp-fileEntry", fileEntry);
 																<portlet:param name="version" value="<%= String.valueOf(curFileVersion.getVersion()) %>" />
 															</portlet:actionURL>
 
-															<liferay-ui:icon-delete
+															<liferay-ui:icon
+																iconCssClass="icon-remove"
 																label="<%= true %>"
 																message="delete-version"
 																url="<%= deleteURL %>"
