@@ -248,19 +248,19 @@ public class BindLdapHandler extends BaseLdapHandler {
 		for (String allowedEmailAddress :
 				PortletPropsValues.EMAIL_ADDRESSES_WHITELIST) {
 
-			String[] attributes = StringUtil.split(
+			String[] parts = StringUtil.split(
 				allowedEmailAddress, StringPool.COLON);
 
-			if (!emailAddress.equals(attributes[0])) {
+			if (!emailAddress.equals(parts[0])) {
 				continue;
 			}
 
-			if (attributes.length == 1) {
+			if (parts.length == 1) {
 				return true;
 			}
 
 			String[] hostsAllowed = StringUtil.split(
-				attributes[1], StringPool.SEMICOLON);
+				parts[1], StringPool.SEMICOLON);
 
 			if (LdapHandlerThreadLocal.isHostAllowed(hostsAllowed)) {
 				return true;
