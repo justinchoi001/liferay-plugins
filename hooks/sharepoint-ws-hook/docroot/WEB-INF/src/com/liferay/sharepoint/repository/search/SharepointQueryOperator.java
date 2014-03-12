@@ -19,6 +19,6 @@ package com.liferay.sharepoint.repository.search;
  */
 public enum SharepointQueryOperator {
 
-	EQ, NEQ, GEQ, GT, LT, LEQ, LIKE;
+	EQ, GEQ, GT, LEQ, LIKE, LT, NEQ;
 
 }
