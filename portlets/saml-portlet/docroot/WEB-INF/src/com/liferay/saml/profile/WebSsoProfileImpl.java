@@ -902,6 +902,9 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 		SAMLMessageContext<AuthnRequest, Response, NameID> samlMessageContext =
 			samlSsoRequestContext.getSAMLMessageContext();
 
+		subjectConfirmationData.setInResponseTo(
+			samlMessageContext.getInboundSAMLMessageId());
+
 		int assertionLifetime = MetadataManagerUtil.getAssertionLifetime(
 			samlMessageContext.getPeerEntityId());
 
