@@ -101,14 +101,13 @@ public class SharepointQueryBuilder {
 		return _queryOptionsList;
 	}
 
-	protected QueryClause buildFieldExpression(
+	protected QueryClause buildFieldQueryClause(
 			String fieldName, String fieldValue,
 			SharepointQueryOperator sharepointQueryOperator)
 		throws SearchException {
 
 		QueryField queryField = new QueryField(
 			getSharepointFieldName(fieldName));
-
 		QueryValue queryValue = new QueryValue(
 			formatFieldValue(fieldName, fieldValue));
 
@@ -131,7 +130,7 @@ public class SharepointQueryBuilder {
 			return new LeqOperator(queryField, queryValue);
 		}
 		else if (sharepointQueryOperator == SharepointQueryOperator.LIKE) {
-			return buildLikeExpression(queryField, fieldValue);
+			return buildLikeQueryClause(queryField, fieldValue);
 		}
 		else {
 			throw new SearchException(
@@ -140,7 +139,7 @@ public class SharepointQueryBuilder {
 		}
 	}
 
-	protected QueryClause buildLikeExpression(
+	protected QueryClause buildLikeQueryClause(
 			QueryField queryField, String value)
 		throws SearchException {
 
@@ -199,6 +198,11 @@ public class SharepointQueryBuilder {
 						_sharepointWSRepository.getExtRepositoryObject(
 							ExtRepositoryObjectType.FOLDER, folderId);
 
+				SharepointObject folderSharepointObject =
+					sharepointWSFolder.getSharepointObject();
+
+				String folderPath = folderSharepointObject.getPath();
+
 				SharepointConnection sharepointConnection =
 					_sharepointWSRepository.getSharepointConnection();
 
@@ -206,11 +210,6 @@ public class SharepointQueryBuilder {
 					sharepointConnection.getSharepointConnectionInfo();
 
 				String libraryName = sharepointConnectionInfo.getLibraryName();
-
-				SharepointObject folderSharepointObject =
-					sharepointWSFolder.getSharepointObject();
-
-				String folderPath = folderSharepointObject.getPath();
 
 				if (folderPath.equals(StringPool.SLASH)) {
 					return libraryName;
@@ -221,11 +220,11 @@ public class SharepointQueryBuilder {
 			}
 			catch (PortalException pe) {
 				throw new SearchException(
-					"Cannot get folder {folderId = " + folderId + "}", pe);
+					"Unable to get folder with folder ID" + folderId, pe);
 			}
 			catch (SystemException se) {
 				throw new SearchException(
-					"Cannot get folder {folderId = " + folderId + "}", se);
+					"Unable to get folder with folder ID" + folderId, se);
 			}
 		}
 		else if (fieldName.equals(Field.CREATE_DATE) ||
@@ -307,7 +306,7 @@ public class SharepointQueryBuilder {
 			return null;
 		}
 
-		return buildFieldExpression(
+		return buildFieldQueryClause(
 			queryTerm.getField(), queryTerm.getValue(),
 			SharepointQueryOperator.EQ);
 	}
