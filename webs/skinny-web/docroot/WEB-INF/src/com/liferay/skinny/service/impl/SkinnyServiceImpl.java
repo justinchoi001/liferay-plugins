@@ -133,12 +133,18 @@ public class SkinnyServiceImpl extends SkinnyServiceBaseImpl {
 			if (fieldDataType.equals("boolean")) {
 				boolean booleanValue = GetterUtil.getBoolean(fieldValue);
 
-				fieldValueString = String.valueOf(booleanValue);
-			}
-			else if (fieldDataType.equals("date")) {
+				fieldValueString = Boolean.toString(booleanValue);
+			} else if (fieldDataType.equals("date")) {
 				fieldValueString = _format.format(fieldValue);
-			}
-			else {
+			} else if (fieldDataType.equals("double")) {
+				Double doubleValue = GetterUtil.getDouble(fieldValue);
+
+				fieldValueString = Double.toString(doubleValue);
+			} else if (fieldDataType.equals("integer") || fieldDataType.equals("number")) {
+				Integer intValue = GetterUtil.getInteger(fieldValue);
+
+				fieldValueString = Integer.toString(intValue);
+			} else {
 				fieldValueString = GetterUtil.getString(fieldValue);
 			}
 
