@@ -122,6 +122,10 @@ public class SkinnyServiceImpl extends SkinnyServiceBaseImpl {
 
 		Fields fields = ddlRecord.getFields();
 
+		String uuid = ddlRecord.getUuid();
+
+		skinnyDDLRecord.addDynamicElement("uuid", uuid);
+
 		for (String fieldName : fields.getNames()) {
 			String fieldValueString = StringPool.BLANK;
 
