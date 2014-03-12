@@ -71,8 +71,8 @@ public class SharepointQueryBuilder {
 
 	public SharepointQueryBuilder(
 			SharepointWSRepository sharepointWSRepository,
-			ExtRepositoryQueryMapper extRepositoryQueryMapper,
-			SearchContext searchContext, Query query)
+			SearchContext searchContext,
+			Query query, ExtRepositoryQueryMapper extRepositoryQueryMapper)
 		throws PortalException {
 
 		_sharepointWSRepository = sharepointWSRepository;

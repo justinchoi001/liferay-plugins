@@ -889,7 +889,7 @@ public class SharepointWSRepository
 		try {
 			SharepointQueryBuilder sharepointQueryBuilder =
 				new SharepointQueryBuilder(
-					this, extRepositoryQueryMapper, searchContext, query);
+					this, searchContext, query, extRepositoryQueryMapper);
 
 			SharepointConnection sharepointConnection =
 				getSharepointConnection();
