@@ -76,10 +76,9 @@ public class SharepointQueryBuilder {
 		throws PortalException {
 
 		_sharepointWSRepository = sharepointWSRepository;
-		_extRepositoryQueryMapper = extRepositoryQueryMapper;
-
 		_query = new com.liferay.sharepoint.connector.schema.query.Query(
 			traverseQuery(query));
+		_extRepositoryQueryMapper = extRepositoryQueryMapper;
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
@@ -331,11 +330,11 @@ public class SharepointQueryBuilder {
 
 	private static String _STAR_PATTERN = Pattern.quote(StringPool.STAR);
 
-	private static Map<String, String> _sharepointFields;
-	private static Set<String> _supportedFields;
+	private static Map<String, String> _sharepointFields =
+		new HashMap<String, String>();
+	private static Set<String> _supportedFields = new HashSet<String>();
 
 	static {
-		_sharepointFields = new HashMap<String, String>();
 		_sharepointFields.put(Field.CREATE_DATE, SharepointField.CREATE_DATE);
 		_sharepointFields.put(Field.FOLDER_ID, SharepointField.FOLDER_PATH);
 		_sharepointFields.put(
@@ -345,7 +344,6 @@ public class SharepointQueryBuilder {
 		_sharepointFields.put(Field.USER_ID, SharepointField.MODIFIED_BY);
 		_sharepointFields.put(Field.USER_NAME, SharepointField.MODIFIED_BY);
 
-		_supportedFields = new HashSet<String>();
 		_supportedFields.add(Field.CREATE_DATE);
 		_supportedFields.add(Field.FOLDER_ID);
 		_supportedFields.add(Field.MODIFIED_DATE);
