@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.SearchContext;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.servlet.PortalSessionThreadLocal;
 import com.liferay.portal.kernel.util.AutoResetThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -809,7 +808,7 @@ public class SharepointWSRepository
 	public List<ExtRepositorySearchResult<?>> search(
 			SearchContext searchContext, Query query,
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
-		throws SearchException, SystemException {
+		throws PortalException, SystemException {
 
 		List<ExtRepositorySearchResult<?>> extRepositorySearchResults =
 			new ArrayList<ExtRepositorySearchResult<?>>();
@@ -885,7 +884,7 @@ public class SharepointWSRepository
 	protected List<SharepointObject> doSearch(
 			SearchContext searchContext, Query query,
 			ExtRepositoryQueryMapper extRepositoryQueryMapper)
-		throws SearchException, SystemException {
+		throws PortalException, SystemException {
 
 		try {
 			SharepointQueryBuilder sharepointQueryBuilder =
