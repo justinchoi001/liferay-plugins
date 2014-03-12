@@ -263,11 +263,11 @@ public class SharepointQueryBuilder {
 		else {
 			QueryClause firstQueryClause = queryClauses.get(0);
 
-			List<QueryClause> restOfQueryClauses = queryClauses.subList(
+			List<QueryClause> remainingQueryClauses = queryClauses.subList(
 				1, queryClauses.size());
 
 			return new AndJoin(
-				firstQueryClause, joinWithAnd(restOfQueryClauses));
+				firstQueryClause, joinWithAnd(remainingQueryClauses));
 		}
 	}
 
