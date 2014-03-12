@@ -218,7 +218,7 @@ public class SharepointQueryBuilder {
 					return libraryName;
 				}
 				else {
-					return libraryName+folderPath;
+					return libraryName + folderPath;
 				}
 			}
 			catch (PortalException pe) {
@@ -229,16 +229,15 @@ public class SharepointQueryBuilder {
 				throw new SearchException(
 					"Cannot get folder {folderId = " + folderId + "}", se);
 			}
-
-		} else if (field.equals(Field.CREATE_DATE) ||
-			field.equals(Field.MODIFIED_DATE)) {
+		}
+		else if (field.equals(Field.CREATE_DATE) ||
+				 field.equals(Field.MODIFIED_DATE)) {
 
 			Date date = _extRepositoryQueryMapper.formatDateParameterValue(
 				field, value);
 
-			DateFormat dateFormat =
-				DateFormatFactoryUtil.getSimpleDateFormat(
-					_SHAREPOINT_DATE_FORMAT_PATTERN);
+			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
+				_SHAREPOINT_DATE_FORMAT_PATTERN);
 
 			return dateFormat.format(date);
 		}
