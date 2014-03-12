@@ -114,23 +114,23 @@ public class SharepointQueryBuilder {
 		if (sharepointQueryOperator == SharepointQueryOperator.EQ) {
 			return new EqOperator(queryField, queryValue);
 		}
-		else if (sharepointQueryOperator == SharepointQueryOperator.NEQ) {
-			return new NeqOperator(queryField, queryValue);
-		}
 		else if (sharepointQueryOperator == SharepointQueryOperator.GEQ) {
 			return new GeqOperator(queryField, queryValue);
 		}
 		else if (sharepointQueryOperator == SharepointQueryOperator.GT) {
 			return new GtOperator(queryField, queryValue);
 		}
-		else if (sharepointQueryOperator == SharepointQueryOperator.LT) {
-			return new LtOperator(queryField, queryValue);
-		}
 		else if (sharepointQueryOperator == SharepointQueryOperator.LEQ) {
 			return new LeqOperator(queryField, queryValue);
 		}
 		else if (sharepointQueryOperator == SharepointQueryOperator.LIKE) {
 			return buildLikeQueryClause(queryField, fieldValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.LT) {
+			return new LtOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.NEQ) {
+			return new NeqOperator(queryField, queryValue);
 		}
 		else {
 			throw new SearchException(
