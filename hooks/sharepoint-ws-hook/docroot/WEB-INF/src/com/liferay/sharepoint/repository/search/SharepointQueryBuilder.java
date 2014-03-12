@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.repository.RepositoryException;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Query;
@@ -74,7 +73,7 @@ public class SharepointQueryBuilder {
 			SharepointWSRepository sharepointWSRepository,
 			ExtRepositoryQueryMapper extRepositoryQueryMapper,
 			SearchContext searchContext, Query query)
-		throws RepositoryException, SearchException {
+		throws PortalException {
 
 		_sharepointWSRepository = sharepointWSRepository;
 		_extRepositoryQueryMapper = extRepositoryQueryMapper;
