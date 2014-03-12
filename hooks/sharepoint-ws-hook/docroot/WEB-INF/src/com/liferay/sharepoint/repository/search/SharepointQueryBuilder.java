@@ -140,21 +140,21 @@ public class SharepointQueryBuilder {
 	}
 
 	protected QueryClause buildLikeQueryClause(
-			QueryField queryField, String value)
+			QueryField queryField, String fieldValue)
 		throws SearchException {
 
 		QueryValue queryValue = new QueryValue(
-			StringUtil.replace(value, StringPool.STAR, StringPool.BLANK));
+			StringUtil.replace(fieldValue, StringPool.STAR, StringPool.BLANK));
 
-		if (value.startsWith(StringPool.STAR) &&
-			value.endsWith(StringPool.STAR)) {
+		if (fieldValue.startsWith(StringPool.STAR) &&
+			fieldValue.endsWith(StringPool.STAR)) {
 
 			return new ContainsOperator(queryField, queryValue);
 		}
-		else if (value.endsWith(StringPool.STAR)) {
+		else if (fieldValue.endsWith(StringPool.STAR)) {
 			return new BeginsWithOperator(queryField, queryValue);
 		}
-		else if (value.startsWith(StringPool.STAR)) {
+		else if (fieldValue.startsWith(StringPool.STAR)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Converting and ENDS-WITH query to a CONTAINS query due " +
@@ -163,16 +163,16 @@ public class SharepointQueryBuilder {
 
 			return new ContainsOperator(queryField, queryValue);
 		}
-		else if (value.contains(StringPool.STAR)) {
+		else if (fieldValue.contains(StringPool.STAR)) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Converting an INTERMEDIATE WILDCARD query to MULTIPLE " +
 						"CONTAINS queries due to repository limitations");
 			}
 
-			String[] parts = StringUtil.split(value, _STAR_PATTERN);
-
 			List<QueryClause> queryClauses = new ArrayList<QueryClause>();
+
+			String[] parts = StringUtil.split(fieldValue, _STAR_PATTERN);
 
 			for (String part : parts) {
 				queryClauses.add(
@@ -182,7 +182,7 @@ public class SharepointQueryBuilder {
 			return joinWithAnd(queryClauses);
 		}
 
-		throw new SearchException("Unsupported LIKE value " + value);
+		throw new SearchException("Unsupported LIKE value " + fieldValue);
 	}
 
 	protected String formatFieldValue(String fieldName, String fieldValue)
