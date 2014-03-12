@@ -71,8 +71,8 @@ public class SharepointQueryBuilder {
 
 	public SharepointQueryBuilder(
 			SharepointWSRepository sharepointWSRepository,
-			SearchContext searchContext,
-			Query query, ExtRepositoryQueryMapper extRepositoryQueryMapper)
+			SearchContext searchContext, Query query,
+			ExtRepositoryQueryMapper extRepositoryQueryMapper)
 		throws PortalException {
 
 		_sharepointWSRepository = sharepointWSRepository;
@@ -325,10 +325,10 @@ public class SharepointQueryBuilder {
 	private static final String _SHAREPOINT_DATE_FORMAT_PATTERN =
 		"yyyy-MM-dd' 'HH:mm:ss";
 
+	private static final String _STAR_PATTERN = Pattern.quote(StringPool.STAR);
+
 	private static Log _log = LogFactoryUtil.getLog(
 		SharepointQueryBuilder.class);
-
-	private static final String _STAR_PATTERN = Pattern.quote(StringPool.STAR);
 
 	private static Map<String, String> _sharepointFields =
 		new HashMap<String, String>();
