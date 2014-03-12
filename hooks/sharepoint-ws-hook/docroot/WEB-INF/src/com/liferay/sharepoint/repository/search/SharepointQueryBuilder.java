@@ -188,12 +188,12 @@ public class SharepointQueryBuilder {
 		throw new SearchException("Unsupported LIKE value " + value);
 	}
 
-	protected String formatFieldValue(String field, String value)
+	protected String formatFieldValue(String fieldName, String fieldValue)
 		throws SearchException {
 
-		if (field.equals(Field.FOLDER_ID)) {
+		if (fieldName.equals(Field.FOLDER_ID)) {
 			String folderId = _extRepositoryQueryMapper.formatParameterValue(
-				field, value);
+				fieldName, fieldValue);
 
 			try {
 				SharepointWSFolder sharepointWSFolder =
@@ -230,11 +230,11 @@ public class SharepointQueryBuilder {
 					"Cannot get folder {folderId = " + folderId + "}", se);
 			}
 		}
-		else if (field.equals(Field.CREATE_DATE) ||
-				 field.equals(Field.MODIFIED_DATE)) {
+		else if (fieldName.equals(Field.CREATE_DATE) ||
+				 fieldName.equals(Field.MODIFIED_DATE)) {
 
 			Date date = _extRepositoryQueryMapper.formatDateParameterValue(
-				field, value);
+				fieldName, fieldValue);
 
 			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 				_SHAREPOINT_DATE_FORMAT_PATTERN);
@@ -242,12 +242,13 @@ public class SharepointQueryBuilder {
 			return dateFormat.format(date);
 		}
 		else {
-			return _extRepositoryQueryMapper.formatParameterValue(field, value);
+			return _extRepositoryQueryMapper.formatParameterValue(
+				fieldName, fieldValue);
 		}
 	}
 
-	protected String getSharepointFieldName(String field) {
-		return _sharepointFields.get(field);
+	protected String getSharepointFieldName(String fieldName) {
+		return _sharepointFields.get(fieldName);
 	}
 
 	protected boolean isSupportedField(String field) {
