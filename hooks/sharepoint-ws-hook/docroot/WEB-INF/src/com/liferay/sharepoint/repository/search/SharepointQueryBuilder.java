@@ -328,7 +328,7 @@ public class SharepointQueryBuilder {
 	private static Log _log = LogFactoryUtil.getLog(
 		SharepointQueryBuilder.class);
 
-	private static String _STAR_PATTERN = Pattern.quote(StringPool.STAR);
+	private static final String _STAR_PATTERN = Pattern.quote(StringPool.STAR);
 
 	private static Map<String, String> _sharepointFields =
 		new HashMap<String, String>();
