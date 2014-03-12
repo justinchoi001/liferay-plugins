@@ -104,41 +104,41 @@ public class SharepointQueryBuilder {
 	}
 
 	protected QueryClause buildFieldExpression(
-			String field, String value,
+			String fieldName, String fieldValue,
 			SharepointQueryOperator sharepointQueryOperator)
 		throws SearchException {
 
-		QueryField queryField = new QueryField(getSharepointField(field));
+		QueryField queryField = new QueryField(
+			getSharepointFieldName(fieldName));
 
 		QueryValue queryValue = new QueryValue(
-			formatParameterValue(field, value));
+			formatFieldValue(fieldName, fieldValue));
 
-		switch (sharepointQueryOperator) {
-			case EQ:
-				return new EqOperator(queryField, queryValue);
-
-			case NEQ:
-				return new NeqOperator(queryField, queryValue);
-
-			case GEQ:
-				return new GeqOperator(queryField, queryValue);
-
-			case GT:
-				return new GtOperator(queryField, queryValue);
-
-			case LT:
-				return new LtOperator(queryField, queryValue);
-
-			case LEQ:
-				return new LeqOperator(queryField, queryValue);
-
-			case LIKE:
-				return buildLikeExpression(queryField, value);
-
-			default:
-				throw new SearchException(
-					"Unsupported Sharepoint query operator " +
-						sharepointQueryOperator);
+		if (sharepointQueryOperator == SharepointQueryOperator.EQ) {
+			return new EqOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.NEQ) {
+			return new NeqOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.GEQ) {
+			return new GeqOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.GT) {
+			return new GtOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.LT) {
+			return new LtOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.LEQ) {
+			return new LeqOperator(queryField, queryValue);
+		}
+		else if (sharepointQueryOperator == SharepointQueryOperator.LIKE) {
+			return buildLikeExpression(queryField, fieldValue);
+		}
+		else {
+			throw new SearchException(
+				"Unsupported Sharepoint query operator " +
+					sharepointQueryOperator);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class SharepointQueryBuilder {
 		throw new SearchException("Unsupported LIKE value " + value);
 	}
 
-	protected String formatParameterValue(String field, String value)
+	protected String formatFieldValue(String field, String value)
 		throws SearchException {
 
 		if (field.equals(Field.FOLDER_ID)) {
@@ -247,7 +247,7 @@ public class SharepointQueryBuilder {
 		}
 	}
 
-	protected String getSharepointField(String field) {
+	protected String getSharepointFieldName(String field) {
 		return _sharepointFields.get(field);
 	}
 
