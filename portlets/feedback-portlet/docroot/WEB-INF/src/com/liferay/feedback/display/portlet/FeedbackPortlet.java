@@ -29,7 +29,9 @@ import com.liferay.portal.service.ServiceContextThreadLocal;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
+import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
+import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.InputStream;
@@ -115,10 +117,13 @@ public class FeedbackPortlet extends MVCPortlet {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		try {
-			MBMessageLocalServiceUtil.addMessage(
+			MBMessage mbMessage = MBMessageLocalServiceUtil.addMessage(
 				user.getUserId(), user.getFullName(), groupId, mbCategoryId,
 				subject, body, "plain", new ArrayList<ObjectValuePair<String,
 				InputStream>>(), anonymous, 0, false, serviceContext);
+
+			MBThreadLocalServiceUtil.updateQuestion(
+				mbMessage.getThreadId(), true);
 
 			jsonObject.put("success", Boolean.TRUE.toString());
 		}
