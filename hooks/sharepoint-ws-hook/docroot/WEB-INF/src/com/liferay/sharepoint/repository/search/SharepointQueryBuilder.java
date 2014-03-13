@@ -270,9 +270,7 @@ public class SharepointQueryBuilder {
 
 		List<QueryClause> queryClauses = new ArrayList<QueryClause>();
 
-		QueryClause queryClause = null;
-
-		queryClause = joinWithAnd(andQueryClauses);
+		QueryClause queryClause = joinWithAnd(andQueryClauses);
 
 		if (queryClause != null) {
 			queryClauses.add(queryClause);
@@ -333,11 +331,11 @@ public class SharepointQueryBuilder {
 		else {
 			QueryClause firstQueryClause = queryClauses.get(0);
 
-			List<QueryClause> remaininQueryClauses = queryClauses.subList(
+			List<QueryClause> remainingQueryClauses = queryClauses.subList(
 				1, queryClauses.size());
 
 			return new OrJoin(
-				firstQueryClause, joinWithOr(remaininQueryClauses));
+				firstQueryClause, joinWithOr(remainingQueryClauses));
 		}
 	}
 
@@ -395,7 +393,7 @@ public class SharepointQueryBuilder {
 
 		throw new SearchException(
 			"Base multi value operator cannot be negated " +
-			baseMultiValueOperator);
+				baseMultiValueOperator);
 	}
 
 	protected QueryClause negateBaseNoValueOperator(
@@ -508,7 +506,7 @@ public class SharepointQueryBuilder {
 
 			QueryClause queryClause = traverseQuery(query);
 
-			if (queryClause!= null) {
+			if (queryClause != null) {
 				queryClauses.add(queryClause);
 			}
 		}
