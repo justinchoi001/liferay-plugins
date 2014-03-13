@@ -31,6 +31,10 @@ public abstract class BaseSingleValueOperator extends BaseOperator {
 		_queryValue = queryValue;
 	}
 
+	public QueryValue getQueryValue() {
+		return _queryValue;
+	}
+
 	@Override
 	protected void populate(Element element) {
 		super.populate(element);

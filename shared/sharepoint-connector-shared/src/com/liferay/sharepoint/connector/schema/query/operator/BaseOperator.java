@@ -28,6 +28,10 @@ public abstract class BaseOperator extends BaseNode implements QueryClause {
 		_queryField = queryField;
 	}
 
+	public QueryField getQueryField() {
+		return _queryField;
+	}
+
 	@Override
 	protected void populate(Element element) {
 		_queryField.attach(element);
