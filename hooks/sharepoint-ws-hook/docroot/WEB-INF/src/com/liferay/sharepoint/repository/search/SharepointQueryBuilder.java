@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.search.BooleanClause;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Query;
@@ -41,14 +43,23 @@ import com.liferay.sharepoint.connector.schema.query.QueryField;
 import com.liferay.sharepoint.connector.schema.query.QueryOptionsList;
 import com.liferay.sharepoint.connector.schema.query.QueryValue;
 import com.liferay.sharepoint.connector.schema.query.join.AndJoin;
+import com.liferay.sharepoint.connector.schema.query.join.BaseJoin;
+import com.liferay.sharepoint.connector.schema.query.join.OrJoin;
+import com.liferay.sharepoint.connector.schema.query.operator.BaseMultiValueOperator;
+import com.liferay.sharepoint.connector.schema.query.operator.BaseNoValueOperator;
+import com.liferay.sharepoint.connector.schema.query.operator.BaseSingleValueOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.BeginsWithOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.ContainsOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.EqOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.GeqOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.GtOperator;
+import com.liferay.sharepoint.connector.schema.query.operator.IncludesOperator;
+import com.liferay.sharepoint.connector.schema.query.operator.IsNotNullOperator;
+import com.liferay.sharepoint.connector.schema.query.operator.IsNullOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.LeqOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.LtOperator;
 import com.liferay.sharepoint.connector.schema.query.operator.NeqOperator;
+import com.liferay.sharepoint.connector.schema.query.operator.NotIncludesOperator;
 import com.liferay.sharepoint.connector.schema.query.option.FolderQueryOption;
 import com.liferay.sharepoint.repository.SharepointWSRepository;
 import com.liferay.sharepoint.repository.model.SharepointWSFolder;
@@ -252,6 +263,36 @@ public class SharepointQueryBuilder {
 		return _supportedFields.contains(field);
 	}
 
+	protected QueryClause joinBooleanQueryClauses(
+			List<QueryClause> andQueryClauses,
+			List<QueryClause> notQueryClauses, List<QueryClause> orQueryClauses)
+		throws SearchException {
+
+		List<QueryClause> queryClauses = new ArrayList<QueryClause>();
+
+		QueryClause queryClause = null;
+
+		queryClause = joinWithAnd(andQueryClauses);
+
+		if (queryClause != null) {
+			queryClauses.add(queryClause);
+		}
+
+		queryClause = joinWithOr(orQueryClauses);
+
+		if (queryClause != null) {
+			queryClauses.add(queryClause);
+		}
+
+		queryClause = joinWithNot(notQueryClauses);
+
+		if (queryClause != null) {
+			queryClauses.add(queryClause);
+		}
+
+		return joinWithAnd(queryClauses);
+	}
+
 	protected QueryClause joinWithAnd(List<QueryClause> queryClauses) {
 		if (queryClauses.isEmpty()) {
 			return null;
@@ -270,13 +311,210 @@ public class SharepointQueryBuilder {
 		}
 	}
 
+	protected QueryClause joinWithNot(List<QueryClause> queryClauses)
+		throws SearchException {
+
+		QueryClause queryClause = joinWithAnd(queryClauses);
+
+		if (queryClause == null) {
+			return null;
+		}
+
+		return negate(queryClause);
+	}
+
+	protected QueryClause joinWithOr(List<QueryClause> queryClauses) {
+		if (queryClauses.isEmpty()) {
+			return null;
+		}
+		else if (queryClauses.size() == 1) {
+			return queryClauses.get(0);
+		}
+		else {
+			QueryClause firstQueryClause = queryClauses.get(0);
+
+			List<QueryClause> remaininQueryClauses = queryClauses.subList(
+				1, queryClauses.size());
+
+			return new OrJoin(
+				firstQueryClause, joinWithOr(remaininQueryClauses));
+		}
+	}
+
 	protected void log(
 		com.liferay.sharepoint.connector.schema.query.Query query,
 		QueryOptionsList queryOptionsList) {
 	}
 
-	protected QueryClause traverseBooleanQuery(BooleanQuery booleanQuery) {
-		return null;
+	protected QueryClause negate(QueryClause queryClause)
+		throws SearchException {
+
+		if (queryClause instanceof BaseJoin) {
+			return negateBaseJoin((BaseJoin)queryClause);
+		}
+		else if (queryClause instanceof BaseMultiValueOperator) {
+			return negateBaseMultiValueOperator(
+				(BaseMultiValueOperator)queryClause);
+		}
+		else if (queryClause instanceof BaseNoValueOperator) {
+			return negateBaseNoValueOperator((BaseNoValueOperator)queryClause);
+		}
+		else if (queryClause instanceof BaseSingleValueOperator) {
+			return negateBaseSingleValueOperator(
+				(BaseSingleValueOperator)queryClause);
+		}
+
+		throw new SearchException(
+			"Query clause cannot be negated " + queryClause);
+	}
+
+	protected QueryClause negateBaseJoin(BaseJoin baseJoin)
+		throws SearchException {
+
+		if (baseJoin instanceof AndJoin) {
+			AndJoin andJoin = (AndJoin)baseJoin;
+
+			return new OrJoin(
+				negate(andJoin.getLeftQueryClause()),
+				negate(andJoin.getRightQueryClause()));
+		}
+		else if (baseJoin instanceof OrJoin) {
+			OrJoin orJoin = (OrJoin)baseJoin;
+
+			return new AndJoin(
+				negate(orJoin.getLeftQueryClause()),
+				negate(orJoin.getRightQueryClause()));
+		}
+
+		throw new SearchException("Base join cannot be negated " + baseJoin);
+	}
+
+	protected QueryClause negateBaseMultiValueOperator(
+			BaseMultiValueOperator baseMultiValueOperator)
+		throws SearchException {
+
+		throw new SearchException(
+			"Base multi value operator cannot be negated " +
+			baseMultiValueOperator);
+	}
+
+	protected QueryClause negateBaseNoValueOperator(
+			BaseNoValueOperator baseNoValueOperator)
+		throws SearchException {
+
+		if (baseNoValueOperator instanceof IsNotNullOperator) {
+			IsNotNullOperator isNotNullOperator =
+				(IsNotNullOperator)baseNoValueOperator;
+
+			return new IsNullOperator(isNotNullOperator.getQueryField());
+		}
+		else if (baseNoValueOperator instanceof IsNullOperator) {
+			IsNullOperator isNullOperator = (IsNullOperator)baseNoValueOperator;
+
+			return new IsNotNullOperator(isNullOperator.getQueryField());
+		}
+
+		throw new SearchException(
+			"Base no value operator cannot be negated " + baseNoValueOperator);
+	}
+
+	protected QueryClause negateBaseSingleValueOperator(
+			BaseSingleValueOperator baseSingleValueOperator)
+		throws SearchException {
+
+		if (baseSingleValueOperator instanceof EqOperator) {
+			EqOperator eqOperator = (EqOperator)baseSingleValueOperator;
+
+			return new NeqOperator(
+				eqOperator.getQueryField(), eqOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof GeqOperator) {
+			GeqOperator geqOperator = (GeqOperator)baseSingleValueOperator;
+
+			return new LtOperator(
+				geqOperator.getQueryField(), geqOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof GtOperator) {
+			GtOperator gtOperator = (GtOperator)baseSingleValueOperator;
+
+			return new LeqOperator(
+				gtOperator.getQueryField(), gtOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof IncludesOperator) {
+			IncludesOperator includesOperator =
+				(IncludesOperator)baseSingleValueOperator;
+
+			return new NotIncludesOperator(
+				includesOperator.getQueryField(),
+				includesOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof LeqOperator) {
+			LeqOperator leqOperator = (LeqOperator)baseSingleValueOperator;
+
+			return new GtOperator(
+				leqOperator.getQueryField(), leqOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof LtOperator) {
+			LtOperator ltOperator = (LtOperator)baseSingleValueOperator;
+
+			return new GeqOperator(
+				ltOperator.getQueryField(), ltOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof NeqOperator) {
+			NeqOperator neqOperator = (NeqOperator)baseSingleValueOperator;
+
+			return new EqOperator(
+				neqOperator.getQueryField(), neqOperator.getQueryValue());
+		}
+		else if (baseSingleValueOperator instanceof NotIncludesOperator) {
+			NotIncludesOperator notIncludesOperator =
+				(NotIncludesOperator)baseSingleValueOperator;
+
+			return new IncludesOperator(
+				notIncludesOperator.getQueryField(),
+				notIncludesOperator.getQueryValue());
+		}
+
+		throw new SearchException(
+			"Base single value operator cannot be negated " +
+				baseSingleValueOperator);
+	}
+
+	protected QueryClause traverseBooleanQuery(BooleanQuery booleanQuery)
+		throws SearchException {
+
+		List<BooleanClause> booleanClauses = booleanQuery.clauses();
+
+		List<QueryClause> andQueryClauses = new ArrayList<QueryClause>();
+
+		List<QueryClause> notQueryClauses = new ArrayList<QueryClause>();
+
+		List<QueryClause> orQueryClauses = new ArrayList<QueryClause>();
+
+		for (BooleanClause booleanClause : booleanClauses) {
+			List<QueryClause> queryClauses = orQueryClauses;
+
+			BooleanClauseOccur booleanClauseOccur =
+				booleanClause.getBooleanClauseOccur();
+
+			if (booleanClauseOccur.equals(BooleanClauseOccur.MUST)) {
+				queryClauses = andQueryClauses;
+			}
+			else if (booleanClauseOccur.equals(BooleanClauseOccur.MUST_NOT)) {
+				queryClauses = notQueryClauses;
+			}
+
+			Query query = booleanClause.getQuery();
+
+			QueryClause queryClause = traverseQuery(query);
+
+			if (queryClause!= null) {
+				queryClauses.add(queryClause);
+			}
+		}
+
+		return joinBooleanQueryClauses(
+			andQueryClauses, notQueryClauses, orQueryClauses);
 	}
 
 	protected QueryClause traverseQuery(Query query) throws SearchException {
@@ -314,11 +552,63 @@ public class SharepointQueryBuilder {
 	protected QueryClause traverseTermRangeQuery(TermRangeQuery termRangeQuery)
 		throws SearchException {
 
-		return null;
+		if (!isSupportedField(termRangeQuery.getField())) {
+			return null;
+		}
+
+		String fieldName = termRangeQuery.getField();
+
+		String sharepointFieldName = getSharepointFieldName(fieldName);
+
+		QueryField queryField = new QueryField(sharepointFieldName);
+
+		String lowerTermFieldValue = formatFieldValue(
+			fieldName, termRangeQuery.getLowerTerm());
+
+		QueryValue lowerTermQueryValue = new QueryValue(lowerTermFieldValue);
+
+		QueryClause lowerTermQueryClause = null;
+
+		if (termRangeQuery.includesLower()) {
+			lowerTermQueryClause = new GeqOperator(
+				queryField, lowerTermQueryValue);
+		}
+		else {
+			lowerTermQueryClause = new GtOperator(
+				queryField, lowerTermQueryValue);
+		}
+
+		String upperTermFieldValue = formatFieldValue(
+			fieldName, termRangeQuery.getUpperTerm());
+
+		QueryValue upperTermQueryValue = new QueryValue(upperTermFieldValue);
+
+		QueryClause upperTermQueryClause = null;
+
+		if (termRangeQuery.includesUpper()) {
+			upperTermQueryClause = new LeqOperator(
+				queryField, upperTermQueryValue);
+		}
+		else {
+			upperTermQueryClause = new LtOperator(
+				queryField, upperTermQueryValue);
+		}
+
+		return new AndJoin(lowerTermQueryClause, upperTermQueryClause);
 	}
 
-	protected QueryClause traverseWildcardQuery(WildcardQuery wildcardQuery) {
-		return null;
+	protected QueryClause traverseWildcardQuery(WildcardQuery wildcardQuery)
+		throws SearchException {
+
+		QueryTerm queryTerm = wildcardQuery.getQueryTerm();
+
+		if (!isSupportedField(queryTerm.getField())) {
+			return null;
+		}
+
+		return buildFieldQueryClause(
+			queryTerm.getField(), queryTerm.getValue(),
+			SharepointQueryOperator.LIKE);
 	}
 
 	private static final String _SHAREPOINT_DATE_FORMAT_PATTERN =
