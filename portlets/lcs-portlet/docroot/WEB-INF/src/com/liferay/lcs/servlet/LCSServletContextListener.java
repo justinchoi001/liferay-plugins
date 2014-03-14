@@ -52,44 +52,6 @@ public class LCSServletContextListener
 		registerPortalLifecycle();
 	}
 
-	protected void updateMonitoringConfiguration(boolean deployed)
-		throws Exception {
-
-		Configuration configuration = getConfiguration();
-
-		Field modifiersField = Field.class.getDeclaredField("modifiers");
-
-		modifiersField.setAccessible(true);
-
-		String propsValuesClassName = "com.liferay.portal.util.PropsValues";
-
-		Class<?> propsValuesClass = findLoadedClass(
-			"com.liferay.portal.util.PropsValues");
-
-		//changeHibernateGenerateStatisticsProperty(
-		//	configuration, deployed, modifiersField, propsValuesClass);
-		//updateMonitoringDataSampleThreadLocalProperty(
-		//	configuration, deployed, modifiersField, propsValuesClass);
-
-		Class<?> monitoringFilterClass = findLoadedClass(
-			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter");
-
-		//updateMonitoringPortalRequestProperty(
-		//	configuration, deployed, monitoringFilterClass, propsValuesClass);
-
-		Class<?> monitoringPortletClass = findLoadedClass(
-			"com.liferay.portlet.MonitoringPortlet");
-
-		//updateMonitoringPortletActionRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//updateMonitoringPortletEventRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//updateMonitoringPortletRenderRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//updateMonitoringPortletResourceRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-	}
-
 	@Override
 	protected void doPortalDestroy() throws Exception {
 		MessageBusUtil.unregisterMessageListener(
@@ -196,6 +158,44 @@ public class LCSServletContextListener
 		finally {
 			StreamUtil.cleanUp(inputStream);
 		}
+	}
+
+	protected void updateMonitoringConfiguration(boolean deployed)
+		throws Exception {
+
+		Configuration configuration = getConfiguration();
+
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+
+		modifiersField.setAccessible(true);
+
+		String propsValuesClassName = "com.liferay.portal.util.PropsValues";
+
+		Class<?> propsValuesClass = findLoadedClass(
+			"com.liferay.portal.util.PropsValues");
+
+		//changeHibernateGenerateStatisticsProperty(
+		//	configuration, deployed, modifiersField, propsValuesClass);
+		//updateMonitoringDataSampleThreadLocalProperty(
+		//	configuration, deployed, modifiersField, propsValuesClass);
+
+		Class<?> monitoringFilterClass = findLoadedClass(
+			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter");
+
+		//updateMonitoringPortalRequestProperty(
+		//	configuration, deployed, monitoringFilterClass, propsValuesClass);
+
+		Class<?> monitoringPortletClass = findLoadedClass(
+			"com.liferay.portlet.MonitoringPortlet");
+
+		//updateMonitoringPortletActionRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+		//updateMonitoringPortletEventRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+		//updateMonitoringPortletRenderRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+		//updateMonitoringPortletResourceRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
 	}
 
 	private MessageListener _messageListener;
