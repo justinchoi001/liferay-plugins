@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.servlet;
 
+import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.HotDeployMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -29,7 +30,9 @@ import com.liferay.portal.kernel.util.StringUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -50,6 +53,71 @@ public class LCSServletContextListener
 		registerPortalLifecycle();
 	}
 
+	protected void changeMonitoringConfiguration(boolean deployed)
+		throws Exception {
+
+		Method findLoadedClassMethod = ClassLoader.class.getDeclaredMethod(
+			"findLoadedClass", String.class);
+
+		findLoadedClassMethod.setAccessible(true);
+
+		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
+
+		String propsValuesClassName = "com.liferay.portal.util.PropsValues";
+
+		Class propsValuesClass = (Class)findLoadedClassMethod.invoke(
+			portalClassLoader, propsValuesClassName);
+
+		String propsUtilClassName = "com.liferay.portal.util.PropsUtil";
+
+		Class propsUtilClass = (Class)findLoadedClassMethod.invoke(
+			portalClassLoader, propsUtilClassName);
+
+		Method getConfigurationMethod = propsUtilClass.getDeclaredMethod(
+			"_getConfiguration");
+
+		getConfigurationMethod.setAccessible(true);
+
+		Field instanceField = propsUtilClass.getDeclaredField("_instance");
+
+		instanceField.setAccessible(true);
+
+		Object instance = instanceField.get(propsUtilClass);
+
+		Configuration configuration =
+			(Configuration)getConfigurationMethod.invoke(instance);
+
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+
+		modifiersField.setAccessible(true);
+
+		String monitoringFilterClassName =
+			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter";
+
+		Class monitoringFilterClass = (Class)findLoadedClassMethod.invoke(
+			portalClassLoader, monitoringFilterClassName);
+
+		String monitoringPortletClassName =
+			"com.liferay.portlet.MonitoringPortlet";
+
+		Class monitoringPortletClass = (Class)findLoadedClassMethod.invoke(
+			portalClassLoader, monitoringPortletClassName);
+
+		//changeHibernateGenerateStatisticsProperty(
+		//	configuration, deployed, modifiersField, propsValuesClass);
+		//changeMonitoringDataSampleThreadLocalProperty(
+		//	configuration, deployed, modifiersField, propsValuesClass);
+		//changeMonitoringPortalRequestProperty(
+		//	configuration, deployed, monitoringFilterClass, propsValuesClass);
+		//changeMonitoringPortletActionRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+		//changeMonitoringPortletEventRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+		//changeMonitoringPortletRenderRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+		//changeMonitoringPortletResourceRequestProperty(
+		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+	}
 	@Override
 	protected void doPortalDestroy() throws Exception {
 		MessageBusUtil.unregisterMessageListener(
@@ -63,7 +131,14 @@ public class LCSServletContextListener
 
 			@Override
 			protected void onDeploy(Message message) throws Exception {
+				changeMonitoringConfiguration(true);
+
 				loadClusterLinkHelperClass();
+			}
+
+			@Override
+			protected void onUndeploy(Message message) throws Exception {
+				changeMonitoringConfiguration(false);
 			}
 
 		};
