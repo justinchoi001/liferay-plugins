@@ -52,7 +52,7 @@ public class LCSServletContextListener
 		registerPortalLifecycle();
 	}
 
-	protected void changeMonitoringConfiguration(boolean deployed)
+	protected void updateMonitoringConfiguration(boolean deployed)
 		throws Exception {
 
 		Configuration configuration = getConfiguration();
@@ -68,25 +68,25 @@ public class LCSServletContextListener
 
 		//changeHibernateGenerateStatisticsProperty(
 		//	configuration, deployed, modifiersField, propsValuesClass);
-		//changeMonitoringDataSampleThreadLocalProperty(
+		//updateMonitoringDataSampleThreadLocalProperty(
 		//	configuration, deployed, modifiersField, propsValuesClass);
 
 		Class<?> monitoringFilterClass = findLoadedClass(
 			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter");
 
-		//changeMonitoringPortalRequestProperty(
+		//updateMonitoringPortalRequestProperty(
 		//	configuration, deployed, monitoringFilterClass, propsValuesClass);
 
 		Class<?> monitoringPortletClass = findLoadedClass(
 			"com.liferay.portlet.MonitoringPortlet");
 
-		//changeMonitoringPortletActionRequestProperty(
+		//updateMonitoringPortletActionRequestProperty(
 		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//changeMonitoringPortletEventRequestProperty(
+		//updateMonitoringPortletEventRequestProperty(
 		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//changeMonitoringPortletRenderRequestProperty(
+		//updateMonitoringPortletRenderRequestProperty(
 		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//changeMonitoringPortletResourceRequestProperty(
+		//updateMonitoringPortletResourceRequestProperty(
 		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
 	}
 
@@ -103,14 +103,14 @@ public class LCSServletContextListener
 
 			@Override
 			protected void onDeploy(Message message) throws Exception {
-				changeMonitoringConfiguration(true);
+				updateMonitoringConfiguration(true);
 
 				loadClusterLinkHelperClass();
 			}
 
 			@Override
 			protected void onUndeploy(Message message) throws Exception {
-				changeMonitoringConfiguration(false);
+				updateMonitoringConfiguration(false);
 			}
 
 		};
