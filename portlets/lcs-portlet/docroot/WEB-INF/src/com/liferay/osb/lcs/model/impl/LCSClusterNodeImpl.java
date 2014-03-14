@@ -346,7 +346,8 @@ public class LCSClusterNodeImpl implements LCSClusterNode {
 	private String _location;
 	private int _monitoringStatus;
 	private String _name;
-	private Map<String, Integer> _patchIdentifiers = new HashMap<String, Integer>();
+	private Map<String, Integer> _patchIdentifiers =
+		new HashMap<String, Integer>();
 	private int _patchingToolStatus;
 	private int _patchingToolVersion;
 	private String _portalEdition;
