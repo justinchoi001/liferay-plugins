@@ -32,7 +32,6 @@ import java.io.InputStream;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -56,59 +55,31 @@ public class LCSServletContextListener
 	protected void changeMonitoringConfiguration(boolean deployed)
 		throws Exception {
 
-		Method findLoadedClassMethod = ClassLoader.class.getDeclaredMethod(
-			"findLoadedClass", String.class);
-
-		findLoadedClassMethod.setAccessible(true);
-
-		ClassLoader portalClassLoader = PortalClassLoaderUtil.getClassLoader();
-
-		String propsValuesClassName = "com.liferay.portal.util.PropsValues";
-
-		Class propsValuesClass = (Class)findLoadedClassMethod.invoke(
-			portalClassLoader, propsValuesClassName);
-
-		String propsUtilClassName = "com.liferay.portal.util.PropsUtil";
-
-		Class propsUtilClass = (Class)findLoadedClassMethod.invoke(
-			portalClassLoader, propsUtilClassName);
-
-		Method getConfigurationMethod = propsUtilClass.getDeclaredMethod(
-			"_getConfiguration");
-
-		getConfigurationMethod.setAccessible(true);
-
-		Field instanceField = propsUtilClass.getDeclaredField("_instance");
-
-		instanceField.setAccessible(true);
-
-		Object instance = instanceField.get(propsUtilClass);
-
-		Configuration configuration =
-			(Configuration)getConfigurationMethod.invoke(instance);
+		Configuration configuration = getConfiguration();
 
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
 
 		modifiersField.setAccessible(true);
 
-		String monitoringFilterClassName =
-			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter";
+		String propsValuesClassName = "com.liferay.portal.util.PropsValues";
 
-		Class monitoringFilterClass = (Class)findLoadedClassMethod.invoke(
-			portalClassLoader, monitoringFilterClassName);
-
-		String monitoringPortletClassName =
-			"com.liferay.portlet.MonitoringPortlet";
-
-		Class monitoringPortletClass = (Class)findLoadedClassMethod.invoke(
-			portalClassLoader, monitoringPortletClassName);
+		Class<?> propsValuesClass = findLoadedClass(
+			"com.liferay.portal.util.PropsValues");
 
 		//changeHibernateGenerateStatisticsProperty(
 		//	configuration, deployed, modifiersField, propsValuesClass);
 		//changeMonitoringDataSampleThreadLocalProperty(
 		//	configuration, deployed, modifiersField, propsValuesClass);
+
+		Class<?> monitoringFilterClass = findLoadedClass(
+			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter");
+
 		//changeMonitoringPortalRequestProperty(
 		//	configuration, deployed, monitoringFilterClass, propsValuesClass);
+
+		Class<?> monitoringPortletClass = findLoadedClass(
+			"com.liferay.portlet.MonitoringPortlet");
+
 		//changeMonitoringPortletActionRequestProperty(
 		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
 		//changeMonitoringPortletEventRequestProperty(
@@ -118,6 +89,7 @@ public class LCSServletContextListener
 		//changeMonitoringPortletResourceRequestProperty(
 		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
 	}
+
 	@Override
 	protected void doPortalDestroy() throws Exception {
 		MessageBusUtil.unregisterMessageListener(
@@ -145,6 +117,35 @@ public class LCSServletContextListener
 
 		MessageBusUtil.registerMessageListener(
 			DestinationNames.HOT_DEPLOY, _messageListener);
+	}
+
+	protected Class<?> findLoadedClass(String className) throws Exception {
+		Method findLoadedClassMethod = ClassLoader.class.getDeclaredMethod(
+			"findLoadedClass", String.class);
+
+		findLoadedClassMethod.setAccessible(true);
+
+		ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+
+		return (Class<?>)findLoadedClassMethod.invoke(classLoader, className);
+	}
+
+	protected Configuration getConfiguration() throws Exception {
+		Class<?> propsUtilClass = findLoadedClass(
+			"com.liferay.portal.util.PropsUtil");
+
+		Method getConfigurationMethod = propsUtilClass.getDeclaredMethod(
+			"_getConfiguration");
+
+		getConfigurationMethod.setAccessible(true);
+
+		Field instanceField = propsUtilClass.getDeclaredField("_instance");
+
+		instanceField.setAccessible(true);
+
+		Object instance = instanceField.get(propsUtilClass);
+
+		return (Configuration)getConfigurationMethod.invoke(instance);
 	}
 
 	protected void loadClusterLinkHelperClass() throws Exception {
