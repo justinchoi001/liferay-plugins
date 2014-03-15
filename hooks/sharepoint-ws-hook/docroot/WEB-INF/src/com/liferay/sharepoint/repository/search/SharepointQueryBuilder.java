@@ -298,15 +298,14 @@ public class SharepointQueryBuilder {
 		else if (queryClauses.size() == 1) {
 			return queryClauses.get(0);
 		}
-		else {
-			QueryClause firstQueryClause = queryClauses.get(0);
 
-			List<QueryClause> remainingQueryClauses = queryClauses.subList(
-				1, queryClauses.size());
+		QueryClause firstQueryClause = queryClauses.get(0);
 
-			return new AndJoin(
-				firstQueryClause, joinWithAnd(remainingQueryClauses));
-		}
+		List<QueryClause> remainingQueryClauses = queryClauses.subList(
+			1, queryClauses.size());
+
+		return new AndJoin(
+			firstQueryClause, joinWithAnd(remainingQueryClauses));
 	}
 
 	protected QueryClause joinWithNot(List<QueryClause> queryClauses)
@@ -328,15 +327,14 @@ public class SharepointQueryBuilder {
 		else if (queryClauses.size() == 1) {
 			return queryClauses.get(0);
 		}
-		else {
-			QueryClause firstQueryClause = queryClauses.get(0);
 
-			List<QueryClause> remainingQueryClauses = queryClauses.subList(
-				1, queryClauses.size());
+		QueryClause firstQueryClause = queryClauses.get(0);
 
-			return new OrJoin(
-				firstQueryClause, joinWithOr(remainingQueryClauses));
-		}
+		List<QueryClause> remainingQueryClauses = queryClauses.subList(
+			1, queryClauses.size());
+
+		return new OrJoin(
+			firstQueryClause, joinWithOr(remainingQueryClauses));
 	}
 
 	protected void log(
