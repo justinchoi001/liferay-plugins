@@ -331,8 +331,7 @@ public class SharepointQueryBuilder {
 		List<QueryClause> remainingQueryClauses = queryClauses.subList(
 			1, queryClauses.size());
 
-		return new OrJoin(
-			firstQueryClause, joinWithOr(remainingQueryClauses));
+		return new OrJoin(firstQueryClause, joinWithOr(remainingQueryClauses));
 	}
 
 	protected QueryClause negate(QueryClause queryClause)
