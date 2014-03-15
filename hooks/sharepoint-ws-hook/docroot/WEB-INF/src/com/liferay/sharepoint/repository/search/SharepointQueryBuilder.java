@@ -100,8 +100,6 @@ public class SharepointQueryBuilder {
 		else {
 			_queryOptionsList = new QueryOptionsList();
 		}
-
-		log(_query, _queryOptionsList);
 	}
 
 	public com.liferay.sharepoint.connector.schema.query.Query getQuery() {
@@ -335,11 +333,6 @@ public class SharepointQueryBuilder {
 
 		return new OrJoin(
 			firstQueryClause, joinWithOr(remainingQueryClauses));
-	}
-
-	protected void log(
-		com.liferay.sharepoint.connector.schema.query.Query query,
-		QueryOptionsList queryOptionsList) {
 	}
 
 	protected QueryClause negate(QueryClause queryClause)
