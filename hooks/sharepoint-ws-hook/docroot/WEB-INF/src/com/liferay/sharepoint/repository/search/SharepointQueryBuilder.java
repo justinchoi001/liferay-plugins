@@ -354,7 +354,7 @@ public class SharepointQueryBuilder {
 		}
 
 		throw new SearchException(
-			"Query clause cannot be negated " + queryClause);
+			"Unable to negate query clause " + queryClause);
 	}
 
 	protected QueryClause negateBaseJoin(BaseJoin baseJoin)
@@ -375,7 +375,7 @@ public class SharepointQueryBuilder {
 				negate(orJoin.getRightQueryClause()));
 		}
 
-		throw new SearchException("Base join cannot be negated " + baseJoin);
+		throw new SearchException("Unable to negate base join " + baseJoin);
 	}
 
 	protected QueryClause negateBaseMultiValueOperator(
@@ -383,7 +383,7 @@ public class SharepointQueryBuilder {
 		throws SearchException {
 
 		throw new SearchException(
-			"Base multi value operator cannot be negated " +
+			"Unable to negate base multi value operator " +
 				baseMultiValueOperator);
 	}
 
@@ -404,7 +404,7 @@ public class SharepointQueryBuilder {
 		}
 
 		throw new SearchException(
-			"Base no value operator cannot be negated " + baseNoValueOperator);
+			"Unable to negate base no value operator " + baseNoValueOperator);
 	}
 
 	protected QueryClause negateBaseSingleValueOperator(
@@ -465,22 +465,18 @@ public class SharepointQueryBuilder {
 		}
 
 		throw new SearchException(
-			"Base single value operator cannot be negated " +
+			"Unable to negate base single value operator " +
 				baseSingleValueOperator);
 	}
 
 	protected QueryClause traverseBooleanQuery(BooleanQuery booleanQuery)
 		throws SearchException {
 
-		List<BooleanClause> booleanClauses = booleanQuery.clauses();
-
 		List<QueryClause> andQueryClauses = new ArrayList<QueryClause>();
-
 		List<QueryClause> notQueryClauses = new ArrayList<QueryClause>();
-
 		List<QueryClause> orQueryClauses = new ArrayList<QueryClause>();
 
-		for (BooleanClause booleanClause : booleanClauses) {
+		for (BooleanClause booleanClause : booleanQuery.clauses()) {
 			List<QueryClause> queryClauses = orQueryClauses;
 
 			BooleanClauseOccur booleanClauseOccur =
@@ -545,6 +541,8 @@ public class SharepointQueryBuilder {
 			return null;
 		}
 
+		QueryClause lowerTermQueryClause = null;
+
 		String fieldName = termRangeQuery.getField();
 
 		String sharepointFieldName = getSharepointFieldName(fieldName);
@@ -556,8 +554,6 @@ public class SharepointQueryBuilder {
 
 		QueryValue lowerTermQueryValue = new QueryValue(lowerTermFieldValue);
 
-		QueryClause lowerTermQueryClause = null;
-
 		if (termRangeQuery.includesLower()) {
 			lowerTermQueryClause = new GeqOperator(
 				queryField, lowerTermQueryValue);
@@ -567,12 +563,12 @@ public class SharepointQueryBuilder {
 				queryField, lowerTermQueryValue);
 		}
 
+		QueryClause upperTermQueryClause = null;
+
 		String upperTermFieldValue = formatFieldValue(
 			fieldName, termRangeQuery.getUpperTerm());
 
 		QueryValue upperTermQueryValue = new QueryValue(upperTermFieldValue);
-
-		QueryClause upperTermQueryClause = null;
 
 		if (termRangeQuery.includesUpper()) {
 			upperTermQueryClause = new LeqOperator(
