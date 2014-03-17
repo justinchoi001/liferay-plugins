@@ -235,7 +235,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		searchContext.setKeywords("test");
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
-		
+
 		queryConfig.setSearchSubfolders(false);
 
 		BooleanQuery searchQuery =
@@ -646,6 +646,15 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		return searchContext;
 	}
 
+	protected SharepointQueryBuilder buildSharepointQueryBuilder(
+			SearchContext searchContext, BooleanQuery booleanQuery)
+		throws Exception {
+
+		return new SharepointQueryBuilder(
+			_sharepointExtRepository, searchContext, booleanQuery,
+			_extRepositoryQueryMapper);
+	}
+
 	protected <T> T getService(
 		Class<?> serviceUtilClass, Class<T> serviceClass) {
 
@@ -660,29 +669,6 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		);
 
 		return service;
-	}
-
-	protected void resetServices() {
-		for (Class<?> serviceUtilClass : _serviceUtilClasses) {
-			try {
-				Field field = serviceUtilClass.getDeclaredField("_service");
-
-				field.setAccessible(true);
-
-				field.set(serviceUtilClass, null);
-			}
-			catch (Exception e) {
-			}
-		}
-	}
-
-	protected SharepointQueryBuilder buildSharepointQueryBuilder(
-			SearchContext searchContext, BooleanQuery booleanQuery)
-		throws Exception {
-
-		return new SharepointQueryBuilder(
-			_sharepointExtRepository, searchContext, booleanQuery,
-			_extRepositoryQueryMapper);
 	}
 
 	protected void initHtmlUtil() {
@@ -874,6 +860,20 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 			}
 		);
+	}
+
+	protected void resetServices() {
+		for (Class<?> serviceUtilClass : _serviceUtilClasses) {
+			try {
+				Field field = serviceUtilClass.getDeclaredField("_service");
+
+				field.setAccessible(true);
+
+				field.set(serviceUtilClass, null);
+			}
+			catch (Exception e) {
+			}
+		}
 	}
 
 	private BeanLocator _beanLocator;
