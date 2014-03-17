@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.search.TermQuery;
 import com.liferay.portal.kernel.search.TermRangeQuery;
 import com.liferay.portal.kernel.search.WildcardQuery;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.repository.external.ExtRepositoryObjectType;
@@ -73,7 +74,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * @author Iván Zaera
@@ -87,9 +87,10 @@ public class SharepointQueryBuilder {
 		throws PortalException {
 
 		_sharepointWSRepository = sharepointWSRepository;
-		_query = new com.liferay.sharepoint.connector.schema.query.Query(
-			traverseQuery(query));
 		_extRepositoryQueryMapper = extRepositoryQueryMapper;
+
+		_query = new com.liferay.sharepoint.connector.schema.query.Query(
+				traverseQuery(query));
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
@@ -100,6 +101,8 @@ public class SharepointQueryBuilder {
 		else {
 			_queryOptionsList = new QueryOptionsList();
 		}
+
+		log(query);
 	}
 
 	public com.liferay.sharepoint.connector.schema.query.Query getQuery() {
@@ -181,7 +184,7 @@ public class SharepointQueryBuilder {
 
 			List<QueryClause> queryClauses = new ArrayList<QueryClause>();
 
-			String[] parts = StringUtil.split(fieldValue, _STAR_PATTERN);
+			String[] parts = StringUtil.split(fieldValue, StringPool.STAR);
 
 			for (String part : parts) {
 				queryClauses.add(
@@ -332,6 +335,23 @@ public class SharepointQueryBuilder {
 			1, queryClauses.size());
 
 		return new OrJoin(firstQueryClause, joinWithOr(remainingQueryClauses));
+	}
+
+	protected void log(Query query) {
+		if (_log.isDebugEnabled()) {
+			StringBundler sb = new StringBundler(10);
+			sb.append("Translation of search query follows:");
+			sb.append(" [Liferay query: ");
+			sb.append(_liferayQueryExplainer.explain(query));
+			sb.append("]");
+			sb.append(" [Sharepoint query: ");
+			sb.append(_query);
+			sb.append("]");
+			sb.append(" [Sharepoint query options list: ");
+			sb.append(_queryOptionsList);
+			sb.append("]");
+			_log.debug(sb.toString());
+		}
 	}
 
 	protected QueryClause negate(QueryClause queryClause)
@@ -598,11 +618,11 @@ public class SharepointQueryBuilder {
 	private static final String _SHAREPOINT_DATE_FORMAT_PATTERN =
 		"yyyy-MM-dd' 'HH:mm:ss";
 
-	private static final String _STAR_PATTERN = Pattern.quote(StringPool.STAR);
-
 	private static Log _log = LogFactoryUtil.getLog(
 		SharepointQueryBuilder.class);
 
+	private static LiferayQueryExplainer _liferayQueryExplainer =
+		new LiferayQueryExplainer();
 	private static Map<String, String> _sharepointFields =
 		new HashMap<String, String>();
 	private static Set<String> _supportedFields = new HashSet<String>();
