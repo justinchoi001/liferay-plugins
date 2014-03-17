@@ -75,6 +75,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.lucene.analysis.KeywordAnalyzer;
 
@@ -851,11 +852,13 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 					long sharepointObjectId = GetterUtil.getLong(
 						invocation.getArguments()[1]);
+					Set<SharepointObject.Permission> permissions =
+						Collections.emptySet();
 
 					return new SharepointWSFolder(
 						new SharepointObject(
 							"", null, new Date(), true, new Date(),
-							"/Root/" + sharepointObjectId, Collections.EMPTY_SET,
+							"/Root/" + sharepointObjectId, permissions,
 							sharepointObjectId, 0, null));
 				}
 
