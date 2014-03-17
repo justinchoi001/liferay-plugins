@@ -240,17 +240,17 @@ public class LCSServletContextListener
 	}
 
 	protected void updateMonitoringPortletRequest(
-			String field, String key, String propertiesKey)
+			String fieldName, String propsValuesKey, String configurationKey)
 		throws Exception {
 
 		boolean monitoringPortletRenderRequest = updatePropsValues(
-			key, propertiesKey);
+			propsValuesKey, configurationKey);
 
 		Class<?> monitoringPortletClass = findLoadedClass(
 			"com.liferay.portlet.MonitoringPortlet");
 
 		Field monitoringPortletRenderRequestField =
-			monitoringPortletClass.getDeclaredField(field);
+			monitoringPortletClass.getDeclaredField(fieldName);
 
 		monitoringPortletRenderRequestField.setAccessible(true);
 		monitoringPortletRenderRequestField.setBoolean(
@@ -264,7 +264,8 @@ public class LCSServletContextListener
 			PropsKeys.MONITORING_PORTLET_RESOURCE_REQUEST);
 	}
 
-	protected boolean updatePropsValues(String key, String propertiesKey)
+	protected boolean updatePropsValues(
+			String propsValuesKey, String configurationKey)
 		throws Exception {
 
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -274,28 +275,28 @@ public class LCSServletContextListener
 		Class<?> propsValuesClass = findLoadedClass(
 			"com.liferay.portal.util.PropsValues");
 
-		Field keyField = propsValuesClass.getField(key);
+		Field propsValuesKeyField = propsValuesClass.getField(propsValuesKey);
 
 		modifiersField.setInt(
-			keyField, keyField.getModifiers() & ~Modifier.FINAL);
+			propsValuesKeyField, propsValuesKeyField.getModifiers() & ~Modifier.FINAL);
 
 		boolean value = false;
 
 		if (_onDeploy) {
 			_originalPropsValues.put(
-				key, keyField.getBoolean(propsValuesClass));
+				propsValuesKey, propsValuesKeyField.getBoolean(propsValuesClass));
 
 			value = true;
 		}
 		else {
-			value = _originalPropsValues.get(key);
+			value = _originalPropsValues.get(propsValuesKey);
 		}
 
-		keyField.setBoolean(propsValuesClass, value);
+		propsValuesKeyField.setBoolean(propsValuesClass, value);
 
 		Configuration configuration = getConfiguration();
 
-		configuration.set(propertiesKey, String.valueOf(value));
+		configuration.set(configurationKey, String.valueOf(value));
 
 		return value;
 	}
