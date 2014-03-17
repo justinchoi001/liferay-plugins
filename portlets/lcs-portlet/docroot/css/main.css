@@ -4,6 +4,10 @@ $text-blue: #009AE5;
 $text-darkgrey: #656565;
 $text-lightgrey: #8D8D8D;
 
+span.lcs-alert {
+	display: inline-block;
+}
+
 .lcs-portlet {
 	color: $text-darkgrey;
 	padding: 12px 10px 10px;
@@ -115,10 +119,5 @@ $text-lightgrey: #8D8D8D;
 			width: 300px;
 			word-wrap: break-word;
 		}
-	}
-
-	.lcs-registration-info {
-		display: inline-block;
-		margin-top: 0;
 	}
 }

@@ -18,7 +18,7 @@
 
 <h3><liferay-ui:message arguments="2" key="registration-step-x-2" /></h3>
 
-<span class="alert alert-info lcs-registration-info">
+<span class="alert alert-info lcs-alert">
 	<liferay-ui:message key="please-add-information-about-your-server" />
 </span>
 
@@ -129,12 +129,15 @@
 	</aui:button-row>
 </aui:form>
 
-<aui:script use="aui-base,liferay-cloud-services">
+<aui:script use="liferay-cloud-services">
 	new Liferay.Portlet.LCS(
 		{
 			addLCSClusterEntryURL: '<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="mvcPath" value="/add_lcs_cluster_entry.jsp" /></portlet:renderURL>',
+			environmentDuplicateNameError: '<%= UnicodeLanguageUtil.get(pageContext, "environment-duplicate-name-error") %>',
+			environmentGenericError: '<%= UnicodeLanguageUtil.get(pageContext, "your-request-failed-to-complete") %>',
+			environmentRequiredNameError: '<%= UnicodeLanguageUtil.get(pageContext, "environment-required-name-error") %>',
+			labelNewEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "new-environment") %>',
 			namespace: '<portlet:namespace />',
-			portletId: '<%= portletDisplay.getId() %>',
 			serveCorpEntryURL: '<portlet:resourceURL id="serveCorpEntry" />',
 			serveLCSClusterEntryURL: '<portlet:resourceURL id="serveLCSClusterEntry" />'
 		}

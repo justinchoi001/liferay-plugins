@@ -30,6 +30,8 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 
 <h3><liferay-ui:message arguments="<%= corpEntryIdentifier.getName() %>" key="create-new-environment-for-x" /></h3>
 
+<div id="<portlet:namespace />lcsEnvironmentAlertContainer"></div>
+
 <portlet:actionURL name="addLCSClusterEntry" var="addLCSClusterEntryURL" />
 
 <aui:form action="<%= addLCSClusterEntryURL %>" name="fm">

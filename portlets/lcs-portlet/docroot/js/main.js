@@ -25,6 +25,8 @@ AUI.add(
 
 		var STR_VALUE = 'value';
 
+		var TPL_ERROR_MESSAGE = '<span class="alert alert-error lcs-alert">{message}</span>';
+
 		var TPL_FIELD_HIDDEN = '<input class="field-input field-input-text" id="{portletNamespace}lcsClusterEntryId" name="{portletNamespace}lcsClusterEntryId" type="hidden" value="" />';
 
 		var TPL_FIELD_OPTION = '<option value="{0}">{1}</option>';
@@ -58,6 +60,10 @@ AUI.add(
 						urlMap[TYPE_ADD_LCS_CLUSTER_ENTRY] = config.addLCSClusterEntryURL;
 						urlMap[TYPE_SERVE_CORP_ENTRY] = config.serveCorpEntryURL;
 						urlMap[TYPE_SERVE_LCS_CLUSTER_ENTRY] = config.serveLCSClusterEntryURL;
+						instance._environmentDuplicateNameError = config.environmentDuplicateNameError;
+						instance._environmentGenericError= config.environmentGenericError;
+						instance._environmentRequiredNameError = config.environmentRequiredNameError;
+						instance._labelNewEnvironment = config.labelNewEnvironment;
 
 						instance._urlMap = urlMap;
 
@@ -156,9 +162,9 @@ AUI.add(
 										height: 560,
 										modal: true,
 										resizable: false,
-										width: 600
+										width: 550
 									},
-									title: Liferay.Language.get('new-environment')
+									title: instance._labelNewEnvironment
 								}
 							).render(instance._portletContentBox);
 
@@ -189,8 +195,6 @@ AUI.add(
 
 						lcsClusterEntryPanel.show();
 
-						lcsClusterEntryPanel._syncUIPosAlign();
-
 						instance._currentLCSClusterEntryPanelAddIOHandle = lcsClusterEntryPanel.io.after(
 							STR_SUCCESS,
 							A.bind('_initializeLCSClusterEntryPanel', instance)
@@ -211,6 +215,29 @@ AUI.add(
 						}
 
 						return url;
+					},
+
+					_handleLCSClusterEntryError: function(message) {
+						var instance = this;
+
+						var errorMessageHTML = Lang.sub(
+							TPL_ERROR_MESSAGE,
+							{
+								message: message
+							}
+						);
+
+						var dialogContainer = A.one('.' + CSS_LCS_CLUSTER_ENTRY_DIALOG);
+
+						dialogContainer.setStyle('height', 'auto');
+
+						var dialogBody = dialogContainer.one('.modal-body');
+
+						dialogBody.setStyle('height', 'auto');
+
+						var errorMessageNode = dialogBody.one('#' + instance.NS + 'lcsEnvironmentAlertContainer');
+
+						errorMessageNode.html(errorMessageHTML);
 					},
 
 					_nodeFromTemplate: function(tpl, parameter) {
@@ -244,13 +271,28 @@ AUI.add(
 									id: form.getDOM()
 								},
 								on: {
+									failure: function(event, id, obj) {
+										instance._handleLCSClusterEntryError(instance._environmentGenericError);
+									},
 									success: function(event, id, obj) {
 										var responseData = this.get('responseData');
 
-										if (responseData.result == 'success') {
+										if (responseData.result === 'success') {
 											instance._lcsClusterEntryPanel.hide();
 
 											instance._loadData();
+										}
+										else {
+											var message = instance._environmentGenericError;
+
+											if (responseData.message === 'duplicateLCSClusterEntryName') {
+												message = instance._environmentDuplicateNameError;
+											}
+											else if (responseData.message === 'requiredLCSClusterEntryName') {
+												message = instance._environmentRequiredNameError;
+											}
+
+											instance._handleLCSClusterEntryError(message);
 										}
 									}
 								}
