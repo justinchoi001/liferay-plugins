@@ -90,7 +90,7 @@ public class SharepointQueryBuilder {
 		_extRepositoryQueryMapper = extRepositoryQueryMapper;
 
 		_query = new com.liferay.sharepoint.connector.schema.query.Query(
-				traverseQuery(query));
+			traverseQuery(query));
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
@@ -338,20 +338,13 @@ public class SharepointQueryBuilder {
 	}
 
 	protected void log(Query query) {
-		if (_log.isDebugEnabled()) {
-			StringBundler sb = new StringBundler(10);
-			sb.append("Translation of search query follows:");
-			sb.append(" [Liferay query: ");
-			sb.append(_liferayQueryExplainer.explain(query));
-			sb.append("]");
-			sb.append(" [Sharepoint query: ");
-			sb.append(_query);
-			sb.append("]");
-			sb.append(" [Sharepoint query options list: ");
-			sb.append(_queryOptionsList);
-			sb.append("]");
-			_log.debug(sb.toString());
+		if (!_log.isDebugEnabled()) {
+			return;
 		}
+
+		_log.debug("Liferay query: " + _liferayQueryExplainer.explain(query));
+		_log.debug("Sharepoint query: " + _query);
+		_log.debug("Sharepoint query options list: " + _queryOptionsList);
 	}
 
 	protected QueryClause negate(QueryClause queryClause)
