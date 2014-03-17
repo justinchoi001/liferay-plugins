@@ -720,13 +720,13 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				public SimpleDateFormat answer(InvocationOnMock invocation)
 					throws Throwable {
 
-					String format = (String)invocation.getArguments()[0];
+					String pattern = (String)invocation.getArguments()[0];
 
-					if (format == null) {
-						format = "yyyyMMddHHmmss";
+					if (pattern == null) {
+						pattern = "yyyyMMddHHmmss";
 					}
 
-					return new SimpleDateFormat(format);
+					return new SimpleDateFormat(pattern);
 				}
 
 			}
