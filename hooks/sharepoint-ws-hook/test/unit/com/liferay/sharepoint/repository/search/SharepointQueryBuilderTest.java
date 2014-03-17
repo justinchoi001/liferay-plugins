@@ -739,36 +739,41 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		_extRepositoryQueryMapper = mock(ExtRepositoryQueryMapper.class);
 
 		when(
-			_extRepositoryQueryMapper.formatParameterValue(
-				Matchers.anyString(), Matchers.anyString())
-		).thenAnswer(new Answer<String>() {
-			@Override
-			public String answer(InvocationOnMock invocation) throws Throwable {
-				return (String)invocation.getArguments()[1];
-			}
-		});
-
-		when(
 			_extRepositoryQueryMapper.formatDateParameterValue(
 				Matchers.anyString(), Matchers.anyString())
 		).thenAnswer(
 			new Answer<Date>() {
 
 				@Override
-				public Date answer(InvocationOnMock invocation)
+				public Date answer(InvocationOnMock invocationOnMock)
 					throws Throwable {
 
-					DateFormat querySimpleDateFormat =
+					DateFormat dateFormat =
 						DateFormatFactoryUtil.getSimpleDateFormat(
 							PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
 
-					String value = (String)invocation.getArguments()[1];
+					String value = (String)invocationOnMock.getArguments()[1];
 
-					return querySimpleDateFormat.parse(value);
+					return dateFormat.parse(value);
 				}
 
 			}
 		);
+
+		when(
+			_extRepositoryQueryMapper.formatParameterValue(
+				Matchers.anyString(), Matchers.anyString())
+		).thenAnswer(
+			new Answer<String>() {
+
+				@Override
+				public String answer(InvocationOnMock invocationOnMock)
+					throws Throwable {
+
+					return (String)invocationOnMock.getArguments()[1];
+				}
+
+			});
 	}
 
 	protected void mockFolders(long...folderIds) throws SystemException {
