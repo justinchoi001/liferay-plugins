@@ -146,8 +146,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -177,8 +177,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -207,8 +207,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new AndJoin(
@@ -241,8 +241,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new AndJoin(
@@ -272,8 +272,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -295,8 +295,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -326,8 +326,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -349,8 +349,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -372,8 +372,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -395,8 +395,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -426,8 +426,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -457,8 +457,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -489,8 +489,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new AndJoin(
@@ -512,8 +512,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -542,8 +542,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new AndJoin(
@@ -571,8 +571,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new AndJoin(
@@ -598,8 +598,8 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
-			searchContext, searchQuery);
+		SharepointQueryBuilder sharepointQueryBuilder =
+			buildSharepointQueryBuilder(searchContext, searchQuery);
 
 		assertQueryEquals(
 			new OrJoin(
@@ -676,7 +676,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		}
 	}
 
-	private SharepointQueryBuilder _buildQuery(
+	protected SharepointQueryBuilder buildSharepointQueryBuilder(
 			SearchContext searchContext, BooleanQuery booleanQuery)
 		throws Exception {
 
