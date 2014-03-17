@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.search.SearchEngineUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.DateFormatFactory;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
@@ -848,13 +849,14 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				public SharepointWSFolder answer(InvocationOnMock invocation)
 					throws Throwable {
 
-					String id = (String)invocation.getArguments()[1];
+					long sharepointObjectId = GetterUtil.getLong(
+						invocation.getArguments()[1]);
 
 					return new SharepointWSFolder(
 						new SharepointObject(
 							"", null, new Date(), true, new Date(),
-							"/Root/" + id, Collections.EMPTY_SET,
-							Long.valueOf(id), 0, null));
+							"/Root/" + sharepointObjectId, Collections.EMPTY_SET,
+							sharepointObjectId, 0, null));
 				}
 
 			}
