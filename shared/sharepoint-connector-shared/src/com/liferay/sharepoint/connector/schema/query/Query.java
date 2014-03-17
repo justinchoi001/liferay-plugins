@@ -25,6 +25,10 @@ public class Query extends BaseNode {
 	public Query(QueryClause queryClause) {
 		_queryClause = queryClause;
 	}
+	
+	public QueryClause getQueryClause() {
+		return _queryClause;
+	}
 
 	@Override
 	protected String getNodeName() {
