@@ -817,7 +817,6 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		);
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void mockSharepointExtRepository()
 		throws PortalException, SystemException {
 
