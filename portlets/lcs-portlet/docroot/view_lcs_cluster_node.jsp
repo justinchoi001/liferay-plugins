@@ -249,14 +249,14 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 					<portlet:param name="redirect" value="<%= currentURL %>" />
 				</liferay-portlet:actionURL>
 
-				<aui:button cssClass="btn-danger" href="<%= disconnectURL %>" title='<%= LanguageUtil.get(pageContext, "disconnect-help") %>' value="disconnect" />
+				<aui:button href="<%= disconnectURL %>" title='<%= LanguageUtil.get(pageContext, "disconnect-help") %>' value="disconnect" />
 			</c:if>
 
 			<liferay-portlet:actionURL name="resetCredentials" var="resetCredentialsURL">
 				<portlet:param name="redirect" value="<%= currentURL %>" />
 			</liferay-portlet:actionURL>
 
-			<aui:button cssClass="btn-danger" href="<%= resetCredentialsURL %>" title='<%= LanguageUtil.get(pageContext, "reset-credentials-help") %>' value="reset-credentials" />
+			<aui:button href="<%= resetCredentialsURL %>" title='<%= LanguageUtil.get(pageContext, "reset-credentials-help") %>' value="reset-credentials" />
 		</aui:button-row>
 	</c:otherwise>
 </c:choose>
