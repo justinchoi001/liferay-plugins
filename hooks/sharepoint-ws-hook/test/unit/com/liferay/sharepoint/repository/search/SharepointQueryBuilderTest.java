@@ -103,23 +103,23 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws PortalException, SystemException {
-		_mockBeanLocator();
+		mockBeanLocator();
 
-		_mockDateFormatFactory();
+		mockDateFormatFactory();
 
-		_mockExtRepositoryQueryMapper();
+		mockExtRepositoryQueryMapper();
 
-		_mockLuceneHelperUtil();
+		mockLuceneHelperUtil();
 
-		_mockProps();
+		mockProps();
 
-		_mockSharepointExtRepository();
+		mockSharepointExtRepository();
 
-		_initHtmlUtil();
+		initHtmlUtil();
 
-		_initRepositorySearchQueryBuilderUtil();
+		initRepositorySearchQueryBuilderUtil();
 
-		_initSearchEngineUtil();
+		initSearchEngineUtil();
 	}
 
 	@After
@@ -193,7 +193,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 	@Test
 	public void testFolderQuery() throws Exception {
-		_mockFolders(1000);
+		mockFolders(1000);
 
 		SearchContext searchContext = buildSearchContext();
 
@@ -227,7 +227,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 	@Test
 	public void testFoldersQuery() throws Exception {
-		_mockFolders(1000, 2000);
+		mockFolders(1000, 2000);
 
 		SearchContext searchContext = buildSearchContext();
 
@@ -528,7 +528,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 	@Test
 	public void testSubfolderQuery() throws Exception {
-		_mockFolders(1000);
+		mockFolders(1000);
 
 		SearchContext searchContext = buildSearchContext();
 
@@ -685,13 +685,13 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 			_extRepositoryQueryMapper);
 	}
 
-	private void _initHtmlUtil() {
+	protected void initHtmlUtil() {
 		HtmlImpl htmlImpl = new HtmlImpl();
 
 		new HtmlUtil().setHtml(htmlImpl);
 	}
 
-	private void _initRepositorySearchQueryBuilderUtil() {
+	protected void initRepositorySearchQueryBuilderUtil() {
 		RepositorySearchQueryBuilderImpl repositorySearchQueryBuilderImpl =
 			new RepositorySearchQueryBuilderImpl();
 
@@ -701,7 +701,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 			repositorySearchQueryBuilderImpl);
 	}
 
-	private void _initSearchEngineUtil() {
+	protected void initSearchEngineUtil() {
 		BaseSearchEngine searchEngine = new BaseSearchEngine();
 
 		searchEngine.setBooleanClauseFactory(new BooleanClauseFactoryImpl());
@@ -714,13 +714,13 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 			SearchEngineUtil.GENERIC_ENGINE_ID, searchEngine);
 	}
 
-	private void _mockBeanLocator() {
+	protected void mockBeanLocator() {
 		_beanLocator = mock(BeanLocator.class);
 
 		PortalBeanLocatorUtil.setBeanLocator(_beanLocator);
 	}
 
-	private void _mockDateFormatFactory() {
+	protected void mockDateFormatFactory() {
 		DateFormatFactory dateFormatFactory = mock(DateFormatFactory.class);
 
 		when(
@@ -747,7 +747,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		new DateFormatFactoryUtil().setDateFormatFactory(dateFormatFactory);
 	}
 
-	private void _mockExtRepositoryQueryMapper() throws SearchException {
+	protected void mockExtRepositoryQueryMapper() throws SearchException {
 		_extRepositoryQueryMapper = mock(ExtRepositoryQueryMapper.class);
 
 		when(
@@ -783,7 +783,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		);
 	}
 
-	private void _mockFolders(long...folderIds) throws SystemException {
+	protected void mockFolders(long...folderIds) throws SystemException {
 		getService(DLAppServiceUtil.class, DLAppService.class);
 
 		RepositoryEntryLocalService repositoryEntryLocalService =
@@ -809,7 +809,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		}
 	}
 
-	private void _mockLuceneHelperUtil() {
+	protected void mockLuceneHelperUtil() {
 		mockStatic(LuceneHelperUtil.class);
 
 		when(
@@ -819,7 +819,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		);
 	}
 
-	private void _mockProps() {
+	protected void mockProps() {
 		Props props = mock(Props.class);
 
 		PropsUtil.setProps(props);
@@ -832,7 +832,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void _mockSharepointExtRepository()
+	protected void mockSharepointExtRepository()
 		throws PortalException, SystemException {
 
 		SharepointConnection sharepointConnection = mock(
