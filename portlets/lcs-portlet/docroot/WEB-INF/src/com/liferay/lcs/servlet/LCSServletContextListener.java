@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.servlet;
 
+import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.HotDeployMessageListener;
@@ -23,15 +25,19 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -65,14 +71,18 @@ public class LCSServletContextListener
 
 			@Override
 			protected void onDeploy(Message message) throws Exception {
-				updateMonitoringConfiguration(true);
+				_onDeploy = true;
+
+				updateMonitoring();
 
 				loadClusterLinkHelperClass();
 			}
 
 			@Override
 			protected void onUndeploy(Message message) throws Exception {
-				updateMonitoringConfiguration(false);
+				_onDeploy = false;
+
+				updateMonitoring();
 			}
 
 		};
@@ -160,44 +170,139 @@ public class LCSServletContextListener
 		}
 	}
 
-	protected void updateMonitoringConfiguration(boolean deployed)
+	protected void updateHibernateGenerateStatistics() throws Exception {
+		boolean hibernateGenerateStatistics = updatePropsValues(
+			"HIBERNATE_GENERATE_STATISTICS",
+			PropsKeys.HIBERNATE_GENERATE_STATISTICS);
+
+		Object sessionFactory = PortalBeanLocatorUtil.locate(
+			"liferayHibernateSessionFactory");
+
+		Class<?> sessionFactoryClass = sessionFactory.getClass();
+
+		Method getStatisticsMethod = sessionFactoryClass.getDeclaredMethod(
+			"getStatistics");
+
+		Object statistics = getStatisticsMethod.invoke(sessionFactory);
+
+		Class<?> statisticsClass = statistics.getClass();
+
+		Method setStatisticsEnabledMethod = statisticsClass.getDeclaredMethod(
+			"setStatisticsEnabled", boolean.class);
+
+		setStatisticsEnabledMethod.invoke(
+			statistics, hibernateGenerateStatistics);
+	}
+
+	protected void updateMonitoring() throws Exception {
+		updateHibernateGenerateStatistics();
+		updateMonitoringPortalRequest();
+		updateMonitoringPortletActionRequest();
+		updateMonitoringPortletEventRequest();
+		updateMonitoringPortletRenderRequest();
+		updateMonitoringPortletResourceRequest();
+	}
+
+	protected void updateMonitoringPortalRequest() throws Exception {
+		boolean monitoringPortalRequest = updatePropsValues(
+			"MONITORING_PORTAL_REQUEST", PropsKeys.MONITORING_PORTAL_REQUEST);
+
+		Class<?> monitoringFilterClass = findLoadedClass(
+			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter");
+
+		Field monitoringPortalRequestField =
+			monitoringFilterClass.getDeclaredField("_monitoringPortalRequest");
+
+		monitoringPortalRequestField.setAccessible(true);
+		monitoringPortalRequestField.setBoolean(
+			monitoringFilterClass, monitoringPortalRequest);
+	}
+
+	protected void updateMonitoringPortletActionRequest() throws Exception {
+		updateMonitoringPortletRequest(
+			"_monitoringPortletActionRequest",
+			"MONITORING_PORTLET_ACTION_REQUEST",
+			PropsKeys.MONITORING_PORTLET_ACTION_REQUEST);
+	}
+
+	protected void updateMonitoringPortletEventRequest() throws Exception {
+		updateMonitoringPortletRequest(
+			"_monitoringPortletEventRequest",
+			"MONITORING_PORTLET_EVENT_REQUEST",
+			PropsKeys.MONITORING_PORTLET_EVENT_REQUEST);
+	}
+
+	protected void updateMonitoringPortletRenderRequest() throws Exception {
+		updateMonitoringPortletRequest(
+			"_monitoringPortletRenderRequest",
+			"MONITORING_PORTLET_RENDER_REQUEST",
+			PropsKeys.MONITORING_PORTLET_RENDER_REQUEST);
+	}
+
+	protected void updateMonitoringPortletRequest(
+			String field, String key, String propertiesKey)
 		throws Exception {
 
-		Configuration configuration = getConfiguration();
+		boolean monitoringPortletRenderRequest = updatePropsValues(
+			key, propertiesKey);
+
+		Class<?> monitoringPortletClass = findLoadedClass(
+			"com.liferay.portlet.MonitoringPortlet");
+
+		Field monitoringPortletRenderRequestField =
+			monitoringPortletClass.getDeclaredField(field);
+
+		monitoringPortletRenderRequestField.setAccessible(true);
+		monitoringPortletRenderRequestField.setBoolean(
+			monitoringPortletClass, monitoringPortletRenderRequest);
+	}
+
+	protected void updateMonitoringPortletResourceRequest() throws Exception {
+		updateMonitoringPortletRequest(
+			"_monitoringPortletResourceRequest",
+			"MONITORING_PORTLET_RESOURCE_REQUEST",
+			PropsKeys.MONITORING_PORTLET_RESOURCE_REQUEST);
+	}
+
+	protected boolean updatePropsValues(String key, String propertiesKey)
+		throws Exception {
 
 		Field modifiersField = Field.class.getDeclaredField("modifiers");
 
 		modifiersField.setAccessible(true);
 
-		String propsValuesClassName = "com.liferay.portal.util.PropsValues";
-
 		Class<?> propsValuesClass = findLoadedClass(
 			"com.liferay.portal.util.PropsValues");
 
-		//changeHibernateGenerateStatisticsProperty(
-		//	configuration, deployed, modifiersField, propsValuesClass);
-		//updateMonitoringDataSampleThreadLocalProperty(
-		//	configuration, deployed, modifiersField, propsValuesClass);
+		Field keyField = propsValuesClass.getField(key);
 
-		Class<?> monitoringFilterClass = findLoadedClass(
-			"com.liferay.portal.servlet.filters.monitoring.MonitoringFilter");
+		modifiersField.setInt(
+			keyField, keyField.getModifiers() & ~Modifier.FINAL);
 
-		//updateMonitoringPortalRequestProperty(
-		//	configuration, deployed, monitoringFilterClass, propsValuesClass);
+		boolean value = false;
 
-		Class<?> monitoringPortletClass = findLoadedClass(
-			"com.liferay.portlet.MonitoringPortlet");
+		if (_onDeploy) {
+			_originalPropsValues.put(
+				key, keyField.getBoolean(propsValuesClass));
 
-		//updateMonitoringPortletActionRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//updateMonitoringPortletEventRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//updateMonitoringPortletRenderRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
-		//updateMonitoringPortletResourceRequestProperty(
-		//	configuration, deployed, monitoringPortletClass, propsValuesClass);
+			value = true;
+		}
+		else {
+			value = _originalPropsValues.get(key);
+		}
+
+		keyField.setBoolean(propsValuesClass, value);
+
+		Configuration configuration = getConfiguration();
+
+		configuration.set(propertiesKey, String.valueOf(value));
+
+		return value;
 	}
 
 	private MessageListener _messageListener;
+	private boolean _onDeploy;
+	private Map<String, Boolean> _originalPropsValues =
+		new HashMap<String, Boolean>();
 
 }
