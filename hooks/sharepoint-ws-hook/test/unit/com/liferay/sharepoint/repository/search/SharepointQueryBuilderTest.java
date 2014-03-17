@@ -97,29 +97,29 @@ import static org.mockito.Matchers.any;
 /**
  * @author Ivan Zaera
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest(LuceneHelperUtil.class)
+@RunWith(PowerMockRunner.class)
 public class SharepointQueryBuilderTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws PortalException, SystemException {
 		_mockBeanLocator();
 
-		_mockProps();
-
-		_mockLuceneHelperUtil();
-
-		_initRepositorySearchQueryBuilderUtil();
-
-		_initSearchEngineUtil();
-
-		_initHtmlUtil();
-
 		_mockDateFormatFactory();
 
 		_mockExtRepositoryQueryMapper();
 
+		_mockLuceneHelperUtil();
+
+		_mockProps();
+
 		_mockSharepointExtRepository();
+
+		_initHtmlUtil();
+
+		_initRepositorySearchQueryBuilderUtil();
+
+		_initSearchEngineUtil();
 	}
 
 	@After
@@ -146,7 +146,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -165,7 +165,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new NeqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("test.doc")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -177,7 +177,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -188,7 +188,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new EqOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("test.jpg"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -221,7 +221,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new EqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("test")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -258,7 +258,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new EqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("test")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -270,7 +270,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -281,7 +281,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new BeginsWithOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("test"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -293,7 +293,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -312,7 +312,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new EqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("multiple")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -324,7 +324,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -335,7 +335,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new EqOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("My test document.jpg"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -347,7 +347,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -358,7 +358,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new BeginsWithOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("Test"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -370,7 +370,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -381,7 +381,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new EqOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("test document"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -393,7 +393,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -412,7 +412,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new EqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("multiple")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -424,7 +424,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -443,7 +443,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new EqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("test")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -455,7 +455,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -474,7 +474,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new EqOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue("test")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -487,7 +487,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -498,7 +498,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new LeqOperator(
 					new QueryField(SharepointField.CREATE_DATE),
 					new QueryValue("2009-11-10 23:59:59"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -510,7 +510,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -521,7 +521,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new EqOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("test"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -539,7 +539,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -556,7 +556,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 						new QueryValue("test")))),
 			new QueryOptionsList(
 				new FolderQueryOption("")),
-			sharepointQuery);
+			sharepointQueryBuilder);
 	}
 
 	@Test
@@ -568,7 +568,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -583,7 +583,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 				new BeginsWithOperator(
 					new QueryField(SharepointField.MODIFIED_BY),
 					new QueryValue("bar"))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	@Test
@@ -595,7 +595,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		BooleanQuery searchQuery =
 			RepositorySearchQueryBuilderUtil.getFullQuery(searchContext);
 
-		SharepointQueryBuilder sharepointQuery = _buildQuery(
+		SharepointQueryBuilder sharepointQueryBuilder = _buildQuery(
 			searchContext, searchQuery);
 
 		assertQueryEquals(
@@ -614,7 +614,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 					new ContainsOperator(
 						new QueryField(SharepointField.MODIFIED_BY),
 						new QueryValue(".jpg")))),
-			new QueryOptionsList(), sharepointQuery);
+			new QueryOptionsList(), sharepointQueryBuilder);
 	}
 
 	protected void assertQueryEquals(
@@ -723,20 +723,24 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 		when(
 			dateFormatFactory.getSimpleDateFormat(Matchers.anyString())
-		).then(new Answer<SimpleDateFormat>() {
-			@Override
-			public SimpleDateFormat answer(InvocationOnMock invocation)
-				throws Throwable {
+		).then(
+			new Answer<SimpleDateFormat>() {
 
-				String format = (String)invocation.getArguments()[0];
+				@Override
+				public SimpleDateFormat answer(InvocationOnMock invocation)
+					throws Throwable {
 
-				if (format == null) {
-					format = "yyyyMMddHHmmss";
+					String format = (String)invocation.getArguments()[0];
+
+					if (format == null) {
+						format = "yyyyMMddHHmmss";
+					}
+
+					return new SimpleDateFormat(format);
 				}
 
-				return new SimpleDateFormat(format);
 			}
-		});
+		);
 
 		new DateFormatFactoryUtil().setDateFormatFactory(dateFormatFactory);
 	}
@@ -757,18 +761,24 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		when(
 			_extRepositoryQueryMapper.formatDateParameterValue(
 				Matchers.anyString(), Matchers.anyString())
-		).thenAnswer(new Answer<Date>() {
-			@Override
-			public Date answer(InvocationOnMock invocation) throws Throwable {
-				DateFormat querySimpleDateFormat =
-					DateFormatFactoryUtil.getSimpleDateFormat(
-						PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
+		).thenAnswer(
+			new Answer<Date>() {
 
-				String value = (String)invocation.getArguments()[1];
+				@Override
+				public Date answer(InvocationOnMock invocation)
+					throws Throwable {
 
-				return querySimpleDateFormat.parse(value);
+					DateFormat querySimpleDateFormat =
+						DateFormatFactoryUtil.getSimpleDateFormat(
+							PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN));
+
+					String value = (String)invocation.getArguments()[1];
+
+					return querySimpleDateFormat.parse(value);
+				}
+
 			}
-		});
+		);
 	}
 
 	private void _mockFolders(long...folderIds) throws SystemException {
@@ -844,20 +854,24 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		when(
 			_sharepointExtRepository.getExtRepositoryObject(
 				any(ExtRepositoryObjectType.class), Matchers.anyString())
-		).thenAnswer(new Answer<SharepointWSFolder>() {
-			@Override
-			public SharepointWSFolder answer(InvocationOnMock invocation)
-				throws Throwable {
+		).thenAnswer(
+			new Answer<SharepointWSFolder>() {
 
-				String id = (String)invocation.getArguments()[1];
+				@Override
+				public SharepointWSFolder answer(InvocationOnMock invocation)
+					throws Throwable {
 
-				return new SharepointWSFolder(
-					new SharepointObject(
-						"", null, new Date(), true, new Date(), "/Root/" + id,
-						Collections.EMPTY_SET, Long.valueOf(id), 0, null));
+					String id = (String)invocation.getArguments()[1];
+
+					return new SharepointWSFolder(
+						new SharepointObject(
+							"", null, new Date(), true, new Date(),
+							"/Root/" + id, Collections.EMPTY_SET,
+							Long.valueOf(id), 0, null));
+				}
+
 			}
-
-		});
+		);
 	}
 
 	private BeanLocator _beanLocator;
