@@ -201,6 +201,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		searchContext.setKeywords("test");
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
+
 		queryConfig.setSearchSubfolders(false);
 
 		BooleanQuery searchQuery =
@@ -234,6 +235,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		searchContext.setKeywords("test");
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
+		
 		queryConfig.setSearchSubfolders(false);
 
 		BooleanQuery searchQuery =
@@ -534,6 +536,7 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 		searchContext.setKeywords("test");
 
 		QueryConfig queryConfig = searchContext.getQueryConfig();
+
 		queryConfig.setSearchSubfolders(true);
 
 		BooleanQuery searchQuery =
@@ -631,7 +634,6 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 		Assert.assertEquals(
 			expectedQueryClause.toString(), queryClause.toString());
-
 		Assert.assertEquals(
 			expectedQueryOptionsList.toString(), queryOptionsList.toString());
 	}
