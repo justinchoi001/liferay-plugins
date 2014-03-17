@@ -58,10 +58,10 @@ public class SkinnyServiceImpl extends SkinnyServiceBaseImpl {
 		List<SkinnyDDLRecord> skinnyDDLRecords =
 			new ArrayList<SkinnyDDLRecord>();
 
+		PermissionChecker permissionChecker = getPermissionChecker();
+
 		DDLRecordSet ddlRecordSet = ddlRecordSetLocalService.getRecordSet(
 			ddlRecordSetId);
-
-		PermissionChecker permissionChecker = getPermissionChecker();
 
 		if (permissionChecker.hasPermission(
 				ddlRecordSet.getGroupId(), DDLRecordSet.class.getName(),
