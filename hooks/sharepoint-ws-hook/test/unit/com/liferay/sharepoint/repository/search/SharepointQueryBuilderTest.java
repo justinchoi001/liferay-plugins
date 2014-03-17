@@ -675,8 +675,10 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 
 	protected void initHtmlUtil() {
 		HtmlImpl htmlImpl = new HtmlImpl();
+		
+		HtmlUtil htmlUtil = new HtmlUtil();
 
-		new HtmlUtil().setHtml(htmlImpl);
+		htmlUtil.setHtml(htmlImpl);
 	}
 
 	protected void initRepositorySearchQueryBuilderUtil() {
@@ -684,8 +686,11 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 			new RepositorySearchQueryBuilderImpl();
 
 		repositorySearchQueryBuilderImpl.setAnalyzer(new KeywordAnalyzer());
+		
+		RepositorySearchQueryBuilderUtil repositorySearchQueryBuilderUtil =
+			new RepositorySearchQueryBuilderUtil();
 
-		new RepositorySearchQueryBuilderUtil().setRepositorySearchQueryBuilder(
+		repositorySearchQueryBuilderUtil.setRepositorySearchQueryBuilder(
 			repositorySearchQueryBuilderImpl);
 	}
 
