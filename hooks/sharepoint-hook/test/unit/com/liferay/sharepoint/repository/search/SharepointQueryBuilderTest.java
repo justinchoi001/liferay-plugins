@@ -674,11 +674,9 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 	}
 
 	protected void initHtmlUtil() {
-		HtmlImpl htmlImpl = new HtmlImpl();
-
 		HtmlUtil htmlUtil = new HtmlUtil();
 
-		htmlUtil.setHtml(htmlImpl);
+		htmlUtil.setHtml(new HtmlImpl());
 	}
 
 	protected void initRepositorySearchQueryBuilderUtil() {
