@@ -774,25 +774,24 @@ public class SharepointQueryBuilderTest extends PowerMockito {
 	protected void mockFolders(long...folderIds) throws SystemException {
 		getService(DLAppServiceUtil.class, DLAppService.class);
 
-		RepositoryEntryLocalService repositoryEntryLocalService =
-			getService(
-				RepositoryEntryLocalServiceUtil.class,
-				RepositoryEntryLocalService.class);
+		RepositoryEntryLocalService repositoryEntryLocalService = getService(
+			RepositoryEntryLocalServiceUtil.class,
+			RepositoryEntryLocalService.class);
 
 		for (long folderId : folderIds) {
 			RepositoryEntry repositoryEntry = mock(RepositoryEntry.class);
+
+			when(
+				repositoryEntry.getMappedId()
+			).thenReturn(
+				Long.toString(folderId)
+			);
 
 			when(
 				repositoryEntryLocalService.fetchRepositoryEntry(
 					Mockito.eq(folderId))
 			).thenReturn(
 				repositoryEntry
-			);
-
-			when(
-				repositoryEntry.getMappedId()
-			).thenReturn(
-				Long.toString(folderId)
 			);
 		}
 	}
