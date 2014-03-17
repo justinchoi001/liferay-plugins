@@ -278,13 +278,15 @@ public class LCSServletContextListener
 		Field propsValuesKeyField = propsValuesClass.getField(propsValuesKey);
 
 		modifiersField.setInt(
-			propsValuesKeyField, propsValuesKeyField.getModifiers() & ~Modifier.FINAL);
+			propsValuesKeyField,
+			propsValuesKeyField.getModifiers() & ~Modifier.FINAL);
 
 		boolean value = false;
 
 		if (_onDeploy) {
 			_originalPropsValues.put(
-				propsValuesKey, propsValuesKeyField.getBoolean(propsValuesClass));
+				propsValuesKey,
+				propsValuesKeyField.getBoolean(propsValuesClass));
 
 			value = true;
 		}
