@@ -81,9 +81,9 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 			return;
 		}
 
-		Lock writeLock = _readWriteLock.writeLock();
+		Lock lock = _readWriteLock.writeLock();
 
-		writeLock.lock();
+		lock.lock();
 
 		try {
 			for (Long spiDefinitionId : spiDefinitionIds) {
@@ -91,15 +91,15 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 			}
 		}
 		finally {
-			writeLock.unlock();
+			lock.unlock();
 		}
 	}
 
 	@Override
 	public void register(SPIDefinition spiDefinition) {
-		Lock writeLock = _readWriteLock.writeLock();
+		Lock lock = _readWriteLock.writeLock();
 
-		writeLock.lock();
+		lock.lock();
 
 		try {
 			if (_spiDefinitions.containsKey(
@@ -112,7 +112,7 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 				spiDefinition.getSpiDefinitionId(), spiDefinition);
 		}
 		finally {
-			writeLock.unlock();
+			lock.unlock();
 		}
 	}
 
@@ -122,29 +122,29 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 
 	@Override
 	public void unregister() {
-		Lock writeLock = _readWriteLock.writeLock();
+		Lock lock = _readWriteLock.writeLock();
 
-		writeLock.lock();
+		lock.lock();
 
 		try {
 			_spiDefinitions.clear();
 		}
 		finally {
-			writeLock.unlock();
+			lock.unlock();
 		}
 	}
 
 	@Override
 	public void unregister(long spiDefinitionId) {
-		Lock writeLock = _readWriteLock.writeLock();
+		Lock lock = _readWriteLock.writeLock();
 
-		writeLock.lock();
+		lock.lock();
 
 		try {
 			_spiDefinitions.remove(spiDefinitionId);
 		}
 		finally {
-			writeLock.unlock();
+			lock.unlock();
 		}
 	}
 

@@ -73,8 +73,8 @@ public class SPIRestartMessageListener extends BaseSPIStatusMessageListener {
 				spiDefinition.getSpiDefinitionId(),
 				SPIAdminConstants.STATUS_STOPPED,
 				"unable-to-automatically-restart-the-spi-the-total-number-of-" +
-					"automatic-restart-attempts-have-exceeded-have-exceeded-" +
-					"the-defined-maximum");
+					"automatic-restart-attempts-have-exceeded-the-defined-" +
+						"maximum");
 
 			return;
 		}
