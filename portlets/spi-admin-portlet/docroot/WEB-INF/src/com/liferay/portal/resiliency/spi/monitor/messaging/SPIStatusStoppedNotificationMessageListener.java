@@ -91,9 +91,11 @@ public class SPIStatusStoppedNotificationMessageListener
 		subject = StringUtil.replace(
 			subject,
 			new String[] {
-				"[$SANDBOX_NAME$]"
+				"[$SANDBOX_NAME$]", "[$SANDBOX_RESTART_ATTEMPTS$]"
 			},
-			new String[] { spiDefinition.getName() }
+			new String[] {
+				spiDefinition.getName(),
+				String.valueOf(spiDefinition.getRestartAttempts()) }
 		);
 
 		String body = NotificationUtil.getNotificationEmailBody(
