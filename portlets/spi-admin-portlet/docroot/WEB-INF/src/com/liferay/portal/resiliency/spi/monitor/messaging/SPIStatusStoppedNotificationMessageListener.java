@@ -95,7 +95,8 @@ public class SPIStatusStoppedNotificationMessageListener
 			},
 			new String[] {
 				spiDefinition.getName(),
-				String.valueOf(spiDefinition.getRestartAttempts()) }
+				String.valueOf(spiDefinition.getRestartAttempts())
+			}
 		);
 
 		String body = NotificationUtil.getNotificationEmailBody(
