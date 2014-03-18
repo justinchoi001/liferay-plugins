@@ -101,9 +101,18 @@ String userAttributeMappings = ParamUtil.getString(request, "userAttributeMappin
 </aui:form>
 
 <aui:script>
-	var uploadMetadataXmlForm = AUI().one("#<portlet:namespace />uploadMetadataXmlForm");
+	Liferay.provide(
+		window,
+		'<portlet:namespace />uploadMetadataXml',
+		function() {
+			var A = AUI();
 
-	function <portlet:namespace />uploadMetadataXml() {
-		uploadMetadataXmlForm.show();
-	}
+			var uploadMetadataXmlForm = A.one('#<portlet:namespace />uploadMetadataXmlForm');
+
+			if (uploadMetadataXmlForm) {
+				uploadMetadataXmlForm.show();
+			}
+		},
+		['aui-base']
+	);
 </aui:script>
