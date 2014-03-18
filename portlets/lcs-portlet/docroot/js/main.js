@@ -287,7 +287,6 @@ AUI.add(
 						var lcsClusterEntries = data.lcsClusterEntries;
 
 						var lcsClusterEntryIdNode = instance._lcsClusterEntryIdNode;
-
 						var lcsClusterEntryInputWrapper = instance._lcsClusterEntryInputWrapper;
 
 						if (lcsClusterEntryIdNode) {
