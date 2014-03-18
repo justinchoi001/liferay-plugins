@@ -17,9 +17,11 @@ package com.liferay.portal.resiliency.spi.monitor.messaging;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.resiliency.spi.model.SPIDefinition;
 import com.liferay.portal.resiliency.spi.service.SPIDefinitionLocalServiceUtil;
 import com.liferay.portal.resiliency.spi.util.PortletKeys;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
 
 import java.util.Arrays;
@@ -55,9 +57,12 @@ public abstract class BaseSPIStatusMessageListener extends BaseMessageListener {
 		SPIDefinition spiDefinition =
 			SPIDefinitionLocalServiceUtil.getSPIDefinition(spiDefinitionId);
 
+		Group companyGroup = GroupLocalServiceUtil.getCompanyGroup(
+			spiDefinition.getCompanyId());
+
 		PortletPreferences portletPreferences =
 			PortletPreferencesLocalServiceUtil.getPreferences(
-				spiDefinition.getCompanyId(), spiDefinition.getCompanyId(),
+				spiDefinition.getCompanyId(), companyGroup.getGroupId(),
 				PortletKeys.PREFS_OWNER_TYPE_GROUP,
 				PortletKeys.PREFS_PLID_SHARED, PortletKeys.SPI_ADMIN, null);
 

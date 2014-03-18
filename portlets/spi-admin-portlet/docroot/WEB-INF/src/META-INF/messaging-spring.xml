@@ -49,8 +49,8 @@
 				</entry>
 				<entry key="liferay/spi_status">
 					<list value-type="com.liferay.portal.kernel.messaging.MessageListener">
-						<ref bean="messageListener.spi_restart" />
 						<ref bean="messageListener.spi_status_notification" />
+						<ref bean="messageListener.spi_restart" />
 					</list>
 				</entry>
 			</map>
