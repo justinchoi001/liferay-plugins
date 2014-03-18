@@ -152,29 +152,33 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 
 		_methodParameterTypes26 = new String[] { "long", "long" };
 
-		_methodName27 = "stopSPI";
+		_methodName27 = "startSPIinBackground";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes27 = new String[] { "long", "long", "boolean" };
 
-		_methodName28 = "stopSPIinBackground";
+		_methodName28 = "stopSPI";
 
-		_methodParameterTypes28 = new String[] { "long", "long" };
+		_methodParameterTypes28 = new String[] { "long" };
 
-		_methodName29 = "updateSPIDefinition";
+		_methodName29 = "stopSPIinBackground";
 
-		_methodParameterTypes29 = new String[] { "long", "int", "java.lang.String" };
+		_methodParameterTypes29 = new String[] { "long", "long" };
 
 		_methodName30 = "updateSPIDefinition";
 
-		_methodParameterTypes30 = new String[] {
+		_methodParameterTypes30 = new String[] { "long", "int", "java.lang.String" };
+
+		_methodName31 = "updateSPIDefinition";
+
+		_methodParameterTypes31 = new String[] {
 				"long", "long", "java.lang.String", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "com.liferay.portal.service.ServiceContext"
 			};
 
-		_methodName31 = "updateTypeSettings";
+		_methodName32 = "updateTypeSettings";
 
-		_methodParameterTypes31 = new String[] {
+		_methodParameterTypes32 = new String[] {
 				"long", "long", "java.lang.String",
 				"com.liferay.portal.service.ServiceContext"
 			};
@@ -1012,12 +1016,47 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 	}
 
 	@Override
+	public long startSPIinBackground(long userId, long spiDefinitionId,
+		boolean automatedRestart)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
+					new Object[] { userId, spiDefinitionId, automatedRestart });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
+				throw (com.liferay.portal.kernel.exception.SystemException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Long)returnObj).longValue();
+	}
+
+	@Override
 	public void stopSPI(long spiDefinitionId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName27,
-				_methodParameterTypes27, new Object[] { spiDefinitionId });
+			_invokableLocalService.invokeMethod(_methodName28,
+				_methodParameterTypes28, new Object[] { spiDefinitionId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1047,8 +1086,8 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { userId, spiDefinitionId });
 		}
 		catch (Throwable t) {
@@ -1082,8 +1121,8 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						spiDefinitionId,
 						
@@ -1127,8 +1166,8 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] {
 						userId,
 						
@@ -1183,8 +1222,8 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32,
 					new Object[] {
 						userId,
 						
@@ -1281,4 +1320,6 @@ public class SPIDefinitionLocalServiceClp implements SPIDefinitionLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
 }

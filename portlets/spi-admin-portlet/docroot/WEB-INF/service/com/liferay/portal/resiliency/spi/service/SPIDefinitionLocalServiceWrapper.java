@@ -354,6 +354,15 @@ public class SPIDefinitionLocalServiceWrapper
 	}
 
 	@Override
+	public long startSPIinBackground(long userId, long spiDefinitionId,
+		boolean automatedRestart)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _spiDefinitionLocalService.startSPIinBackground(userId,
+			spiDefinitionId, automatedRestart);
+	}
+
+	@Override
 	public void stopSPI(long spiDefinitionId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {

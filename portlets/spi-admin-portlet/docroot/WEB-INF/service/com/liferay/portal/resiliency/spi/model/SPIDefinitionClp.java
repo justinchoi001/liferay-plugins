@@ -646,15 +646,15 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 	}
 
 	@Override
-	public com.liferay.portal.kernel.resiliency.spi.SPI getSPI() {
+	public java.lang.String getBaseDir() {
 		try {
-			String methodName = "getSPI";
+			String methodName = "getBaseDir";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			com.liferay.portal.kernel.resiliency.spi.SPI returnObj = (com.liferay.portal.kernel.resiliency.spi.SPI)invokeOnRemoteModel(methodName,
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -665,15 +665,15 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 	}
 
 	@Override
-	public java.lang.String getBaseDir() {
+	public com.liferay.portal.kernel.resiliency.spi.SPI getSPI() {
 		try {
-			String methodName = "getBaseDir";
+			String methodName = "getSPI";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+			com.liferay.portal.kernel.resiliency.spi.SPI returnObj = (com.liferay.portal.kernel.resiliency.spi.SPI)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

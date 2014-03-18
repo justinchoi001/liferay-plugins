@@ -332,6 +332,15 @@ public class SPIDefinitionLocalServiceUtil {
 		return getService().startSPIinBackground(userId, spiDefinitionId);
 	}
 
+	public static long startSPIinBackground(long userId, long spiDefinitionId,
+		boolean automatedRestart)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .startSPIinBackground(userId, spiDefinitionId,
+			automatedRestart);
+	}
+
 	public static void stopSPI(long spiDefinitionId)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
