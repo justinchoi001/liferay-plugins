@@ -61,13 +61,19 @@ public class SPIRestartMessageListener extends BaseSPIStatusMessageListener {
 
 		int restartAttempts = spiDefinition.getRestartAttempts();
 
-		if (maxRestartAttempts < restartAttempts++) {
+		if (maxRestartAttempts <= restartAttempts++) {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Restart attempt " + restartAttempts +
 						" is ignored because it exceeds the limit of " +
 							maxRestartAttempts + " restart attempts");
 			}
+
+			SPIDefinitionLocalServiceUtil.updateSPIDefinition(
+				spiDefinition.getSpiDefinitionId(),
+				SPIAdminConstants.STATUS_STOPPED,
+				"Unable to execute automatic restart. Automatic restart " +
+					"attempts exceeded");
 
 			return;
 		}
@@ -82,7 +88,7 @@ public class SPIRestartMessageListener extends BaseSPIStatusMessageListener {
 			spiDefinition.getCompanyId());
 
 		SPIDefinitionLocalServiceUtil.startSPIinBackground(
-			userId, spiDefinition.getSpiDefinitionId());
+			userId, spiDefinition.getSpiDefinitionId(), true);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

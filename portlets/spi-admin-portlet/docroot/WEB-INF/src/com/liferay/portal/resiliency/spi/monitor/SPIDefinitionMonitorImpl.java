@@ -20,7 +20,9 @@ import com.liferay.portal.resiliency.spi.model.SPIDefinition;
 import com.liferay.portal.resiliency.spi.util.SPIAdminConstants;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -41,6 +43,8 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 	public void destroy() {
 		_stopped = true;
 
+		_spiDefinitions.clear();
+
 		_monitorThread.interrupt();
 	}
 
@@ -49,13 +53,15 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 
 		readLock.lock();
 
+		Set<Long> spiDefinitionIds = new HashSet<Long>();
+
 		try {
 			for (SPIDefinition spiDefinition : _spiDefinitions.values()) {
 				if (spiDefinition.isAlive()) {
 					continue;
 				}
 
-				spiDefinition.deleteBaseDir();
+				spiDefinitionIds.add(spiDefinition.getSpiDefinitionId());
 
 				Message message = new Message();
 
@@ -69,6 +75,23 @@ public class SPIDefinitionMonitorImpl implements SPIDefinitionMonitor {
 		}
 		finally {
 			readLock.unlock();
+		}
+
+		if (spiDefinitionIds.isEmpty()) {
+			return;
+		}
+
+		Lock writeLock = _readWriteLock.writeLock();
+
+		writeLock.lock();
+
+		try {
+			for (Long spiDefinitionId : spiDefinitionIds) {
+				_spiDefinitions.remove(spiDefinitionId);
+			}
+		}
+		finally {
+			writeLock.unlock();
 		}
 	}
 

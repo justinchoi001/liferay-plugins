@@ -298,10 +298,16 @@ public class SPIDefinitionLocalServiceImpl
 	public long startSPIinBackground(long userId, long spiDefinitionId)
 		throws PortalException, SystemException {
 
+		return startSPIinBackground(userId, spiDefinitionId, false);
+	}
+
+	@Override
+	public long startSPIinBackground(
+			long userId, long spiDefinitionId, boolean automatedRestart)
+		throws PortalException, SystemException {
+
 		SPIDefinition spiDefinition = spiDefinitionPersistence.findByPrimaryKey(
 			spiDefinitionId);
-
-		spiDefinition.setRestartAttempts(0);
 
 		UnicodeProperties typeSettingsProperties =
 			spiDefinition.getTypeSettingsProperties();
@@ -330,6 +336,13 @@ public class SPIDefinitionLocalServiceImpl
 			String.valueOf(backgroundTask.getBackgroundTaskId()));
 
 		spiDefinition.setTypeSettingsProperties(typeSettingsProperties);
+
+		if (!automatedRestart && (spiDefinition.getRestartAttempts() > 0)) {
+			spiDefinition.setRestartAttempts(0);
+		}
+		else {
+			spiDefinition.deleteBaseDir();
+		}
 
 		spiDefinition.setStatus(SPIAdminConstants.STATUS_STARTING);
 		spiDefinition.setStatusMessage(null);

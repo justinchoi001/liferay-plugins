@@ -179,8 +179,8 @@ public class SPIDefinitionImpl extends SPIDefinitionBaseImpl {
 			return spi.isAlive();
 		}
 		catch (RemoteException e) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					"Unable to determine whether " + getName() +
 						" is alive or not",
 					e);
