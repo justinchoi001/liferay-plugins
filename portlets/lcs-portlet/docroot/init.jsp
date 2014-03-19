@@ -68,6 +68,6 @@ PortletURL currentURLObj = PortletURLUtil.getCurrent(liferayPortletRequest, life
 
 String currentURL = currentURLObj.toString();
 
-Format dateFormatDateTime = FastDateFormatFactoryUtil.getSimpleDateFormat("MMM d, yyyy - hh:mm:ss");
-Format durationFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm:ss", TimeZone.getTimeZone("GMT"));
+Format dateFormatDate = FastDateFormatFactoryUtil.getSimpleDateFormat("MMM d, yyyy - hh:mm:ss");
+Format intervalDateFormatDate = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm:ss", TimeZone.getTimeZone("GMT"));
 %>

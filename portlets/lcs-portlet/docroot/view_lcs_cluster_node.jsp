@@ -115,19 +115,34 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 						<liferay-ui:message key="heartbeat-interval" />
 					</dt>
 					<dd>
-						<%= durationFormat.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("heartbeatInterval")))) %>
+
+						<%
+						Date heartbeatIntervalDate = new Date(GetterUtil.getLong(lcsConnectionMetadata.get("heartbeatInterval")));
+						%>
+
+						<%= intervalDateFormatDate.format(heartbeatIntervalDate) %>
 					</dd>
 					<dt>
 						<liferay-ui:message key="message-task-interval" />
 					</dt>
 					<dd>
-						<%= durationFormat.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskInterval")))) %>
+
+						<%
+						Date messageTaskIntervalDate = new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskInterval")));
+						%>
+
+						<%= intervalDateFormatDate.format(messageTaskIntervalDate) %>
 					</dd>
 					<dt>
 						<liferay-ui:message key="metrics-task-interval" />
 					</dt>
 					<dd>
-						<%= durationFormat.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("jvmMetricsTaskInterval")))) %>
+
+						<%
+						Date jvmMetricsTaskIntervalDate = new Date(GetterUtil.getLong(lcsConnectionMetadata.get("jvmMetricsTaskInterval")));
+						%>
+
+						<%= intervalDateFormatDate.format(jvmMetricsTaskIntervalDate) %>
 					</dd>
 
 					<c:if test='<%= lcsConnectionMetadata.get("messageTaskTime") != null %>'>
@@ -135,7 +150,12 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 							<liferay-ui:message key="last-message-received" />
 						</dt>
 						<dd>
-							<%= dateFormatDateTime.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskTime")))) %>
+
+							<%
+							Date messageTaskTimeDate = new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskTime")));
+							%>
+
+							<%= dateFormatDate.format(messageTaskTimeDate) %>
 						</dd>
 					</c:if>
 
@@ -150,7 +170,12 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 							%>
 
 							<c:if test="<%= handshakeTime != null %>">
-								<%= durationFormat.format(new Date(System.currentTimeMillis() - GetterUtil.getLong(handshakeTime))) %>
+
+								<%
+								Date handshakeTimeDate = new Date(System.currentTimeMillis() - GetterUtil.getLong(handshakeTime));
+								%>
+
+								<%= intervalDateFormatDate.format(handshakeTimeDate) %>
 							</c:if>
 						</dd>
 					</c:if>
