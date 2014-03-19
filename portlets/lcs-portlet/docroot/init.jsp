@@ -22,8 +22,7 @@
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.compat.portal.kernel.util.Time" %><%@
-page import="com.liferay.compat.portlet.PortletURLUtil" %><%@
+<%@ page import="com.liferay.compat.portlet.PortletURLUtil" %><%@
 page import="com.liferay.lcs.oauth.OAuthUtil" %><%@
 page import="com.liferay.lcs.util.HandshakeManagerUtil" %><%@
 page import="com.liferay.lcs.util.KeyGeneratorUtil" %><%@
@@ -48,7 +47,8 @@ page import="com.liferay.util.portlet.PortletProps" %>
 
 <%@ page import="java.util.Date" %><%@
 page import="java.util.List" %><%@
-page import="java.util.Map" %>
+page import="java.util.Map" %><%@
+page import="java.util.TimeZone" %>
 
 <%@ page import="javax.portlet.PortletMode" %><%@
 page import="javax.portlet.PortletURL" %><%@
@@ -68,5 +68,6 @@ PortletURL currentURLObj = PortletURLUtil.getCurrent(liferayPortletRequest, life
 
 String currentURL = currentURLObj.toString();
 
-Format dateFormatDateTime = FastDateFormatFactoryUtil.getSimpleDateFormat("MMM d, yyyy - hh:mm:ss", locale, timeZone);
+Format dateFormatDateTime = FastDateFormatFactoryUtil.getSimpleDateFormat("MMM d, yyyy - hh:mm:ss");
+Format durationFormat = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm:ss", TimeZone.getTimeZone("GMT"));
 %>

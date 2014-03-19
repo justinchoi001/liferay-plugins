@@ -115,19 +115,19 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 						<liferay-ui:message key="heartbeat-interval" />
 					</dt>
 					<dd>
-						<%= Time.getDuration(GetterUtil.getLong(lcsConnectionMetadata.get("heartbeatInterval"))) %>
+						<%= durationFormat.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("heartbeatInterval")))) %>
 					</dd>
 					<dt>
 						<liferay-ui:message key="message-task-interval" />
 					</dt>
 					<dd>
-						<%= Time.getDuration(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskInterval"))) %>
+						<%= durationFormat.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskInterval")))) %>
 					</dd>
 					<dt>
 						<liferay-ui:message key="metrics-task-interval" />
 					</dt>
 					<dd>
-						<%= Time.getDuration(GetterUtil.getLong(lcsConnectionMetadata.get("jvmMetricsTaskInterval"))) %>
+						<%= durationFormat.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("jvmMetricsTaskInterval")))) %>
 					</dd>
 
 					<c:if test='<%= lcsConnectionMetadata.get("messageTaskTime") != null %>'>
@@ -135,12 +135,7 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 							<liferay-ui:message key="last-message-received" />
 						</dt>
 						<dd>
-
-							<%
-							Date date = new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskTime")));
-							%>
-
-							<%= dateFormatDateTime.format(date) %>
+							<%= dateFormatDateTime.format(new Date(GetterUtil.getLong(lcsConnectionMetadata.get("messageTaskTime")))) %>
 						</dd>
 					</c:if>
 
@@ -155,7 +150,7 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 							%>
 
 							<c:if test="<%= handshakeTime != null %>">
-								<%= Time.getDuration(System.currentTimeMillis() - GetterUtil.getLong(handshakeTime)) %>
+								<%= durationFormat.format(new Date(System.currentTimeMillis() - GetterUtil.getLong(handshakeTime))) %>
 							</c:if>
 						</dd>
 					</c:if>
