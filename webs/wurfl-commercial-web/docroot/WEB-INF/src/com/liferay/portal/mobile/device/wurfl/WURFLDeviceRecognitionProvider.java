@@ -20,12 +20,27 @@ import com.liferay.portal.kernel.mobile.device.DeviceCapabilityFilter;
 import com.liferay.portal.kernel.mobile.device.DeviceRecognitionProvider;
 import com.liferay.portal.kernel.mobile.device.KnownDevices;
 import com.liferay.portal.kernel.mobile.device.UnknownDevice;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.StreamUtil;
+import com.liferay.portal.mobile.device.wurfl.util.PortletPropsValues;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.sourceforge.wurfl.core.WURFLManager;
+import net.sourceforge.wurfl.core.WURFLEngine;
+import net.sourceforge.wurfl.core.resource.WURFLResources;
+import net.sourceforge.wurfl.core.resource.XMLResource;
 
 /**
  * @author Milen Dyankov
@@ -34,20 +49,15 @@ import net.sourceforge.wurfl.core.WURFLManager;
 public class WURFLDeviceRecognitionProvider
 	implements DeviceRecognitionProvider {
 
+	public void afterPropertiesSet() throws Exception {
+		reload();
+	}
+
 	@Override
 	public Device detectDevice(HttpServletRequest request) {
-		WURFLManager wurflManager = _wurflHolderImpl.getWURFLManager();
-
-		if (wurflManager == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("WURFL database has not initialized");
-			}
-
-			return UnknownDevice.getInstance();
-		}
 
 		net.sourceforge.wurfl.core.Device wurflDevice =
-			wurflManager.getDeviceForRequest(request);
+			_wurflEngine.getDeviceForRequest(request);
 
 		Device device = null;
 
@@ -72,9 +82,27 @@ public class WURFLDeviceRecognitionProvider
 
 	@Override
 	public void reload() throws Exception {
-		_wurflHolderImpl.reload();
+		List<InputStream> inputStreams = new ArrayList<InputStream>();
 
-		_knownDevices.reload();
+		try {
+			XMLResource xmlResource = getWURFLDatabase(inputStreams);
+
+			WURFLResources wurflResources = getWURFLDatabasePatches(
+				inputStreams);
+
+			_wurflEngine.reload(xmlResource, wurflResources);
+
+			_knownDevices.reload();
+		}
+		finally {
+			for (InputStream inputStream : inputStreams) {
+				StreamUtil.cleanUp(inputStream);
+			}
+		}
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Initialised");
+		}
 	}
 
 	@Override
@@ -88,8 +116,67 @@ public class WURFLDeviceRecognitionProvider
 		_knownDevices = knownDevices;
 	}
 
-	public void setWurflHolderImpl(WURFLHolderImpl wurflHolderImpl) {
-		_wurflHolderImpl = wurflHolderImpl;
+	public void setWURFLEngine(WURFLEngine wurflEngine) {
+		_wurflEngine = wurflEngine;
+	}
+
+	protected XMLResource getWURFLDatabase(List<InputStream> inputStreams)
+		throws IOException {
+
+		Class<?> clazz = getClass();
+
+		InputStream inputStream = clazz.getResourceAsStream(
+			PortletPropsValues.WURFL_DATABASE_PRIMARY);
+
+		if (inputStream == null) {
+			throw new IllegalStateException(
+				"Unable to find " + PortletPropsValues.WURFL_DATABASE_PRIMARY);
+		}
+
+		if (PortletPropsValues.WURFL_DATABASE_PRIMARY.endsWith(".gz")) {
+			inputStream = new GZIPInputStream(inputStream);
+		}
+		else if (PortletPropsValues.WURFL_DATABASE_PRIMARY.endsWith(".jar") ||
+				 PortletPropsValues.WURFL_DATABASE_PRIMARY.endsWith(".zip")) {
+
+			ZipInputStream zipInputStream = new ZipInputStream(inputStream);
+
+			inputStream = zipInputStream;
+
+			zipInputStream.getNextEntry();
+		}
+
+		XMLResource xmlResource = new XMLResource(
+			inputStream, PortletPropsValues.WURFL_DATABASE_PRIMARY);
+
+		inputStreams.add(inputStream);
+
+		return xmlResource;
+	}
+
+	protected WURFLResources getWURFLDatabasePatches(
+			List<InputStream> inputStreams)
+		throws FileNotFoundException {
+
+		WURFLResources wurflResources = new WURFLResources();
+
+		String[] fileNames = FileUtil.listFiles(
+			PortletPropsValues.WURFL_DATABASE_PATCHES);
+
+		for (String fileName : fileNames) {
+			File file = new File(
+				PortletPropsValues.WURFL_DATABASE_PATCHES, fileName);
+
+			FileInputStream fileInputStream = new FileInputStream(file);
+
+			inputStreams.add(fileInputStream);
+
+			XMLResource xmlResource = new XMLResource(file);
+
+			wurflResources.add(xmlResource);
+		}
+
+		return wurflResources;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(
@@ -97,6 +184,6 @@ public class WURFLDeviceRecognitionProvider
 
 	private DeviceCapabilityFilter _deviceCapabilityFilter;
 	private KnownDevices _knownDevices;
-	private WURFLHolderImpl _wurflHolderImpl;
+	private WURFLEngine _wurflEngine;
 
 }

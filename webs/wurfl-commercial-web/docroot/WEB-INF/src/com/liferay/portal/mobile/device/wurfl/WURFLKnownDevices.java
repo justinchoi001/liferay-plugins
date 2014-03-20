@@ -28,7 +28,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import net.sourceforge.wurfl.core.Device;
-import net.sourceforge.wurfl.core.WURFLHolder;
+import net.sourceforge.wurfl.core.WURFLEngine;
 import net.sourceforge.wurfl.core.WURFLUtils;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -99,8 +99,8 @@ public class WURFLKnownDevices implements KnownDevices {
 		loadWURFLDevices();
 	}
 
-	public void setWurflHolder(WURFLHolder wurflHolder) {
-		_wurflHolder = wurflHolder;
+	public void setWURFLEngine(WURFLEngine wurflEngine) {
+		_wurflEngine = wurflEngine;
 	}
 
 	protected void loadWURFLDevices() {
@@ -108,7 +108,7 @@ public class WURFLKnownDevices implements KnownDevices {
 			return;
 		}
 
-		WURFLUtils wurflUtils = _wurflHolder.getWURFLUtils();
+		WURFLUtils wurflUtils = _wurflEngine.getWURFLUtils();
 
 		if (wurflUtils == null) {
 			_log.error("Unable to load WURFL devices");
@@ -258,6 +258,6 @@ public class WURFLKnownDevices implements KnownDevices {
 	private boolean _initialized;
 	private Set<VersionableName> _operatingSystems;
 	private Set<String> _pointingMethods = new TreeSet<String>();
-	private WURFLHolder _wurflHolder;
+	private WURFLEngine _wurflEngine;
 
 }
