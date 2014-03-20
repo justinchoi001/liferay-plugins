@@ -55,7 +55,6 @@ public class WURFLDeviceRecognitionProvider
 
 	@Override
 	public Device detectDevice(HttpServletRequest request) {
-
 		net.sourceforge.wurfl.core.Device wurflDevice =
 			_wurflEngine.getDeviceForRequest(request);
 
@@ -85,10 +84,9 @@ public class WURFLDeviceRecognitionProvider
 		List<InputStream> inputStreams = new ArrayList<InputStream>();
 
 		try {
-			XMLResource xmlResource = getWURFLDatabase(inputStreams);
+			XMLResource xmlResource = getXMLResource(inputStreams);
 
-			WURFLResources wurflResources = getWURFLDatabasePatches(
-				inputStreams);
+			WURFLResources wurflResources = getWURFLResources(inputStreams);
 
 			_wurflEngine.reload(xmlResource, wurflResources);
 
@@ -120,7 +118,31 @@ public class WURFLDeviceRecognitionProvider
 		_wurflEngine = wurflEngine;
 	}
 
-	protected XMLResource getWURFLDatabase(List<InputStream> inputStreams)
+	protected WURFLResources getWURFLResources(List<InputStream> inputStreams)
+		throws FileNotFoundException {
+
+		WURFLResources wurflResources = new WURFLResources();
+
+		String[] fileNames = FileUtil.listFiles(
+			PortletPropsValues.WURFL_DATABASE_PATCHES);
+
+		for (String fileName : fileNames) {
+			File file = new File(
+				PortletPropsValues.WURFL_DATABASE_PATCHES, fileName);
+
+			FileInputStream fileInputStream = new FileInputStream(file);
+
+			inputStreams.add(fileInputStream);
+
+			XMLResource xmlResource = new XMLResource(file);
+
+			wurflResources.add(xmlResource);
+		}
+
+		return wurflResources;
+	}
+
+	protected XMLResource getXMLResource(List<InputStream> inputStreams)
 		throws IOException {
 
 		Class<?> clazz = getClass();
@@ -152,31 +174,6 @@ public class WURFLDeviceRecognitionProvider
 		inputStreams.add(inputStream);
 
 		return xmlResource;
-	}
-
-	protected WURFLResources getWURFLDatabasePatches(
-			List<InputStream> inputStreams)
-		throws FileNotFoundException {
-
-		WURFLResources wurflResources = new WURFLResources();
-
-		String[] fileNames = FileUtil.listFiles(
-			PortletPropsValues.WURFL_DATABASE_PATCHES);
-
-		for (String fileName : fileNames) {
-			File file = new File(
-				PortletPropsValues.WURFL_DATABASE_PATCHES, fileName);
-
-			FileInputStream fileInputStream = new FileInputStream(file);
-
-			inputStreams.add(fileInputStream);
-
-			XMLResource xmlResource = new XMLResource(file);
-
-			wurflResources.add(xmlResource);
-		}
-
-		return wurflResources;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(

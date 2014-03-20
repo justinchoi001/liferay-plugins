@@ -30,18 +30,18 @@ public class LiferayCacheProvider implements CacheProvider {
 	}
 
 	@Override
-	public InternalDevice getDevice(String cacheKey) {
-		return _portalCache.get(cacheKey);
+	public InternalDevice getDevice(String deviceId) {
+		return _portalCache.get(deviceId);
 	}
 
 	@Override
-	public InternalDevice getInternalDeviceFromDeviceId(String cacheKey) {
-		return _portalCache.get(cacheKey);
+	public InternalDevice getInternalDeviceFromDeviceId(String deviceId) {
+		return _portalCache.get(deviceId);
 	}
 
 	@Override
-	public void putDevice(String cacheKey, InternalDevice internalDevice) {
-		_portalCache.put(cacheKey, internalDevice);
+	public void putDevice(String deviceId, InternalDevice internalDevice) {
+		_portalCache.put(deviceId, internalDevice);
 	}
 
 	private PortalCache<String, InternalDevice> _portalCache =
