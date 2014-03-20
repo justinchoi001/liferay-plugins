@@ -10,7 +10,6 @@
 	<classpathentry kind="lib" path="/portal-master/lib/development/mail.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/development/servlet-api.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/global/portlet.jar" />
-	<classpathentry kind="lib" path="/portal-master/lib/portal/backport-concurrent.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-collections.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-lang.jar" />
 	<classpathentry kind="lib" path="/portal-master/lib/portal/commons-logging.jar" />
@@ -21,6 +20,8 @@
 	<classpathentry kind="lib" path="/portal-master/util-java/util-java.jar" />
 	<classpathentry kind="lib" path="/portal-master/util-slf4j/util-slf4j.jar" />
 	<classpathentry kind="lib" path="/portal-master/util-taglib/util-taglib.jar" />
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/jackson-core-asl.jar" />
+	<classpathentry kind="lib" path="docroot/WEB-INF/lib/jackson-mapper-asl.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/portal-compat-shared.jar" />
 	<classpathentry kind="lib" path="docroot/WEB-INF/lib/wurfl.jar" />
 	<classpathentry kind="output" path="bin" />
