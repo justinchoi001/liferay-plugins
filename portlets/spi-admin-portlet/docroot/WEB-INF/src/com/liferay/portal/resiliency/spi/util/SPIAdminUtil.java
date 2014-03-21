@@ -69,8 +69,13 @@ public class SPIAdminUtil {
 		while (itr.hasNext()) {
 			String servletContextName = itr.next();
 
-			if (Arrays.binarySearch(
-					PortletPropsValues.SPI_BLACKLIST_SERVLET_CONTEXT_NAMES,
+			if (!servletContextName.contains("portlet") &&
+				!servletContextName.contains("web")) {
+
+				itr.remove();
+			}
+			else if (Arrays.binarySearch(
+						PortletPropsValues.SPI_BLACKLIST_SERVLET_CONTEXT_NAMES,
 					servletContextName) >= 0) {
 
 				itr.remove();
