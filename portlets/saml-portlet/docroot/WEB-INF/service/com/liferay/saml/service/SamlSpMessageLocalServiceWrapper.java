@@ -318,6 +318,7 @@ public class SamlSpMessageLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SamlSpMessageLocalService getWrappedSamlSpMessageLocalService() {
 		return _samlSpMessageLocalService;
 	}
@@ -325,6 +326,7 @@ public class SamlSpMessageLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSamlSpMessageLocalService(
 		SamlSpMessageLocalService samlSpMessageLocalService) {
 		_samlSpMessageLocalService = samlSpMessageLocalService;

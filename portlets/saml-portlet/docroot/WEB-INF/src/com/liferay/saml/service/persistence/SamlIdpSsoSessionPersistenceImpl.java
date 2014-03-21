@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -401,7 +400,7 @@ public class SamlIdpSsoSessionPersistenceImpl extends BasePersistenceImpl<SamlId
 			CacheRegistryUtil.clear(SamlIdpSsoSessionImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(SamlIdpSsoSessionImpl.class.getName());
+		EntityCacheUtil.clearCache(SamlIdpSsoSessionImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -631,10 +630,12 @@ public class SamlIdpSsoSessionPersistenceImpl extends BasePersistenceImpl<SamlId
 
 		EntityCacheUtil.putResult(SamlIdpSsoSessionModelImpl.ENTITY_CACHE_ENABLED,
 			SamlIdpSsoSessionImpl.class, samlIdpSsoSession.getPrimaryKey(),
-			samlIdpSsoSession);
+			samlIdpSsoSession, false);
 
 		clearUniqueFindersCache(samlIdpSsoSession);
 		cacheUniqueFindersCache(samlIdpSsoSession);
+
+		samlIdpSsoSession.resetOriginalValues();
 
 		return samlIdpSsoSession;
 	}
@@ -861,7 +862,7 @@ public class SamlIdpSsoSessionPersistenceImpl extends BasePersistenceImpl<SamlId
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SamlIdpSsoSession>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SamlIdpSsoSession>)QueryUtil.list(q,

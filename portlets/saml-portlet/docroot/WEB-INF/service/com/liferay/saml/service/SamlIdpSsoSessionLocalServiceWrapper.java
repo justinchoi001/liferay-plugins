@@ -325,6 +325,7 @@ public class SamlIdpSsoSessionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SamlIdpSsoSessionLocalService getWrappedSamlIdpSsoSessionLocalService() {
 		return _samlIdpSsoSessionLocalService;
 	}
@@ -332,6 +333,7 @@ public class SamlIdpSsoSessionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSamlIdpSsoSessionLocalService(
 		SamlIdpSsoSessionLocalService samlIdpSsoSessionLocalService) {
 		_samlIdpSsoSessionLocalService = samlIdpSsoSessionLocalService;

@@ -132,6 +132,9 @@ public class SamlSpMessageModelImpl extends BaseModelImpl<SamlSpMessage>
 		attributes.put("samlIdpResponseKey", getSamlIdpResponseKey());
 		attributes.put("expirationDate", getExpirationDate());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -347,6 +350,16 @@ public class SamlSpMessageModelImpl extends BaseModelImpl<SamlSpMessage>
 	@Override
 	public int hashCode() {
 		return (int)getPrimaryKey();
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return ENTITY_CACHE_ENABLED;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return FINDER_CACHE_ENABLED;
 	}
 
 	@Override

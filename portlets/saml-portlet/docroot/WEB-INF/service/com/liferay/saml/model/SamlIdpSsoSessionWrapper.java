@@ -422,6 +422,7 @@ public class SamlIdpSsoSessionWrapper implements SamlIdpSsoSession,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public SamlIdpSsoSession getWrappedSamlIdpSsoSession() {
 		return _samlIdpSsoSession;
 	}
@@ -429,6 +430,16 @@ public class SamlIdpSsoSessionWrapper implements SamlIdpSsoSession,
 	@Override
 	public SamlIdpSsoSession getWrappedModel() {
 		return _samlIdpSsoSession;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _samlIdpSsoSession.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _samlIdpSsoSession.isFinderCacheEnabled();
 	}
 
 	@Override

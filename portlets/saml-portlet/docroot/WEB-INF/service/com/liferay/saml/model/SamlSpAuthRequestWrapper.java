@@ -341,6 +341,7 @@ public class SamlSpAuthRequestWrapper implements SamlSpAuthRequest,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public SamlSpAuthRequest getWrappedSamlSpAuthRequest() {
 		return _samlSpAuthRequest;
 	}
@@ -348,6 +349,16 @@ public class SamlSpAuthRequestWrapper implements SamlSpAuthRequest,
 	@Override
 	public SamlSpAuthRequest getWrappedModel() {
 		return _samlSpAuthRequest;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _samlSpAuthRequest.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _samlSpAuthRequest.isFinderCacheEnabled();
 	}
 
 	@Override

@@ -16,6 +16,7 @@ package com.liferay.saml.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -81,6 +82,9 @@ public class SamlSpMessageClp extends BaseModelImpl<SamlSpMessage>
 		attributes.put("samlIdpResponseKey", getSamlIdpResponseKey());
 		attributes.put("expirationDate", getExpirationDate());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -121,6 +125,9 @@ public class SamlSpMessageClp extends BaseModelImpl<SamlSpMessage>
 		if (expirationDate != null) {
 			setExpirationDate(expirationDate);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -405,6 +412,16 @@ public class SamlSpMessageClp extends BaseModelImpl<SamlSpMessage>
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(13);
 
@@ -470,4 +487,6 @@ public class SamlSpMessageClp extends BaseModelImpl<SamlSpMessage>
 	private String _samlIdpResponseKey;
 	private Date _expirationDate;
 	private BaseModel<?> _samlSpMessageRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -453,7 +452,7 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 			CacheRegistryUtil.clear(SamlSpMessageImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(SamlSpMessageImpl.class.getName());
+		EntityCacheUtil.clearCache(SamlSpMessageImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -685,10 +684,12 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 
 		EntityCacheUtil.putResult(SamlSpMessageModelImpl.ENTITY_CACHE_ENABLED,
 			SamlSpMessageImpl.class, samlSpMessage.getPrimaryKey(),
-			samlSpMessage);
+			samlSpMessage, false);
 
 		clearUniqueFindersCache(samlSpMessage);
 		cacheUniqueFindersCache(samlSpMessage);
+
+		samlSpMessage.resetOriginalValues();
 
 		return samlSpMessage;
 	}
@@ -912,7 +913,7 @@ public class SamlSpMessagePersistenceImpl extends BasePersistenceImpl<SamlSpMess
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SamlSpMessage>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SamlSpMessage>)QueryUtil.list(q, getDialect(),

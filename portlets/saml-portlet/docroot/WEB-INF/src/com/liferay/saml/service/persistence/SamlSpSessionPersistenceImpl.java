@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -493,7 +492,7 @@ public class SamlSpSessionPersistenceImpl extends BasePersistenceImpl<SamlSpSess
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SamlSpSession>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SamlSpSession>)QueryUtil.list(q, getDialect(),
@@ -1433,7 +1432,7 @@ public class SamlSpSessionPersistenceImpl extends BasePersistenceImpl<SamlSpSess
 			CacheRegistryUtil.clear(SamlSpSessionImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(SamlSpSessionImpl.class.getName());
+		EntityCacheUtil.clearCache(SamlSpSessionImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -1740,10 +1739,12 @@ public class SamlSpSessionPersistenceImpl extends BasePersistenceImpl<SamlSpSess
 
 		EntityCacheUtil.putResult(SamlSpSessionModelImpl.ENTITY_CACHE_ENABLED,
 			SamlSpSessionImpl.class, samlSpSession.getPrimaryKey(),
-			samlSpSession);
+			samlSpSession, false);
 
 		clearUniqueFindersCache(samlSpSession);
 		cacheUniqueFindersCache(samlSpSession);
+
+		samlSpSession.resetOriginalValues();
 
 		return samlSpSession;
 	}
@@ -1974,7 +1975,7 @@ public class SamlSpSessionPersistenceImpl extends BasePersistenceImpl<SamlSpSess
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SamlSpSession>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SamlSpSession>)QueryUtil.list(q, getDialect(),

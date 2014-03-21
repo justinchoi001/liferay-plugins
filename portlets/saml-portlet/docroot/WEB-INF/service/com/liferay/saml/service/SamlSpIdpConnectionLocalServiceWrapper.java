@@ -374,6 +374,7 @@ public class SamlSpIdpConnectionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SamlSpIdpConnectionLocalService getWrappedSamlSpIdpConnectionLocalService() {
 		return _samlSpIdpConnectionLocalService;
 	}
@@ -381,6 +382,7 @@ public class SamlSpIdpConnectionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSamlSpIdpConnectionLocalService(
 		SamlSpIdpConnectionLocalService samlSpIdpConnectionLocalService) {
 		_samlSpIdpConnectionLocalService = samlSpIdpConnectionLocalService;

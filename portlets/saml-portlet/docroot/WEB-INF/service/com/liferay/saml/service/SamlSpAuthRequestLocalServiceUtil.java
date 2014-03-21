@@ -326,6 +326,7 @@ public class SamlSpAuthRequestLocalServiceUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setService(SamlSpAuthRequestLocalService service) {
 	}
 

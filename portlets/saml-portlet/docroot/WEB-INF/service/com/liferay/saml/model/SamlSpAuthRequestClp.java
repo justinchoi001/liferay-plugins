@@ -16,6 +16,7 @@ package com.liferay.saml.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -80,6 +81,9 @@ public class SamlSpAuthRequestClp extends BaseModelImpl<SamlSpAuthRequest>
 		attributes.put("samlIdpEntityId", getSamlIdpEntityId());
 		attributes.put("samlSpAuthRequestKey", getSamlSpAuthRequestKey());
 
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
+
 		return attributes;
 	}
 
@@ -115,6 +119,9 @@ public class SamlSpAuthRequestClp extends BaseModelImpl<SamlSpAuthRequest>
 		if (samlSpAuthRequestKey != null) {
 			setSamlSpAuthRequestKey(samlSpAuthRequestKey);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -360,6 +367,16 @@ public class SamlSpAuthRequestClp extends BaseModelImpl<SamlSpAuthRequest>
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(11);
 
@@ -418,4 +435,6 @@ public class SamlSpAuthRequestClp extends BaseModelImpl<SamlSpAuthRequest>
 	private String _samlIdpEntityId;
 	private String _samlSpAuthRequestKey;
 	private BaseModel<?> _samlSpAuthRequestRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

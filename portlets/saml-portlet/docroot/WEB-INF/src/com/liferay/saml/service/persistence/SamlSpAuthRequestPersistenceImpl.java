@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -457,7 +456,7 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 			CacheRegistryUtil.clear(SamlSpAuthRequestImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(SamlSpAuthRequestImpl.class.getName());
+		EntityCacheUtil.clearCache(SamlSpAuthRequestImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -689,10 +688,12 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 
 		EntityCacheUtil.putResult(SamlSpAuthRequestModelImpl.ENTITY_CACHE_ENABLED,
 			SamlSpAuthRequestImpl.class, samlSpAuthRequest.getPrimaryKey(),
-			samlSpAuthRequest);
+			samlSpAuthRequest, false);
 
 		clearUniqueFindersCache(samlSpAuthRequest);
 		cacheUniqueFindersCache(samlSpAuthRequest);
+
+		samlSpAuthRequest.resetOriginalValues();
 
 		return samlSpAuthRequest;
 	}
@@ -917,7 +918,7 @@ public class SamlSpAuthRequestPersistenceImpl extends BasePersistenceImpl<SamlSp
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SamlSpAuthRequest>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SamlSpAuthRequest>)QueryUtil.list(q,

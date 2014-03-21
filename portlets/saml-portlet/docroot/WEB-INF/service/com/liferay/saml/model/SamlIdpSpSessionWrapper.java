@@ -497,6 +497,7 @@ public class SamlIdpSpSessionWrapper implements SamlIdpSpSession,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public SamlIdpSpSession getWrappedSamlIdpSpSession() {
 		return _samlIdpSpSession;
 	}
@@ -504,6 +505,16 @@ public class SamlIdpSpSessionWrapper implements SamlIdpSpSession,
 	@Override
 	public SamlIdpSpSession getWrappedModel() {
 		return _samlIdpSpSession;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _samlIdpSpSession.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _samlIdpSpSession.isFinderCacheEnabled();
 	}
 
 	@Override

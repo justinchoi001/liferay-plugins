@@ -370,6 +370,7 @@ public class SamlSpMessageWrapper implements SamlSpMessage,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public SamlSpMessage getWrappedSamlSpMessage() {
 		return _samlSpMessage;
 	}
@@ -377,6 +378,16 @@ public class SamlSpMessageWrapper implements SamlSpMessage,
 	@Override
 	public SamlSpMessage getWrappedModel() {
 		return _samlSpMessage;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _samlSpMessage.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _samlSpMessage.isFinderCacheEnabled();
 	}
 
 	@Override
