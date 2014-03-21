@@ -86,7 +86,7 @@ else {
 		</c:choose>
 	</c:if>
 
-	<c:if test="<%= SPIDefinitionPermissionUtil.contains(permissionChecker, spiDefinition, ActionKeys.DELETE) %>">
+	<c:if test="<%= SPIDefinitionPermissionUtil.contains(permissionChecker, spiDefinition, ActionKeys.DELETE) && !spiDefinition.isAlive() %>">
 		<c:choose>
 			<c:when test="<%= spiDefinition.getStatus() == SPIAdminConstants.STATUS_STOPPED %>">
 				<portlet:actionURL name="deleteSPIDefinition" var="deleteURL">
