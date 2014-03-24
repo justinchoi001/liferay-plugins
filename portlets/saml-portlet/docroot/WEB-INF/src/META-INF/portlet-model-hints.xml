@@ -123,7 +123,9 @@
 		<field name="assertionXml" type="String">
 			<hint-collection name="CLOB" />
 		</field>
-		<field name="jSessionId" type="String" />
+		<field name="jSessionId" type="String">
+			<hint name="max-length">200</hint>
+		</field>
 		<field name="nameIdFormat" type="String">
 			<hint-collection name="ENTITY-ID" />
 		</field>
