@@ -80,13 +80,15 @@ public class SendPatchesCommand implements Command {
 				payload.put("fixedIssues", ListUtil.fromArray(fixedIssues));
 				payload.put("hashCode", installedHashCode);
 
-				Map<String, Integer> patches = new HashMap<String, Integer>();
+				Map<String, Integer> patchesIdentifiers =
+					new HashMap<String, Integer>();
 
 				for (String patch : installedPatches) {
-					patches.put(patch, LCSConstants.PATCHES_INSTALLED);
+					patchesIdentifiers.put(
+						patch, LCSConstants.PATCHES_INSTALLED);
 				}
 
-				payload.put("patches", patches);
+				payload.put("patchesIdentifiers", patchesIdentifiers);
 				payload.put(
 					"patchingToolVersion",
 					PatcherUtil.getPatchingToolVersion());
