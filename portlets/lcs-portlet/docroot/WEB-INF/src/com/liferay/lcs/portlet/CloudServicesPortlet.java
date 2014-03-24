@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CompanyConstants;
 import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.service.PortletPreferencesLocalServiceUtil;
@@ -67,15 +66,13 @@ public class CloudServicesPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long corpEntryId = ParamUtil.getLong(actionRequest, "corpEntryId");
 		long lcsClusterEntryId = ParamUtil.getLong(
 			actionRequest, "lcsClusterEntryId");
 		String name = ParamUtil.getString(actionRequest, "name");
 		String description = ParamUtil.getString(actionRequest, "description");
 		String location = ParamUtil.getString(actionRequest, "location");
 
-		addLCSClusterNode(
-			corpEntryId, lcsClusterEntryId, name, description, location);
+		addLCSClusterNode(lcsClusterEntryId, name, description, location);
 	}
 
 	public void resetCredentials(
@@ -189,13 +186,9 @@ public class CloudServicesPortlet extends MVCPortlet {
 	}
 
 	protected void addLCSClusterNode(
-			long corpEntryId, long lcsClusterEntryId, String name,
-			String description, String location)
+			long lcsClusterEntryId, String name, String description,
+			String location)
 		throws Exception {
-
-		if (lcsClusterEntryId <= 0) {
-			lcsClusterEntryId = getDefaultLCSClusterEntry(corpEntryId);
-		}
 
 		LCSClusterNodeUtil.registerLCSClusterNode(
 			lcsClusterEntryId, name, description, location);
@@ -255,35 +248,6 @@ public class CloudServicesPortlet extends MVCPortlet {
 			corpEntriesJSONArray.length() - 1);
 
 		return jsonObject.getLong("corpEntryId");
-	}
-
-	protected long getDefaultLCSClusterEntry(long corpEntryId)
-		throws Exception {
-
-		long lcsClusterEntryId = 0;
-
-		List<LCSClusterEntry> lcsClusterEntries =
-			LCSClusterEntryServiceUtil.getCorpEntryLCSClusterEntries(
-				corpEntryId);
-
-		for (LCSClusterEntry lcsClusterEntry : lcsClusterEntries) {
-			if (Validator.equals(lcsClusterEntry.getName(), "UNCLASSIFIED")) {
-				lcsClusterEntryId = lcsClusterEntry.getLcsClusterEntryId();
-
-				break;
-			}
-		}
-
-		if (lcsClusterEntryId == 0) {
-			LCSClusterEntry lcsClusterEntry =
-				LCSClusterEntryServiceUtil.addLCSClusterEntry(
-					corpEntryId, "UNCLASSIFIED", "UNCLASSIFIED", "UNCLASSIFIED",
-					LCSConstants.LCS_CLUSTER_ENTRY_TYPE_ENVIRONMENT);
-
-			lcsClusterEntryId = lcsClusterEntry.getLcsClusterEntryId();
-		}
-
-		return lcsClusterEntryId;
 	}
 
 	protected javax.portlet.PortletPreferences getJxPortletPreferences(
