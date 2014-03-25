@@ -155,17 +155,28 @@ public class ServerMetricsTask implements Runnable {
 
 					Map<String, Object> values = new HashMap<String, Object>();
 
-					Object numBusyConnections = mBeanServer.getAttribute(
-						objectName, "numBusyConnections");
+					try {
+						Object numBusyConnections = mBeanServer.getAttribute(
+							objectName, "numBusyConnections");
 
-					values.put("numActive", numBusyConnections);
+						values.put("numActive", numBusyConnections);
 
-					Object numIdleConnections = mBeanServer.getAttribute(
-						objectName, "numIdleConnections");
+						Object numIdleConnections = mBeanServer.getAttribute(
+							objectName, "numIdleConnections");
 
-					values.put("numIdle", numIdleConnections);
+						values.put("numIdle", numIdleConnections);
 
-					jdbcConnectionPoolsMetrics.put(dataSourceName, values);
+						jdbcConnectionPoolsMetrics.put(dataSourceName, values);
+					}
+					catch (Exception e) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"JDBC Connection Pool metrics is not " +
+									"readable. ");
+						}
+
+						jdbcConnectionPoolsMetrics = Collections.emptyMap();
+					}
 				}
 			}
 			else if (StringUtil.equalsIgnoreCase(liferayPoolProvider, "dbcp")) {
