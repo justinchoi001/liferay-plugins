@@ -171,8 +171,7 @@ public class ServerMetricsTask implements Runnable {
 					catch (Exception e) {
 						if (_log.isWarnEnabled()) {
 							_log.warn(
-								"JDBC Connection Pool metrics is not " +
-									"readable. ");
+								"JDBC Connection Pool metrics is not readable");
 						}
 
 						jdbcConnectionPoolsMetrics = Collections.emptyMap();
