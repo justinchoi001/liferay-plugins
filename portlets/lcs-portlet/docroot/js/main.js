@@ -60,9 +60,9 @@ AUI.add(
 						urlMap[TYPE_ADD_LCS_CLUSTER_ENTRY] = config.addLCSClusterEntryURL;
 						urlMap[TYPE_SERVE_CORP_ENTRY] = config.serveCorpEntryURL;
 						urlMap[TYPE_SERVE_LCS_CLUSTER_ENTRY] = config.serveLCSClusterEntryURL;
-						instance._environmentDuplicateNameError = config.environmentDuplicateNameError;
-						instance._environmentGenericError= config.environmentGenericError;
-						instance._environmentRequiredNameError = config.environmentRequiredNameError;
+						instance._errorDuplicateEnvironment = config.errorDuplicateEnvironment;
+						instance._errorGenericEnvironment= config.errorGenericEnvironment;
+						instance._errorRequiredEnvironmentName = config.errorRequiredEnvironmentName;
 						instance._labelNewEnvironment = config.labelNewEnvironment;
 
 						instance._urlMap = urlMap;
@@ -272,24 +272,24 @@ AUI.add(
 								},
 								on: {
 									failure: function(event, id, obj) {
-										instance._handleLCSClusterEntryError(instance._environmentGenericError);
+										instance._handleLCSClusterEntryError(instance._errorGenericEnvironment);
 									},
 									success: function(event, id, obj) {
 										var responseData = this.get('responseData');
 
-										if (responseData.result === 'success') {
+										if (responseData.result == 'success') {
 											instance._lcsClusterEntryPanel.hide();
 
 											instance._loadData();
 										}
 										else {
-											var message = instance._environmentGenericError;
+											var message = instance._errorGenericEnvironment;
 
-											if (responseData.message === 'duplicateLCSClusterEntryName') {
-												message = instance._environmentDuplicateNameError;
+											if (responseData.message == 'duplicateLCSClusterEntryName') {
+												message = instance._errorDuplicateEnvironment;
 											}
-											else if (responseData.message === 'requiredLCSClusterEntryName') {
-												message = instance._environmentRequiredNameError;
+											else if (responseData.message == 'requiredLCSClusterEntryName') {
+												message = instance._errorRequiredEnvironmentName;
 											}
 
 											instance._handleLCSClusterEntryError(message);

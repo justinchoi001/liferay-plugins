@@ -133,9 +133,9 @@
 	new Liferay.Portlet.LCS(
 		{
 			addLCSClusterEntryURL: '<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="mvcPath" value="/add_lcs_cluster_entry.jsp" /></portlet:renderURL>',
-			environmentDuplicateNameError: '<%= UnicodeLanguageUtil.get(pageContext, "environment-duplicate-name-error") %>',
-			environmentGenericError: '<%= UnicodeLanguageUtil.get(pageContext, "your-request-failed-to-complete") %>',
-			environmentRequiredNameError: '<%= UnicodeLanguageUtil.get(pageContext, "environment-required-name-error") %>',
+			errorDuplicateEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "please-enter-an-unique-environment-name") %>',
+			errorGenericEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "your-request-failed-to-complete") %>',
+			errorRequiredEnvironmentName: '<%= UnicodeLanguageUtil.get(pageContext, "environment-name-is-required") %>',
 			labelNewEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "new-environment") %>',
 			namespace: '<portlet:namespace />',
 			serveCorpEntryURL: '<portlet:resourceURL id="serveCorpEntry" />',
