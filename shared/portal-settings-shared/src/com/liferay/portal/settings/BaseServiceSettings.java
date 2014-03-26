@@ -45,6 +45,11 @@ public class BaseServiceSettings implements Settings {
 	}
 
 	@Override
+	public void reset(String key) {
+		typedSettings.reset(key);
+	}
+
+	@Override
 	public Settings setValue(String key, String value) {
 		return typedSettings.setValue(key, value);
 	}
