@@ -60,6 +60,7 @@ AUI.add(
 						urlMap[TYPE_ADD_LCS_CLUSTER_ENTRY] = config.addLCSClusterEntryURL;
 						urlMap[TYPE_SERVE_CORP_ENTRY] = config.serveCorpEntryURL;
 						urlMap[TYPE_SERVE_LCS_CLUSTER_ENTRY] = config.serveLCSClusterEntryURL;
+
 						instance._errorDuplicateEnvironment = config.errorDuplicateEnvironment;
 						instance._errorGenericEnvironment= config.errorGenericEnvironment;
 						instance._errorRequiredEnvironmentName = config.errorRequiredEnvironmentName;
