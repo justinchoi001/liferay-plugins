@@ -1088,6 +1088,7 @@ public class SourceUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setPersistence(SourcePersistence persistence) {
 	}
 

@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -232,7 +231,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<OAuthApplication>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<OAuthApplication>)QueryUtil.list(q,
@@ -621,7 +620,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, OAuthApplicationImpl.class);
@@ -798,7 +797,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				OAuthApplication.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -927,7 +926,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -1091,7 +1090,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<OAuthApplication>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<OAuthApplication>)QueryUtil.list(q,
@@ -1479,7 +1478,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, OAuthApplicationImpl.class);
@@ -1656,7 +1655,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				OAuthApplication.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -1785,7 +1784,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -2195,7 +2194,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				qPos.add(companyId);
 
 				if (bindName) {
-					qPos.add(name.toLowerCase());
+					qPos.add(StringUtil.toLowerCase(name));
 				}
 
 				if (!pagination) {
@@ -2204,7 +2203,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<OAuthApplication>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<OAuthApplication>)QueryUtil.list(q,
@@ -2494,7 +2493,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		qPos.add(companyId);
 
 		if (bindName) {
-			qPos.add(name.toLowerCase());
+			qPos.add(StringUtil.toLowerCase(name));
 		}
 
 		if (orderByComparator != null) {
@@ -2638,7 +2637,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, OAuthApplicationImpl.class);
@@ -2652,7 +2651,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 			qPos.add(companyId);
 
 			if (bindName) {
-				qPos.add(name.toLowerCase());
+				qPos.add(StringUtil.toLowerCase(name));
 			}
 
 			return (List<OAuthApplication>)QueryUtil.list(q, getDialect(),
@@ -2834,7 +2833,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				OAuthApplication.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -2851,7 +2850,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		qPos.add(companyId);
 
 		if (bindName) {
-			qPos.add(name.toLowerCase());
+			qPos.add(StringUtil.toLowerCase(name));
 		}
 
 		if (orderByComparator != null) {
@@ -2941,7 +2940,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				qPos.add(companyId);
 
 				if (bindName) {
-					qPos.add(name.toLowerCase());
+					qPos.add(StringUtil.toLowerCase(name));
 				}
 
 				count = (Long)q.uniqueResult();
@@ -3005,7 +3004,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -3015,7 +3014,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 			qPos.add(companyId);
 
 			if (bindName) {
-				qPos.add(name.toLowerCase());
+				qPos.add(StringUtil.toLowerCase(name));
 			}
 
 			Long count = (Long)q.uniqueResult();
@@ -3179,7 +3178,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				qPos.add(userId);
 
 				if (bindName) {
-					qPos.add(name.toLowerCase());
+					qPos.add(StringUtil.toLowerCase(name));
 				}
 
 				if (!pagination) {
@@ -3188,7 +3187,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<OAuthApplication>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<OAuthApplication>)QueryUtil.list(q,
@@ -3478,7 +3477,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		qPos.add(userId);
 
 		if (bindName) {
-			qPos.add(name.toLowerCase());
+			qPos.add(StringUtil.toLowerCase(name));
 		}
 
 		if (orderByComparator != null) {
@@ -3622,7 +3621,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, OAuthApplicationImpl.class);
@@ -3636,7 +3635,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 			qPos.add(userId);
 
 			if (bindName) {
-				qPos.add(name.toLowerCase());
+				qPos.add(StringUtil.toLowerCase(name));
 			}
 
 			return (List<OAuthApplication>)QueryUtil.list(q, getDialect(),
@@ -3818,7 +3817,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				OAuthApplication.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -3835,7 +3834,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		qPos.add(userId);
 
 		if (bindName) {
-			qPos.add(name.toLowerCase());
+			qPos.add(StringUtil.toLowerCase(name));
 		}
 
 		if (orderByComparator != null) {
@@ -3923,7 +3922,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 				qPos.add(userId);
 
 				if (bindName) {
-					qPos.add(name.toLowerCase());
+					qPos.add(StringUtil.toLowerCase(name));
 				}
 
 				count = (Long)q.uniqueResult();
@@ -3987,7 +3986,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -3997,7 +3996,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 			qPos.add(userId);
 
 			if (bindName) {
-				qPos.add(name.toLowerCase());
+				qPos.add(StringUtil.toLowerCase(name));
 			}
 
 			Long count = (Long)q.uniqueResult();
@@ -4071,7 +4070,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 			CacheRegistryUtil.clear(OAuthApplicationImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(OAuthApplicationImpl.class.getName());
+		EntityCacheUtil.clearCache(OAuthApplicationImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -4333,10 +4332,12 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 		EntityCacheUtil.putResult(OAuthApplicationModelImpl.ENTITY_CACHE_ENABLED,
 			OAuthApplicationImpl.class, oAuthApplication.getPrimaryKey(),
-			oAuthApplication);
+			oAuthApplication, false);
 
 		clearUniqueFindersCache(oAuthApplication);
 		cacheUniqueFindersCache(oAuthApplication);
+
+		oAuthApplication.resetOriginalValues();
 
 		return oAuthApplication;
 	}
@@ -4571,7 +4572,7 @@ public class OAuthApplicationPersistenceImpl extends BasePersistenceImpl<OAuthAp
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<OAuthApplication>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<OAuthApplication>)QueryUtil.list(q,

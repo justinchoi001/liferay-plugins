@@ -575,6 +575,7 @@ public class BBBMeetingWrapper implements BBBMeeting, ModelWrapper<BBBMeeting> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public BBBMeeting getWrappedBBBMeeting() {
 		return _bbbMeeting;
 	}
@@ -582,6 +583,16 @@ public class BBBMeetingWrapper implements BBBMeeting, ModelWrapper<BBBMeeting> {
 	@Override
 	public BBBMeeting getWrappedModel() {
 		return _bbbMeeting;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _bbbMeeting.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _bbbMeeting.isFinderCacheEnabled();
 	}
 
 	@Override

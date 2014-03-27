@@ -838,6 +838,7 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public Entry getWrappedEntry() {
 		return _entry;
 	}
@@ -845,6 +846,16 @@ public class EntryWrapper implements Entry, ModelWrapper<Entry> {
 	@Override
 	public Entry getWrappedModel() {
 		return _entry;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entry.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _entry.isFinderCacheEnabled();
 	}
 
 	@Override

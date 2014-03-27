@@ -19,6 +19,7 @@ import com.liferay.bbb.service.ClpSerializer;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -87,6 +88,9 @@ public class BBBParticipantClp extends BaseModelImpl<BBBParticipant>
 		attributes.put("emailAddress", getEmailAddress());
 		attributes.put("type", getType());
 		attributes.put("status", getStatus());
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -164,6 +168,9 @@ public class BBBParticipantClp extends BaseModelImpl<BBBParticipant>
 		if (status != null) {
 			setStatus(status);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -583,6 +590,16 @@ public class BBBParticipantClp extends BaseModelImpl<BBBParticipant>
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(25);
 
@@ -691,4 +708,6 @@ public class BBBParticipantClp extends BaseModelImpl<BBBParticipant>
 	private int _type;
 	private int _status;
 	private BaseModel<?> _bbbParticipantRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

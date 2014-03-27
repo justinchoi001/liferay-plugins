@@ -1020,6 +1020,7 @@ public class BBBMeetingUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setPersistence(BBBMeetingPersistence persistence) {
 	}
 

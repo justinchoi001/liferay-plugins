@@ -858,6 +858,7 @@ public class DefinitionWrapper implements Definition, ModelWrapper<Definition> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public Definition getWrappedDefinition() {
 		return _definition;
 	}
@@ -865,6 +866,16 @@ public class DefinitionWrapper implements Definition, ModelWrapper<Definition> {
 	@Override
 	public Definition getWrappedModel() {
 		return _definition;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _definition.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _definition.isFinderCacheEnabled();
 	}
 
 	@Override

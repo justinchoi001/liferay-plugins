@@ -20,6 +20,7 @@ import com.liferay.meeting.webex.service.WebExSiteLocalServiceUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.lar.StagedModelType;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -89,6 +90,9 @@ public class WebExSiteClp extends BaseModelImpl<WebExSite> implements WebExSite 
 		attributes.put("password", getPassword());
 		attributes.put("partnerKey", getPartnerKey());
 		attributes.put("siteKey", getSiteKey());
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -178,6 +182,9 @@ public class WebExSiteClp extends BaseModelImpl<WebExSite> implements WebExSite 
 		if (siteKey != null) {
 			setSiteKey(siteKey);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -668,6 +675,16 @@ public class WebExSiteClp extends BaseModelImpl<WebExSite> implements WebExSite 
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(29);
 
@@ -790,4 +807,6 @@ public class WebExSiteClp extends BaseModelImpl<WebExSite> implements WebExSite 
 	private String _partnerKey;
 	private long _siteKey;
 	private BaseModel<?> _webExSiteRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

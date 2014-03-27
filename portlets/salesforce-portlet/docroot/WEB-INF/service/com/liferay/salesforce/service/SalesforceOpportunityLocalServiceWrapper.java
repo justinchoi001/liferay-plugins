@@ -92,6 +92,7 @@ public class SalesforceOpportunityLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SalesforceOpportunityLocalService getWrappedSalesforceOpportunityLocalService() {
 		return _salesforceOpportunityLocalService;
 	}
@@ -99,6 +100,7 @@ public class SalesforceOpportunityLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSalesforceOpportunityLocalService(
 		SalesforceOpportunityLocalService salesforceOpportunityLocalService) {
 		_salesforceOpportunityLocalService = salesforceOpportunityLocalService;

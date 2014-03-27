@@ -116,6 +116,7 @@ public class SourceServiceWrapper implements SourceService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SourceService getWrappedSourceService() {
 		return _sourceService;
 	}
@@ -123,6 +124,7 @@ public class SourceServiceWrapper implements SourceService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSourceService(SourceService sourceService) {
 		_sourceService = sourceService;
 	}

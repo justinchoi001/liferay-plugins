@@ -115,6 +115,7 @@ public class BBBMeetingServiceWrapper implements BBBMeetingService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public BBBMeetingService getWrappedBBBMeetingService() {
 		return _bbbMeetingService;
 	}
@@ -122,6 +123,7 @@ public class BBBMeetingServiceWrapper implements BBBMeetingService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedBBBMeetingService(BBBMeetingService bbbMeetingService) {
 		_bbbMeetingService = bbbMeetingService;
 	}

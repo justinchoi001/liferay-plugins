@@ -136,6 +136,7 @@ public class KaleoDraftDefinitionServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public KaleoDraftDefinitionService getWrappedKaleoDraftDefinitionService() {
 		return _kaleoDraftDefinitionService;
 	}
@@ -143,6 +144,7 @@ public class KaleoDraftDefinitionServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedKaleoDraftDefinitionService(
 		KaleoDraftDefinitionService kaleoDraftDefinitionService) {
 		_kaleoDraftDefinitionService = kaleoDraftDefinitionService;

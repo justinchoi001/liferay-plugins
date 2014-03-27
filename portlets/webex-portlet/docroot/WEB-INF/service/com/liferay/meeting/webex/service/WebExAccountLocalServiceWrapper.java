@@ -420,6 +420,7 @@ public class WebExAccountLocalServiceWrapper implements WebExAccountLocalService
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public WebExAccountLocalService getWrappedWebExAccountLocalService() {
 		return _webExAccountLocalService;
 	}
@@ -427,6 +428,7 @@ public class WebExAccountLocalServiceWrapper implements WebExAccountLocalService
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedWebExAccountLocalService(
 		WebExAccountLocalService webExAccountLocalService) {
 		_webExAccountLocalService = webExAccountLocalService;

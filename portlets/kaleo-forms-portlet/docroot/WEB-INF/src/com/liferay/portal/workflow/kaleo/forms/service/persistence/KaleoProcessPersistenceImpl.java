@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
@@ -223,7 +222,7 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoProcess>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoProcess>)QueryUtil.list(q, getDialect(),
@@ -609,7 +608,7 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, KaleoProcessImpl.class);
@@ -785,7 +784,7 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 				KaleoProcess.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -914,7 +913,7 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -1208,7 +1207,7 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 			CacheRegistryUtil.clear(KaleoProcessImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(KaleoProcessImpl.class.getName());
+		EntityCacheUtil.clearCache(KaleoProcessImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -1452,10 +1451,13 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 		}
 
 		EntityCacheUtil.putResult(KaleoProcessModelImpl.ENTITY_CACHE_ENABLED,
-			KaleoProcessImpl.class, kaleoProcess.getPrimaryKey(), kaleoProcess);
+			KaleoProcessImpl.class, kaleoProcess.getPrimaryKey(), kaleoProcess,
+			false);
 
 		clearUniqueFindersCache(kaleoProcess);
 		cacheUniqueFindersCache(kaleoProcess);
+
+		kaleoProcess.resetOriginalValues();
 
 		return kaleoProcess;
 	}
@@ -1682,7 +1684,7 @@ public class KaleoProcessPersistenceImpl extends BasePersistenceImpl<KaleoProces
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoProcess>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoProcess>)QueryUtil.list(q, getDialect(),

@@ -326,6 +326,7 @@ public class BBBServerLocalServiceWrapper implements BBBServerLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public BBBServerLocalService getWrappedBBBServerLocalService() {
 		return _bbbServerLocalService;
 	}
@@ -333,6 +334,7 @@ public class BBBServerLocalServiceWrapper implements BBBServerLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedBBBServerLocalService(
 		BBBServerLocalService bbbServerLocalService) {
 		_bbbServerLocalService = bbbServerLocalService;

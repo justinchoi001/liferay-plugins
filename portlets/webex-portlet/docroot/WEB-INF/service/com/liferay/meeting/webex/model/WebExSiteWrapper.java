@@ -614,6 +614,7 @@ public class WebExSiteWrapper implements WebExSite, ModelWrapper<WebExSite> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public WebExSite getWrappedWebExSite() {
 		return _webExSite;
 	}
@@ -621,6 +622,16 @@ public class WebExSiteWrapper implements WebExSite, ModelWrapper<WebExSite> {
 	@Override
 	public WebExSite getWrappedModel() {
 		return _webExSite;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _webExSite.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _webExSite.isFinderCacheEnabled();
 	}
 
 	@Override

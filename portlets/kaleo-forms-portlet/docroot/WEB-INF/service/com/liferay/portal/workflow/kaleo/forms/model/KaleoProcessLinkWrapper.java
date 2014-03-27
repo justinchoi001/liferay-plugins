@@ -319,6 +319,7 @@ public class KaleoProcessLinkWrapper implements KaleoProcessLink,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public KaleoProcessLink getWrappedKaleoProcessLink() {
 		return _kaleoProcessLink;
 	}
@@ -326,6 +327,16 @@ public class KaleoProcessLinkWrapper implements KaleoProcessLink,
 	@Override
 	public KaleoProcessLink getWrappedModel() {
 		return _kaleoProcessLink;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _kaleoProcessLink.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _kaleoProcessLink.isFinderCacheEnabled();
 	}
 
 	@Override

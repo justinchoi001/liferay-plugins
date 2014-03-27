@@ -377,6 +377,7 @@ public class OAuthUserLocalServiceWrapper implements OAuthUserLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public OAuthUserLocalService getWrappedOAuthUserLocalService() {
 		return _oAuthUserLocalService;
 	}
@@ -384,6 +385,7 @@ public class OAuthUserLocalServiceWrapper implements OAuthUserLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedOAuthUserLocalService(
 		OAuthUserLocalService oAuthUserLocalService) {
 		_oAuthUserLocalService = oAuthUserLocalService;

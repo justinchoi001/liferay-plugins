@@ -157,6 +157,7 @@ public class SalesforceLocalServiceWrapper implements SalesforceLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SalesforceLocalService getWrappedSalesforceLocalService() {
 		return _salesforceLocalService;
 	}
@@ -164,6 +165,7 @@ public class SalesforceLocalServiceWrapper implements SalesforceLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSalesforceLocalService(
 		SalesforceLocalService salesforceLocalService) {
 		_salesforceLocalService = salesforceLocalService;

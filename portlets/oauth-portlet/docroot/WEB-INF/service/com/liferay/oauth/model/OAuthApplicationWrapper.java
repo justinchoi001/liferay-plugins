@@ -648,6 +648,7 @@ public class OAuthApplicationWrapper implements OAuthApplication,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public OAuthApplication getWrappedOAuthApplication() {
 		return _oAuthApplication;
 	}
@@ -655,6 +656,16 @@ public class OAuthApplicationWrapper implements OAuthApplication,
 	@Override
 	public OAuthApplication getWrappedModel() {
 		return _oAuthApplication;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _oAuthApplication.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _oAuthApplication.isFinderCacheEnabled();
 	}
 
 	@Override

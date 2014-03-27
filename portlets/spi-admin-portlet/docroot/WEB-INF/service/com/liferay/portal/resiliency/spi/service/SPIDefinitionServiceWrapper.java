@@ -165,6 +165,7 @@ public class SPIDefinitionServiceWrapper implements SPIDefinitionService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SPIDefinitionService getWrappedSPIDefinitionService() {
 		return _spiDefinitionService;
 	}
@@ -172,6 +173,7 @@ public class SPIDefinitionServiceWrapper implements SPIDefinitionService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSPIDefinitionService(
 		SPIDefinitionService spiDefinitionService) {
 		_spiDefinitionService = spiDefinitionService;

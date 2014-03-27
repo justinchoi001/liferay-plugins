@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -230,7 +229,7 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoDraftDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoDraftDefinition>)QueryUtil.list(q,
@@ -768,7 +767,7 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoDraftDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoDraftDefinition>)QueryUtil.list(q,
@@ -1577,7 +1576,7 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 			CacheRegistryUtil.clear(KaleoDraftDefinitionImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(KaleoDraftDefinitionImpl.class.getName());
+		EntityCacheUtil.clearCache(KaleoDraftDefinitionImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -1866,10 +1865,12 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 
 		EntityCacheUtil.putResult(KaleoDraftDefinitionModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoDraftDefinitionImpl.class,
-			kaleoDraftDefinition.getPrimaryKey(), kaleoDraftDefinition);
+			kaleoDraftDefinition.getPrimaryKey(), kaleoDraftDefinition, false);
 
 		clearUniqueFindersCache(kaleoDraftDefinition);
 		cacheUniqueFindersCache(kaleoDraftDefinition);
+
+		kaleoDraftDefinition.resetOriginalValues();
 
 		return kaleoDraftDefinition;
 	}
@@ -2101,7 +2102,7 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoDraftDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoDraftDefinition>)QueryUtil.list(q,

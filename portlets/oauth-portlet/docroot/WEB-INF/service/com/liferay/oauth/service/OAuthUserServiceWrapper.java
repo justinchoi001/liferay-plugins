@@ -67,6 +67,7 @@ public class OAuthUserServiceWrapper implements OAuthUserService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public OAuthUserService getWrappedOAuthUserService() {
 		return _oAuthUserService;
 	}
@@ -74,6 +75,7 @@ public class OAuthUserServiceWrapper implements OAuthUserService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedOAuthUserService(OAuthUserService oAuthUserService) {
 		_oAuthUserService = oAuthUserService;
 	}

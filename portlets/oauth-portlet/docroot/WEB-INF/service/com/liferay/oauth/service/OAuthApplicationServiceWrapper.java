@@ -111,6 +111,7 @@ public class OAuthApplicationServiceWrapper implements OAuthApplicationService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public OAuthApplicationService getWrappedOAuthApplicationService() {
 		return _oAuthApplicationService;
 	}
@@ -118,6 +119,7 @@ public class OAuthApplicationServiceWrapper implements OAuthApplicationService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedOAuthApplicationService(
 		OAuthApplicationService oAuthApplicationService) {
 		_oAuthApplicationService = oAuthApplicationService;

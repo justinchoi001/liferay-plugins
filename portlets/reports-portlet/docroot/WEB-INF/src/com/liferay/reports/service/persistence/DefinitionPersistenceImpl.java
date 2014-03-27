@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
@@ -241,7 +240,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Definition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Definition>)QueryUtil.list(q, getDialect(),
@@ -1051,7 +1050,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Definition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Definition>)QueryUtil.list(q, getDialect(),
@@ -1596,7 +1595,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Definition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Definition>)QueryUtil.list(q, getDialect(),
@@ -1980,7 +1979,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, DefinitionImpl.class);
@@ -2155,7 +2154,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 				Definition.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -2284,7 +2283,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -2449,7 +2448,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Definition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Definition>)QueryUtil.list(q, getDialect(),
@@ -2853,7 +2852,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 			CacheRegistryUtil.clear(DefinitionImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(DefinitionImpl.class.getName());
+		EntityCacheUtil.clearCache(DefinitionImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -3169,10 +3168,12 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 		}
 
 		EntityCacheUtil.putResult(DefinitionModelImpl.ENTITY_CACHE_ENABLED,
-			DefinitionImpl.class, definition.getPrimaryKey(), definition);
+			DefinitionImpl.class, definition.getPrimaryKey(), definition, false);
 
 		clearUniqueFindersCache(definition);
 		cacheUniqueFindersCache(definition);
+
+		definition.resetOriginalValues();
 
 		return definition;
 	}
@@ -3403,7 +3404,7 @@ public class DefinitionPersistenceImpl extends BasePersistenceImpl<Definition>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Definition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Definition>)QueryUtil.list(q, getDialect(),

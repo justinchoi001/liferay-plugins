@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -233,7 +232,7 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoProcessLink>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoProcessLink>)QueryUtil.list(q,
@@ -916,7 +915,7 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 			CacheRegistryUtil.clear(KaleoProcessLinkImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(KaleoProcessLinkImpl.class.getName());
+		EntityCacheUtil.clearCache(KaleoProcessLinkImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -1173,10 +1172,12 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 
 		EntityCacheUtil.putResult(KaleoProcessLinkModelImpl.ENTITY_CACHE_ENABLED,
 			KaleoProcessLinkImpl.class, kaleoProcessLink.getPrimaryKey(),
-			kaleoProcessLink);
+			kaleoProcessLink, false);
 
 		clearUniqueFindersCache(kaleoProcessLink);
 		cacheUniqueFindersCache(kaleoProcessLink);
+
+		kaleoProcessLink.resetOriginalValues();
 
 		return kaleoProcessLink;
 	}
@@ -1400,7 +1401,7 @@ public class KaleoProcessLinkPersistenceImpl extends BasePersistenceImpl<KaleoPr
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<KaleoProcessLink>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<KaleoProcessLink>)QueryUtil.list(q,

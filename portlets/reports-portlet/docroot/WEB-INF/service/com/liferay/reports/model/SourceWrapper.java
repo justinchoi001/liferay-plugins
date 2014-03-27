@@ -736,6 +736,7 @@ public class SourceWrapper implements Source, ModelWrapper<Source> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public Source getWrappedSource() {
 		return _source;
 	}
@@ -743,6 +744,16 @@ public class SourceWrapper implements Source, ModelWrapper<Source> {
 	@Override
 	public Source getWrappedModel() {
 		return _source;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _source.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _source.isFinderCacheEnabled();
 	}
 
 	@Override

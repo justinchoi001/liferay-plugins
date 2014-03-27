@@ -96,6 +96,7 @@ public class OAuthUserServiceUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setService(OAuthUserService service) {
 	}
 

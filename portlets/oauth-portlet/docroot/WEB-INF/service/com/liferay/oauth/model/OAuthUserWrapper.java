@@ -489,6 +489,7 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public OAuthUser getWrappedOAuthUser() {
 		return _oAuthUser;
 	}
@@ -496,6 +497,16 @@ public class OAuthUserWrapper implements OAuthUser, ModelWrapper<OAuthUser> {
 	@Override
 	public OAuthUser getWrappedModel() {
 		return _oAuthUser;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _oAuthUser.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _oAuthUser.isFinderCacheEnabled();
 	}
 
 	@Override

@@ -350,6 +350,7 @@ public class KaleoProcessLocalServiceWrapper implements KaleoProcessLocalService
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public KaleoProcessLocalService getWrappedKaleoProcessLocalService() {
 		return _kaleoProcessLocalService;
 	}
@@ -357,6 +358,7 @@ public class KaleoProcessLocalServiceWrapper implements KaleoProcessLocalService
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedKaleoProcessLocalService(
 		KaleoProcessLocalService kaleoProcessLocalService) {
 		_kaleoProcessLocalService = kaleoProcessLocalService;

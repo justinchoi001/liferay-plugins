@@ -334,6 +334,7 @@ public class BBBParticipantLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public BBBParticipantLocalService getWrappedBBBParticipantLocalService() {
 		return _bbbParticipantLocalService;
 	}
@@ -341,6 +342,7 @@ public class BBBParticipantLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedBBBParticipantLocalService(
 		BBBParticipantLocalService bbbParticipantLocalService) {
 		_bbbParticipantLocalService = bbbParticipantLocalService;

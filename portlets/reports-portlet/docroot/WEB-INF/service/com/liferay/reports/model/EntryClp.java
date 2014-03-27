@@ -17,6 +17,7 @@ package com.liferay.reports.model;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -96,6 +97,9 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 		attributes.put("reportParameters", getReportParameters());
 		attributes.put("status", getStatus());
 		attributes.put("errorMessage", getErrorMessage());
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -227,6 +231,9 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 		if (errorMessage != null) {
 			setErrorMessage(errorMessage);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -965,6 +972,16 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(43);
 
@@ -1136,4 +1153,6 @@ public class EntryClp extends BaseModelImpl<Entry> implements Entry {
 	private String _status;
 	private String _errorMessage;
 	private BaseModel<?> _entryRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

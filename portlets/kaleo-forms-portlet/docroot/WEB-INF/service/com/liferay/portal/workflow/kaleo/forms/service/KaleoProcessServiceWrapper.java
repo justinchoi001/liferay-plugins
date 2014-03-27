@@ -118,6 +118,7 @@ public class KaleoProcessServiceWrapper implements KaleoProcessService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public KaleoProcessService getWrappedKaleoProcessService() {
 		return _kaleoProcessService;
 	}
@@ -125,6 +126,7 @@ public class KaleoProcessServiceWrapper implements KaleoProcessService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedKaleoProcessService(
 		KaleoProcessService kaleoProcessService) {
 		_kaleoProcessService = kaleoProcessService;

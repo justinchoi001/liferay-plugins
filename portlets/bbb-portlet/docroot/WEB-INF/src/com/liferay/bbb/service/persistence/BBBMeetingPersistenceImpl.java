@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.security.permission.InlineSQLHelperUtil;
@@ -225,7 +224,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBMeeting>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBMeeting>)QueryUtil.list(q, getDialect(),
@@ -609,7 +608,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, BBBMeetingImpl.class);
@@ -784,7 +783,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 				BBBMeeting.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -913,7 +912,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -1078,7 +1077,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBMeeting>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBMeeting>)QueryUtil.list(q, getDialect(),
@@ -1568,7 +1567,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBMeeting>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBMeeting>)QueryUtil.list(q, getDialect(),
@@ -2070,7 +2069,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBMeeting>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBMeeting>)QueryUtil.list(q, getDialect(),
@@ -2494,7 +2493,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 			CacheRegistryUtil.clear(BBBMeetingImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(BBBMeetingImpl.class.getName());
+		EntityCacheUtil.clearCache(BBBMeetingImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -2745,7 +2744,9 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 		}
 
 		EntityCacheUtil.putResult(BBBMeetingModelImpl.ENTITY_CACHE_ENABLED,
-			BBBMeetingImpl.class, bbbMeeting.getPrimaryKey(), bbbMeeting);
+			BBBMeetingImpl.class, bbbMeeting.getPrimaryKey(), bbbMeeting, false);
+
+		bbbMeeting.resetOriginalValues();
 
 		return bbbMeeting;
 	}
@@ -2976,7 +2977,7 @@ public class BBBMeetingPersistenceImpl extends BasePersistenceImpl<BBBMeeting>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBMeeting>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBMeeting>)QueryUtil.list(q, getDialect(),

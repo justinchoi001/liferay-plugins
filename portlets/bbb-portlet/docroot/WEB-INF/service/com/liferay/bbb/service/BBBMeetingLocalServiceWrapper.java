@@ -370,6 +370,7 @@ public class BBBMeetingLocalServiceWrapper implements BBBMeetingLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public BBBMeetingLocalService getWrappedBBBMeetingLocalService() {
 		return _bbbMeetingLocalService;
 	}
@@ -377,6 +378,7 @@ public class BBBMeetingLocalServiceWrapper implements BBBMeetingLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedBBBMeetingLocalService(
 		BBBMeetingLocalService bbbMeetingLocalService) {
 		_bbbMeetingLocalService = bbbMeetingLocalService;

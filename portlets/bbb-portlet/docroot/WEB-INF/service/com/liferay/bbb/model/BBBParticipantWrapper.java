@@ -550,6 +550,7 @@ public class BBBParticipantWrapper implements BBBParticipant,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public BBBParticipant getWrappedBBBParticipant() {
 		return _bbbParticipant;
 	}
@@ -557,6 +558,16 @@ public class BBBParticipantWrapper implements BBBParticipant,
 	@Override
 	public BBBParticipant getWrappedModel() {
 		return _bbbParticipant;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _bbbParticipant.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _bbbParticipant.isFinderCacheEnabled();
 	}
 
 	@Override

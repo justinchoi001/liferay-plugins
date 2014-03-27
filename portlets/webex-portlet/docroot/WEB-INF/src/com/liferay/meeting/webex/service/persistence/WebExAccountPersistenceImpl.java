@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
@@ -240,7 +239,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<WebExAccount>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<WebExAccount>)QueryUtil.list(q, getDialect(),
@@ -1049,7 +1048,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<WebExAccount>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<WebExAccount>)QueryUtil.list(q, getDialect(),
@@ -1607,7 +1606,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<WebExAccount>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<WebExAccount>)QueryUtil.list(q, getDialect(),
@@ -2015,7 +2014,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, WebExAccountImpl.class);
@@ -2196,7 +2195,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 				WebExAccount.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN, groupId);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -2339,7 +2338,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -2418,7 +2417,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 			CacheRegistryUtil.clear(WebExAccountImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(WebExAccountImpl.class.getName());
+		EntityCacheUtil.clearCache(WebExAccountImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -2719,10 +2718,13 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 		}
 
 		EntityCacheUtil.putResult(WebExAccountModelImpl.ENTITY_CACHE_ENABLED,
-			WebExAccountImpl.class, webExAccount.getPrimaryKey(), webExAccount);
+			WebExAccountImpl.class, webExAccount.getPrimaryKey(), webExAccount,
+			false);
 
 		clearUniqueFindersCache(webExAccount);
 		cacheUniqueFindersCache(webExAccount);
+
+		webExAccount.resetOriginalValues();
 
 		return webExAccount;
 	}
@@ -2951,7 +2953,7 @@ public class WebExAccountPersistenceImpl extends BasePersistenceImpl<WebExAccoun
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<WebExAccount>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<WebExAccount>)QueryUtil.list(q, getDialect(),

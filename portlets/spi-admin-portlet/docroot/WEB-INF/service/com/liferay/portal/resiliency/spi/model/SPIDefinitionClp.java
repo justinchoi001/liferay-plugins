@@ -16,6 +16,7 @@ package com.liferay.portal.resiliency.spi.model;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -90,6 +91,9 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("status", getStatus());
 		attributes.put("statusMessage", getStatusMessage());
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -192,6 +196,9 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 		if (statusMessage != null) {
 			setStatusMessage(statusMessage);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -646,15 +653,15 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 	}
 
 	@Override
-	public java.lang.String getBaseDir() {
+	public com.liferay.portal.kernel.resiliency.spi.SPI getSPI() {
 		try {
-			String methodName = "getBaseDir";
+			String methodName = "getSPI";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+			com.liferay.portal.kernel.resiliency.spi.SPI returnObj = (com.liferay.portal.kernel.resiliency.spi.SPI)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -665,15 +672,15 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 	}
 
 	@Override
-	public com.liferay.portal.kernel.resiliency.spi.SPI getSPI() {
+	public java.lang.String getBaseDir() {
 		try {
-			String methodName = "getSPI";
+			String methodName = "getBaseDir";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			com.liferay.portal.kernel.resiliency.spi.SPI returnObj = (com.liferay.portal.kernel.resiliency.spi.SPI)invokeOnRemoteModel(methodName,
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -1123,6 +1130,16 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(33);
 
@@ -1259,4 +1276,6 @@ public class SPIDefinitionClp extends BaseModelImpl<SPIDefinition>
 	private int _status;
 	private String _statusMessage;
 	private BaseModel<?> _spiDefinitionRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

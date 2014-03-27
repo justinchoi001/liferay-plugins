@@ -343,6 +343,7 @@ public class AuditEventLocalServiceWrapper implements AuditEventLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public AuditEventLocalService getWrappedAuditEventLocalService() {
 		return _auditEventLocalService;
 	}
@@ -350,6 +351,7 @@ public class AuditEventLocalServiceWrapper implements AuditEventLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedAuditEventLocalService(
 		AuditEventLocalService auditEventLocalService) {
 		_auditEventLocalService = auditEventLocalService;

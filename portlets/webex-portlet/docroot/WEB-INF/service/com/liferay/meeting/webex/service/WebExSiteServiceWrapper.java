@@ -118,6 +118,7 @@ public class WebExSiteServiceWrapper implements WebExSiteService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public WebExSiteService getWrappedWebExSiteService() {
 		return _webExSiteService;
 	}
@@ -125,6 +126,7 @@ public class WebExSiteServiceWrapper implements WebExSiteService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedWebExSiteService(WebExSiteService webExSiteService) {
 		_webExSiteService = webExSiteService;
 	}

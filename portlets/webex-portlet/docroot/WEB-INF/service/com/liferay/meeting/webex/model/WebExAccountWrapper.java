@@ -543,6 +543,7 @@ public class WebExAccountWrapper implements WebExAccount,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public WebExAccount getWrappedWebExAccount() {
 		return _webExAccount;
 	}
@@ -550,6 +551,16 @@ public class WebExAccountWrapper implements WebExAccount,
 	@Override
 	public WebExAccount getWrappedModel() {
 		return _webExAccount;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _webExAccount.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _webExAccount.isFinderCacheEnabled();
 	}
 
 	@Override

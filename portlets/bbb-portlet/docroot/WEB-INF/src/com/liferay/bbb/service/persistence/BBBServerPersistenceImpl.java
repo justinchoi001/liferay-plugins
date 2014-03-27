@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
@@ -225,7 +224,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBServer>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBServer>)QueryUtil.list(q, getDialect(),
@@ -622,7 +621,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 			CacheRegistryUtil.clear(BBBServerImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(BBBServerImpl.class.getName());
+		EntityCacheUtil.clearCache(BBBServerImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -816,7 +815,9 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 		}
 
 		EntityCacheUtil.putResult(BBBServerModelImpl.ENTITY_CACHE_ENABLED,
-			BBBServerImpl.class, bbbServer.getPrimaryKey(), bbbServer);
+			BBBServerImpl.class, bbbServer.getPrimaryKey(), bbbServer, false);
+
+		bbbServer.resetOriginalValues();
 
 		return bbbServer;
 	}
@@ -1044,7 +1045,7 @@ public class BBBServerPersistenceImpl extends BasePersistenceImpl<BBBServer>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<BBBServer>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<BBBServer>)QueryUtil.list(q, getDialect(),

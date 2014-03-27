@@ -441,6 +441,7 @@ public class BBBParticipantUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setPersistence(BBBParticipantPersistence persistence) {
 	}
 

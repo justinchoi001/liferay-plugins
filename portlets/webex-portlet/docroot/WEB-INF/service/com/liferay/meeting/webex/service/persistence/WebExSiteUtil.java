@@ -997,6 +997,7 @@ public class WebExSiteUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setPersistence(WebExSitePersistence persistence) {
 	}
 

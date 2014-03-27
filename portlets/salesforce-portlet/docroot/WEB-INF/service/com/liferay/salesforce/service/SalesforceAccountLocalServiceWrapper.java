@@ -91,6 +91,7 @@ public class SalesforceAccountLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SalesforceAccountLocalService getWrappedSalesforceAccountLocalService() {
 		return _salesforceAccountLocalService;
 	}
@@ -98,6 +99,7 @@ public class SalesforceAccountLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSalesforceAccountLocalService(
 		SalesforceAccountLocalService salesforceAccountLocalService) {
 		_salesforceAccountLocalService = salesforceAccountLocalService;

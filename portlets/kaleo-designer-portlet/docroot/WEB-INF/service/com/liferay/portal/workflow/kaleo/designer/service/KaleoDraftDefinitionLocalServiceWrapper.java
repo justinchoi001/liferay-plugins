@@ -412,6 +412,7 @@ public class KaleoDraftDefinitionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public KaleoDraftDefinitionLocalService getWrappedKaleoDraftDefinitionLocalService() {
 		return _kaleoDraftDefinitionLocalService;
 	}
@@ -419,6 +420,7 @@ public class KaleoDraftDefinitionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedKaleoDraftDefinitionLocalService(
 		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
 		_kaleoDraftDefinitionLocalService = kaleoDraftDefinitionLocalService;

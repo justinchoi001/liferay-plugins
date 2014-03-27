@@ -414,6 +414,7 @@ public class SPIDefinitionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public SPIDefinitionLocalService getWrappedSPIDefinitionLocalService() {
 		return _spiDefinitionLocalService;
 	}
@@ -421,6 +422,7 @@ public class SPIDefinitionLocalServiceWrapper
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedSPIDefinitionLocalService(
 		SPIDefinitionLocalService spiDefinitionLocalService) {
 		_spiDefinitionLocalService = spiDefinitionLocalService;

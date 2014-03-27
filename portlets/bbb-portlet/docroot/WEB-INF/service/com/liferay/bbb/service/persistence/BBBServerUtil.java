@@ -433,6 +433,7 @@ public class BBBServerUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setPersistence(BBBServerPersistence persistence) {
 	}
 

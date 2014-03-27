@@ -20,6 +20,7 @@ import com.liferay.bbb.service.ClpSerializer;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.model.BaseModel;
@@ -89,6 +90,9 @@ public class BBBMeetingClp extends BaseModelImpl<BBBMeeting>
 		attributes.put("attendeePassword", getAttendeePassword());
 		attributes.put("moderatorPassword", getModeratorPassword());
 		attributes.put("status", getStatus());
+
+		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
+		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
 
 		return attributes;
 	}
@@ -172,6 +176,9 @@ public class BBBMeetingClp extends BaseModelImpl<BBBMeeting>
 		if (status != null) {
 			setStatus(status);
 		}
+
+		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
+		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
 	}
 
 	@Override
@@ -614,6 +621,16 @@ public class BBBMeetingClp extends BaseModelImpl<BBBMeeting>
 	}
 
 	@Override
+	public boolean isEntityCacheEnabled() {
+		return _entityCacheEnabled;
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _finderCacheEnabled;
+	}
+
+	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(27);
 
@@ -729,4 +746,6 @@ public class BBBMeetingClp extends BaseModelImpl<BBBMeeting>
 	private String _moderatorPassword;
 	private int _status;
 	private BaseModel<?> _bbbMeetingRemoteModel;
+	private boolean _entityCacheEnabled;
+	private boolean _finderCacheEnabled;
 }

@@ -629,6 +629,7 @@ public class AuditEventWrapper implements AuditEvent, ModelWrapper<AuditEvent> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public AuditEvent getWrappedAuditEvent() {
 		return _auditEvent;
 	}
@@ -636,6 +637,16 @@ public class AuditEventWrapper implements AuditEvent, ModelWrapper<AuditEvent> {
 	@Override
 	public AuditEvent getWrappedModel() {
 		return _auditEvent;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _auditEvent.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _auditEvent.isFinderCacheEnabled();
 	}
 
 	@Override

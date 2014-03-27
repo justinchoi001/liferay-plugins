@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
@@ -230,7 +229,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SPIDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SPIDefinition>)QueryUtil.list(q, getDialect(),
@@ -617,7 +616,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, SPIDefinitionImpl.class);
@@ -794,7 +793,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 				SPIDefinition.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -923,7 +922,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -1374,7 +1373,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SPIDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SPIDefinition>)QueryUtil.list(q, getDialect(),
@@ -1782,7 +1781,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, SPIDefinitionImpl.class);
@@ -1963,7 +1962,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 				SPIDefinition.class.getName(),
 				_FILTER_ENTITY_TABLE_FILTER_PK_COLUMN);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -2057,6 +2056,13 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 			return findByC_S(companyId, statuses, start, end, orderByComparator);
 		}
 
+		if (statuses == null) {
+			statuses = new int[0];
+		}
+		else {
+			statuses = ArrayUtil.unique(statuses);
+		}
+
 		StringBundler query = new StringBundler();
 
 		if (getDB().isSupportsInlineDistinct()) {
@@ -2066,35 +2072,22 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 			query.append(_FILTER_SQL_SELECT_SPIDEFINITION_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		boolean conjunctionable = false;
+		query.append(_FINDER_COLUMN_C_S_COMPANYID_2);
 
-		if (conjunctionable) {
-			query.append(WHERE_AND);
-		}
-
-		query.append(_FINDER_COLUMN_C_S_COMPANYID_5);
-
-		conjunctionable = true;
-
-		if ((statuses == null) || (statuses.length > 0)) {
-			if (conjunctionable) {
-				query.append(WHERE_AND);
-			}
-
+		if (statuses.length > 0) {
 			query.append(StringPool.OPEN_PARENTHESIS);
 
-			for (int i = 0; i < statuses.length; i++) {
-				query.append(_FINDER_COLUMN_C_S_STATUS_5);
+			query.append(_FINDER_COLUMN_C_S_STATUS_7);
 
-				if ((i + 1) < statuses.length) {
-					query.append(WHERE_OR);
-				}
-			}
+			query.append(StringUtil.merge(statuses));
 
 			query.append(StringPool.CLOSE_PARENTHESIS);
 
-			conjunctionable = true;
+			query.append(StringPool.CLOSE_PARENTHESIS);
 		}
+
+		query.setStringAt(removeConjunction(query.stringAt(query.index() - 1)),
+			query.index() - 1);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			query.append(_FILTER_SQL_SELECT_SPIDEFINITION_NO_INLINE_DISTINCT_WHERE_2);
@@ -2128,7 +2121,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, SPIDefinitionImpl.class);
@@ -2140,10 +2133,6 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 			QueryPos qPos = QueryPos.getInstance(q);
 
 			qPos.add(companyId);
-
-			if (statuses != null) {
-				qPos.add(statuses);
-			}
 
 			return (List<SPIDefinition>)QueryUtil.list(q, getDialect(), start,
 				end);
@@ -2214,7 +2203,14 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	public List<SPIDefinition> findByC_S(long companyId, int[] statuses,
 		int start, int end, OrderByComparator orderByComparator)
 		throws SystemException {
-		if ((statuses != null) && (statuses.length == 1)) {
+		if (statuses == null) {
+			statuses = new int[0];
+		}
+		else {
+			statuses = ArrayUtil.unique(statuses);
+		}
+
+		if (statuses.length == 1) {
 			return findByC_S(companyId, statuses[0], start, end,
 				orderByComparator);
 		}
@@ -2254,35 +2250,22 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 			query.append(_SQL_SELECT_SPIDEFINITION_WHERE);
 
-			boolean conjunctionable = false;
+			query.append(_FINDER_COLUMN_C_S_COMPANYID_2);
 
-			if (conjunctionable) {
-				query.append(WHERE_AND);
-			}
-
-			query.append(_FINDER_COLUMN_C_S_COMPANYID_5);
-
-			conjunctionable = true;
-
-			if ((statuses == null) || (statuses.length > 0)) {
-				if (conjunctionable) {
-					query.append(WHERE_AND);
-				}
-
+			if (statuses.length > 0) {
 				query.append(StringPool.OPEN_PARENTHESIS);
 
-				for (int i = 0; i < statuses.length; i++) {
-					query.append(_FINDER_COLUMN_C_S_STATUS_5);
+				query.append(_FINDER_COLUMN_C_S_STATUS_7);
 
-					if ((i + 1) < statuses.length) {
-						query.append(WHERE_OR);
-					}
-				}
+				query.append(StringUtil.merge(statuses));
 
 				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				conjunctionable = true;
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -2306,17 +2289,13 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 				qPos.add(companyId);
 
-				if (statuses != null) {
-					qPos.add(statuses);
-				}
-
 				if (!pagination) {
 					list = (List<SPIDefinition>)QueryUtil.list(q, getDialect(),
 							start, end, false);
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SPIDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SPIDefinition>)QueryUtil.list(q, getDialect(),
@@ -2427,6 +2406,13 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	@Override
 	public int countByC_S(long companyId, int[] statuses)
 		throws SystemException {
+		if (statuses == null) {
+			statuses = new int[0];
+		}
+		else {
+			statuses = ArrayUtil.unique(statuses);
+		}
+
 		Object[] finderArgs = new Object[] { companyId, StringUtil.merge(statuses) };
 
 		Long count = (Long)FinderCacheUtil.getResult(FINDER_PATH_WITH_PAGINATION_COUNT_BY_C_S,
@@ -2437,35 +2423,22 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 			query.append(_SQL_COUNT_SPIDEFINITION_WHERE);
 
-			boolean conjunctionable = false;
+			query.append(_FINDER_COLUMN_C_S_COMPANYID_2);
 
-			if (conjunctionable) {
-				query.append(WHERE_AND);
-			}
-
-			query.append(_FINDER_COLUMN_C_S_COMPANYID_5);
-
-			conjunctionable = true;
-
-			if ((statuses == null) || (statuses.length > 0)) {
-				if (conjunctionable) {
-					query.append(WHERE_AND);
-				}
-
+			if (statuses.length > 0) {
 				query.append(StringPool.OPEN_PARENTHESIS);
 
-				for (int i = 0; i < statuses.length; i++) {
-					query.append(_FINDER_COLUMN_C_S_STATUS_5);
+				query.append(_FINDER_COLUMN_C_S_STATUS_7);
 
-					if ((i + 1) < statuses.length) {
-						query.append(WHERE_OR);
-					}
-				}
+				query.append(StringUtil.merge(statuses));
 
 				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				conjunctionable = true;
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
+
+			query.setStringAt(removeConjunction(query.stringAt(query.index() -
+						1)), query.index() - 1);
 
 			String sql = query.toString();
 
@@ -2479,10 +2452,6 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 				QueryPos qPos = QueryPos.getInstance(q);
 
 				qPos.add(companyId);
-
-				if (statuses != null) {
-					qPos.add(statuses);
-				}
 
 				count = (Long)q.uniqueResult();
 
@@ -2535,7 +2504,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -2573,39 +2542,33 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 			return countByC_S(companyId, statuses);
 		}
 
+		if (statuses == null) {
+			statuses = new int[0];
+		}
+		else {
+			statuses = ArrayUtil.unique(statuses);
+		}
+
 		StringBundler query = new StringBundler();
 
 		query.append(_FILTER_SQL_COUNT_SPIDEFINITION_WHERE);
 
-		boolean conjunctionable = false;
+		query.append(_FINDER_COLUMN_C_S_COMPANYID_2);
 
-		if (conjunctionable) {
-			query.append(WHERE_AND);
-		}
-
-		query.append(_FINDER_COLUMN_C_S_COMPANYID_5);
-
-		conjunctionable = true;
-
-		if ((statuses == null) || (statuses.length > 0)) {
-			if (conjunctionable) {
-				query.append(WHERE_AND);
-			}
-
+		if (statuses.length > 0) {
 			query.append(StringPool.OPEN_PARENTHESIS);
 
-			for (int i = 0; i < statuses.length; i++) {
-				query.append(_FINDER_COLUMN_C_S_STATUS_5);
+			query.append(_FINDER_COLUMN_C_S_STATUS_7);
 
-				if ((i + 1) < statuses.length) {
-					query.append(WHERE_OR);
-				}
-			}
+			query.append(StringUtil.merge(statuses));
 
 			query.append(StringPool.CLOSE_PARENTHESIS);
 
-			conjunctionable = true;
+			query.append(StringPool.CLOSE_PARENTHESIS);
 		}
+
+		query.setStringAt(removeConjunction(query.stringAt(query.index() - 1)),
+			query.index() - 1);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(query.toString(),
 				SPIDefinition.class.getName(),
@@ -2616,7 +2579,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -2624,10 +2587,6 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 			QueryPos qPos = QueryPos.getInstance(q);
 
 			qPos.add(companyId);
-
-			if (statuses != null) {
-				qPos.add(statuses);
-			}
 
 			Long count = (Long)q.uniqueResult();
 
@@ -2642,11 +2601,8 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 	}
 
 	private static final String _FINDER_COLUMN_C_S_COMPANYID_2 = "spiDefinition.companyId = ? AND ";
-	private static final String _FINDER_COLUMN_C_S_COMPANYID_5 = "(" +
-		removeConjunction(_FINDER_COLUMN_C_S_COMPANYID_2) + ")";
 	private static final String _FINDER_COLUMN_C_S_STATUS_2 = "spiDefinition.status = ?";
-	private static final String _FINDER_COLUMN_C_S_STATUS_5 = "(" +
-		removeConjunction(_FINDER_COLUMN_C_S_STATUS_2) + ")";
+	private static final String _FINDER_COLUMN_C_S_STATUS_7 = "spiDefinition.status IN (";
 	public static final FinderPath FINDER_PATH_FETCH_BY_CA_CP = new FinderPath(SPIDefinitionModelImpl.ENTITY_CACHE_ENABLED,
 			SPIDefinitionModelImpl.FINDER_CACHE_ENABLED,
 			SPIDefinitionImpl.class, FINDER_CLASS_NAME_ENTITY, "fetchByCA_CP",
@@ -2982,7 +2938,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 			CacheRegistryUtil.clear(SPIDefinitionImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(SPIDefinitionImpl.class.getName());
+		EntityCacheUtil.clearCache(SPIDefinitionImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -3297,10 +3253,12 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 		EntityCacheUtil.putResult(SPIDefinitionModelImpl.ENTITY_CACHE_ENABLED,
 			SPIDefinitionImpl.class, spiDefinition.getPrimaryKey(),
-			spiDefinition);
+			spiDefinition, false);
 
 		clearUniqueFindersCache(spiDefinition);
 		cacheUniqueFindersCache(spiDefinition);
+
+		spiDefinition.resetOriginalValues();
 
 		return spiDefinition;
 	}
@@ -3534,7 +3492,7 @@ public class SPIDefinitionPersistenceImpl extends BasePersistenceImpl<SPIDefinit
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<SPIDefinition>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<SPIDefinition>)QueryUtil.list(q, getDialect(),

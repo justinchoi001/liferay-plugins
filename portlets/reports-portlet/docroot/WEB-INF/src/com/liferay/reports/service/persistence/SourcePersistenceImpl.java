@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnmodifiableList;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.CacheModel;
@@ -240,7 +239,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Source>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Source>)QueryUtil.list(q, getDialect(), start,
@@ -1046,7 +1045,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Source>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Source>)QueryUtil.list(q, getDialect(), start,
@@ -1587,7 +1586,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Source>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Source>)QueryUtil.list(q, getDialect(), start,
@@ -1970,7 +1969,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			if (getDB().isSupportsInlineDistinct()) {
 				q.addEntity(_FILTER_ENTITY_ALIAS, SourceImpl.class);
@@ -2145,7 +2144,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 				Source.class.getName(), _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN,
 				groupId);
 
-		SQLQuery q = session.createSQLQuery(sql);
+		SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 		q.setFirstResult(0);
 		q.setMaxResults(2);
@@ -2274,7 +2273,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 		try {
 			session = openSession();
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME,
 				com.liferay.portal.kernel.dao.orm.Type.LONG);
@@ -2438,7 +2437,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Source>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Source>)QueryUtil.list(q, getDialect(), start,
@@ -2837,7 +2836,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 			CacheRegistryUtil.clear(SourceImpl.class.getName());
 		}
 
-		EntityCacheUtil.clearCache(SourceImpl.class.getName());
+		EntityCacheUtil.clearCache(SourceImpl.class);
 
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
@@ -3143,10 +3142,12 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 		}
 
 		EntityCacheUtil.putResult(SourceModelImpl.ENTITY_CACHE_ENABLED,
-			SourceImpl.class, source.getPrimaryKey(), source);
+			SourceImpl.class, source.getPrimaryKey(), source, false);
 
 		clearUniqueFindersCache(source);
 		cacheUniqueFindersCache(source);
+
+		source.resetOriginalValues();
 
 		return source;
 	}
@@ -3374,7 +3375,7 @@ public class SourcePersistenceImpl extends BasePersistenceImpl<Source>
 
 					Collections.sort(list);
 
-					list = new UnmodifiableList<Source>(list);
+					list = Collections.unmodifiableList(list);
 				}
 				else {
 					list = (List<Source>)QueryUtil.list(q, getDialect(), start,

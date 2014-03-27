@@ -696,6 +696,7 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public KaleoDraftDefinition getWrappedKaleoDraftDefinition() {
 		return _kaleoDraftDefinition;
 	}
@@ -703,6 +704,16 @@ public class KaleoDraftDefinitionWrapper implements KaleoDraftDefinition,
 	@Override
 	public KaleoDraftDefinition getWrappedModel() {
 		return _kaleoDraftDefinition;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _kaleoDraftDefinition.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _kaleoDraftDefinition.isFinderCacheEnabled();
 	}
 
 	@Override

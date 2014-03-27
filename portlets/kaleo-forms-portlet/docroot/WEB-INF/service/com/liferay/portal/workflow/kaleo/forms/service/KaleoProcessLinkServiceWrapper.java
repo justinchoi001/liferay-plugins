@@ -88,6 +88,7 @@ public class KaleoProcessLinkServiceWrapper implements KaleoProcessLinkService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public KaleoProcessLinkService getWrappedKaleoProcessLinkService() {
 		return _kaleoProcessLinkService;
 	}
@@ -95,6 +96,7 @@ public class KaleoProcessLinkServiceWrapper implements KaleoProcessLinkService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedKaleoProcessLinkService(
 		KaleoProcessLinkService kaleoProcessLinkService) {
 		_kaleoProcessLinkService = kaleoProcessLinkService;

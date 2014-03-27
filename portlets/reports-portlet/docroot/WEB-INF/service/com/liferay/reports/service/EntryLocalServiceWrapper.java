@@ -386,6 +386,7 @@ public class EntryLocalServiceWrapper implements EntryLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
+	@Deprecated
 	public EntryLocalService getWrappedEntryLocalService() {
 		return _entryLocalService;
 	}
@@ -393,6 +394,7 @@ public class EntryLocalServiceWrapper implements EntryLocalService,
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #setWrappedService}
 	 */
+	@Deprecated
 	public void setWrappedEntryLocalService(EntryLocalService entryLocalService) {
 		_entryLocalService = entryLocalService;
 	}

@@ -114,6 +114,7 @@ public class SalesforceEventLocalServiceUtil {
 	/**
 	 * @deprecated As of 6.2.0
 	 */
+	@Deprecated
 	public void setService(SalesforceEventLocalService service) {
 	}
 

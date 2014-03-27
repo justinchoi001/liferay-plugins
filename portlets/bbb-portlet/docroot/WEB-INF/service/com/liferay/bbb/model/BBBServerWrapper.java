@@ -504,6 +504,7 @@ public class BBBServerWrapper implements BBBServer, ModelWrapper<BBBServer> {
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedModel}
 	 */
+	@Deprecated
 	public BBBServer getWrappedBBBServer() {
 		return _bbbServer;
 	}
@@ -511,6 +512,16 @@ public class BBBServerWrapper implements BBBServer, ModelWrapper<BBBServer> {
 	@Override
 	public BBBServer getWrappedModel() {
 		return _bbbServer;
+	}
+
+	@Override
+	public boolean isEntityCacheEnabled() {
+		return _bbbServer.isEntityCacheEnabled();
+	}
+
+	@Override
+	public boolean isFinderCacheEnabled() {
+		return _bbbServer.isFinderCacheEnabled();
 	}
 
 	@Override
