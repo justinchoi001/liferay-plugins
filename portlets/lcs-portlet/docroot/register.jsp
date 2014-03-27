@@ -118,11 +118,11 @@
 
 	<aui:input checked="<%= true %>" disabled="<%= !ClusterExecutorUtil.isEnabled() %>" id="registerAllClusterNodes" label="register-all-nodes-of-this-cluster" name="registerAllClusterNodes" type="checkbox" />
 
-	<portlet:actionURL name="resetCredentials" var="resetCredentialsURL">
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-	</portlet:actionURL>
-
 	<aui:button-row>
+		<portlet:actionURL name="resetCredentials" var="resetCredentialsURL">
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+		</portlet:actionURL>
+
 		<aui:button href="<%= resetCredentialsURL.toString() %>" name="back" value="back" />
 
 		<aui:button cssClass="btn-success" disabled="<%= true %>" name="register" type="submit" value="register" />
@@ -130,14 +130,23 @@
 </aui:form>
 
 <aui:script use="liferay-cloud-services">
-	new Liferay.Portlet.LCS(
+	var lcsPortlet = new Liferay.Portlet.LCS(
 		{
-			addLCSClusterEntryURL: '<portlet:renderURL windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><portlet:param name="mvcPath" value="/add_lcs_cluster_entry.jsp" /></portlet:renderURL>',
+			namespace: '<portlet:namespace />'
+		}
+	);
+
+	lcsPortlet.initializeRegisterPage(
+		{
+			<portlet:renderURL var="addLCSClusterEntryURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+				<portlet:param name="mvcPath" value="/add_lcs_cluster_entry.jsp" />
+			</portlet:renderURL>
+
+			addLCSClusterEntryURL: '<%= addLCSClusterEntryURL %>',
 			errorDuplicateEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "please-enter-an-unique-environment-name") %>',
 			errorGenericEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "your-request-failed-to-complete") %>',
 			errorRequiredEnvironmentName: '<%= UnicodeLanguageUtil.get(pageContext, "environment-name-is-required") %>',
 			labelNewEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "new-environment") %>',
-			namespace: '<portlet:namespace />',
 			serveCorpEntryURL: '<portlet:resourceURL id="serveCorpEntry" />',
 			serveLCSClusterEntryURL: '<portlet:resourceURL id="serveLCSClusterEntry" />'
 		}

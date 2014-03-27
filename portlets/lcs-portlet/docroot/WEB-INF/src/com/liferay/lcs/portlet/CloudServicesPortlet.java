@@ -79,9 +79,11 @@ public class CloudServicesPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		stop(actionRequest, actionResponse);
+		HandshakeManagerUtil.stop();
 
 		deletePortletPreferences(actionRequest);
+
+		sendRedirect(actionRequest, actionResponse);
 	}
 
 	@Override
@@ -92,7 +94,16 @@ public class CloudServicesPortlet extends MVCPortlet {
 		try {
 			String resourceId = resourceRequest.getResourceID();
 
-			if (resourceId.equals("serveCorpEntry")) {
+			if (resourceId.equals("connect")) {
+				connect(resourceRequest, resourceResponse);
+			}
+			else if (resourceId.equals("disconnect")) {
+				disconnect(resourceRequest, resourceResponse);
+			}
+			else if (resourceId.equals("serveConnectionStatus")) {
+				serveConnectionStatus(resourceRequest, resourceResponse);
+			}
+			else if (resourceId.equals("serveCorpEntry")) {
 				serveCorpEntry(resourceRequest, resourceResponse);
 			}
 			else if (resourceId.equals("serveLCSClusterEntry")) {
@@ -154,23 +165,6 @@ public class CloudServicesPortlet extends MVCPortlet {
 		}
 	}
 
-	public void start(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws IOException {
-
-		HandshakeManagerUtil.start();
-
-		sendRedirect(actionRequest, actionResponse);
-	}
-
-	public void stop(ActionRequest actionRequest, ActionResponse actionResponse)
-		throws IOException {
-
-		HandshakeManagerUtil.stop();
-
-		sendRedirect(actionRequest, actionResponse);
-	}
-
 	protected LCSClusterEntry addLCSClusterEntry(
 			long corpEntryId, String name, String description, String location)
 		throws Exception {
@@ -194,6 +188,26 @@ public class CloudServicesPortlet extends MVCPortlet {
 			lcsClusterEntryId, name, description, location);
 	}
 
+	protected void connect(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		try {
+			HandshakeManagerUtil.start();
+
+			jsonObject.put("result", "success");
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			jsonObject.put("result", "failure");
+		}
+
+		writeJSON(resourceRequest, resourceResponse, jsonObject);
+	}
+
 	protected void deletePortletPreferences(PortletRequest portletRequest)
 		throws Exception {
 
@@ -209,6 +223,26 @@ public class CloudServicesPortlet extends MVCPortlet {
 				_log.warn(nsppe, nsppe);
 			}
 		}
+	}
+
+	protected void disconnect(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		try {
+			HandshakeManagerUtil.stop();
+
+			jsonObject.put("result", "success");
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			jsonObject.put("result", "failure");
+		}
+
+		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}
 
 	protected JSONArray getCorpEntriesJSONArray(PortletRequest portletRequest)
@@ -305,6 +339,18 @@ public class CloudServicesPortlet extends MVCPortlet {
 		jsonObject.put("type", lcsClusterEntry.getType());
 
 		return jsonObject;
+	}
+
+	protected void serveConnectionStatus(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("pending", HandshakeManagerUtil.isPending());
+		jsonObject.put("ready", HandshakeManagerUtil.isReady());
+
+		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}
 
 	protected void serveCorpEntry(

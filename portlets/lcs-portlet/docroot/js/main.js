@@ -3,27 +3,23 @@ AUI.add(
 	function(A) {
 		var Lang = A.Lang;
 
+		var CSS_ICON_CONNECTED = 'lcs-icon-connected';
+
+		var CSS_ICON_DISCONNECTED = 'lcs-icon-disconnected';
+
+		var CSS_ICON_PENDING = 'lcs-icon-pending';
+
 		var CSS_LCS_CLUSTER_ENTRY_DIALOG = 'lcs-cluster-entry-dialog';
 
-		var EVENT_CHANGE = 'change';
+		var STR_CLICK = 'click';
 
-		var EVENT_CLICK = 'click';
+		var STR_INPUT = 'input';
 
-		var EVENT_INPUT = 'input';
+		var STR_REPONSE_DATA = 'responseData';
 
-		var EVENT_SUBMIT = 'submit';
-
-		var EVENT_VISIBLE_CHANGE = 'visibleChange';
-
-		var SELECTOR_LCS_CLUSTER_ENTRY_ADD_FORM = 'fm';
-
-		var STR_EMPTY = '';
+		var STR_SUBMIT = 'submit';
 
 		var STR_SUCCESS = 'success';
-
-		var STR_URI = 'uri';
-
-		var STR_VALUE = 'value';
 
 		var TPL_ERROR_MESSAGE = '<span class="alert alert-error lcs-alert">{message}</span>';
 
@@ -52,7 +48,90 @@ AUI.add(
 				NAME: 'liferay-cloud-services',
 
 				prototype: {
-					initializer: function(config) {
+					initializeLCSClusterNodePage: function(config) {
+						var instance = this;
+
+						var connectURL = config.connectURL;
+						var disconnectURL = config.disconnectURL;
+						var pending = config.pending;
+
+						instance._connectionStatusURL = config.connectionStatusURL;
+						instance._labelConnected = config.labelConnected;
+						instance._labelConnectedHelp = config.labelConnectedHelp;
+						instance._labelDisconnected = config.labelDisconnected;
+						instance._labelDisconnectedHelp = config.labelDisconnectedHelp;
+						instance._labelPending = config.labelPending;
+						instance._labelPendingHelp = config.labelPendingHelp;
+
+						var connectButton = instance.byId('connect');
+						var disconnectButton = instance.byId('disconnect');
+						var resetCredentialsButton = instance.byId('resetCredentials');
+
+						connectButton.on(
+							STR_CLICK,
+							function(event) {
+								A.io.request(
+									connectURL,
+									{
+										dataType: 'json',
+										method: 'GET',
+										on: {
+											success: function(event, id, obj) {
+												var response = this.get(STR_REPONSE_DATA);
+
+												if (response.result == STR_SUCCESS) {
+													instance._refreshConnectionControls(true, false);
+
+													setTimeout(A.bind('_getConnectionStatus', instance), 1000);
+												}
+											}
+										}
+									}
+								);
+							}
+						);
+
+						disconnectButton.on(
+							STR_CLICK,
+							function(event) {
+								A.io.request(
+									disconnectURL,
+									{
+										dataType: 'json',
+										method: 'GET',
+										on: {
+											success: function(event, id, obj) {
+												var response = this.get(STR_REPONSE_DATA);
+
+												if (response.result == STR_SUCCESS) {
+													instance._refreshConnectionControls(true, true);
+
+													setTimeout(A.bind('_getConnectionStatus', instance), 1000);
+												}
+											}
+										}
+									}
+								);
+							}
+						);
+
+						instance._connectButton = connectButton;
+						instance._disconnectButton = disconnectButton;
+						instance._resetCredentialsButton = resetCredentialsButton;
+
+						new A.TooltipDelegate(
+							{
+								trigger: '.lcs-portlet button',
+								zIndex: 1
+							}
+						);
+
+						if (pending) {
+							instance._getConnectionStatus();
+						}
+					},
+
+					initializeRegisterPage: function(config) {
 						var instance = this;
 
 						var urlMap = {};
@@ -74,23 +153,23 @@ AUI.add(
 
 						instance._portletContentBox = instance._registrationForm.ancestor('.portlet-content');
 
-						instance.byId('addEnvironmentButton').on(EVENT_CLICK, instance._createLCSClusterEntryPanel, instance);
-						instance.byId('corpEntryId').on(EVENT_CHANGE, instance._loadData, instance);
-						instance.byId('name').on(EVENT_INPUT, A.bind('_refreshSubmitDisabled', instance));
+						instance.byId('addEnvironmentButton').on(STR_CLICK, instance._createLCSClusterEntryPanel, instance);
+						instance.byId('corpEntryId').on('change', instance._loadData, instance);
+						instance.byId('name').on(STR_INPUT, A.bind('_refreshSubmitDisabled', instance));
 					},
 
 					_initializeLCSClusterEntryPanel: function() {
 						var instance = this;
 
-						var lcsClusterEntryFormAdd = instance.byId(SELECTOR_LCS_CLUSTER_ENTRY_ADD_FORM, instance._lcsClusterEntryPanel);
+						var lcsClusterEntryFormAdd = instance.byId('fm', instance._lcsClusterEntryPanel);
 
 						var name = instance.one('#name', lcsClusterEntryFormAdd);
 
-						lcsClusterEntryFormAdd.detach(EVENT_SUBMIT);
+						lcsClusterEntryFormAdd.detach(STR_SUBMIT);
 
-						name.on(EVENT_INPUT, A.bind('_onLCSClusterEntryNameInput', instance));
+						name.on(STR_INPUT, A.bind('_onLCSClusterEntryNameInput', instance));
 
-						lcsClusterEntryFormAdd.on(EVENT_SUBMIT, instance._onLCSClusterEntryFormSubmit, instance, lcsClusterEntryFormAdd);
+						lcsClusterEntryFormAdd.on(STR_SUBMIT, instance._onLCSClusterEntryFormSubmit, instance, lcsClusterEntryFormAdd);
 
 						instance._lcsClusterEntryFormAdd = lcsClusterEntryFormAdd;
 					},
@@ -107,9 +186,9 @@ AUI.add(
 								},
 								on: {
 									success: function(event, id, obj) {
-										var data = this.get('responseData');
+										var response = this.get(STR_REPONSE_DATA);
 
-										instance._refreshFormData(data);
+										instance._refreshFormData(response);
 									}
 								}
 							}
@@ -178,7 +257,7 @@ AUI.add(
 							);
 
 							lcsClusterEntryPanel.on(
-								EVENT_VISIBLE_CHANGE,
+								'visibleChange',
 								function(event) {
 									if (!event.newVal && instance._lcsClusterEntryFormAdd) {
 										instance._lcsClusterEntryFormAdd.reset();
@@ -191,7 +270,7 @@ AUI.add(
 						else if (instance._currentLCSClusterEntryPanelAddIOHandle) {
 							instance._currentLCSClusterEntryPanelAddIOHandle.detach();
 
-							lcsClusterEntryPanel.io.set(STR_URI, lcsClusterEntryPanelRenderURL);
+							lcsClusterEntryPanel.io.set('uri', lcsClusterEntryPanelRenderURL);
 						}
 
 						lcsClusterEntryPanel.show();
@@ -216,6 +295,30 @@ AUI.add(
 						}
 
 						return url;
+					},
+
+					_getConnectionStatus: function() {
+						var instance = this;
+
+						A.io.request(
+							instance._connectionStatusURL,
+							{
+								dataType: 'json',
+								method: 'GET',
+								on: {
+									success: function(event, id, obj) {
+										var response = this.get(STR_REPONSE_DATA);
+
+										if (response.pending) {
+											setTimeout(A.bind('_getConnectionStatus', instance), 1000);
+										}
+										else {
+											instance._refreshConnectionControls(false, response.ready);
+										}
+									}
+								}
+							}
+						);
 					},
 
 					_handleLCSClusterEntryError: function(message) {
@@ -245,7 +348,7 @@ AUI.add(
 						var instance = this;
 
 						if (!parameter) {
-							parameter = STR_EMPTY;
+							parameter = '';
 						}
 
 						var tplHTML = Lang.sub(
@@ -276,9 +379,9 @@ AUI.add(
 										instance._handleLCSClusterEntryError(instance._errorGenericEnvironment);
 									},
 									success: function(event, id, obj) {
-										var responseData = this.get('responseData');
+										var response = this.get(STR_REPONSE_DATA);
 
-										if (responseData.result == 'success') {
+										if (response.result == 'success') {
 											instance._lcsClusterEntryPanel.hide();
 
 											instance._loadData();
@@ -286,10 +389,10 @@ AUI.add(
 										else {
 											var message = instance._errorGenericEnvironment;
 
-											if (responseData.message == 'duplicateLCSClusterEntryName') {
+											if (response.message == 'duplicateLCSClusterEntryName') {
 												message = instance._errorDuplicateEnvironment;
 											}
-											else if (responseData.message == 'requiredLCSClusterEntryName') {
+											else if (response.message == 'requiredLCSClusterEntryName') {
 												message = instance._errorRequiredEnvironmentName;
 											}
 
@@ -307,6 +410,64 @@ AUI.add(
 						var disabled = !(Lang.trim(event.currentTarget.val()));
 
 						Liferay.Util.toggleDisabled(instance.byId('create'), disabled);
+					},
+
+					_refreshConnectionControls: function(pending, ready) {
+						var instance = this;
+
+						var connectButton = instance._connectButton;
+						var disconnectButton = instance._disconnectButton;
+						var resetCredentialsButton = instance._resetCredentialsButton;
+
+						var connectionStatusNode = instance.one('.lcs-connection-status');
+						var connectionStatusIconNode = connectionStatusNode.one('.lcs-connection-icon');
+						var connectionStatusLabelNode = connectionStatusNode.one('.lcs-connection-label');
+						var connectionStatusTooltipNode = connectionStatusNode.one('.tooltip-text');
+
+						var alertContainerNode = instance.byId('connectionAlertContainer');
+
+						Liferay.Util.toggleDisabled(connectButton, pending);
+						Liferay.Util.toggleDisabled(disconnectButton, pending);
+						Liferay.Util.toggleDisabled(resetCredentialsButton, pending);
+
+						if (pending) {
+							alertContainerNode.show();
+
+							var tooltip = A.one('body > .tooltip');
+
+							if (tooltip) {
+								tooltip.addClass('tooltip-hidden');
+							}
+
+							connectionStatusIconNode.removeClass(CSS_ICON_CONNECTED);
+							connectionStatusIconNode.removeClass(CSS_ICON_DISCONNECTED);
+							connectionStatusIconNode.addClass(CSS_ICON_PENDING);
+
+							connectionStatusLabelNode.html(instance._labelPending);
+							connectionStatusTooltipNode.html(instance._labelPendingHelp);
+						}
+						else {
+							alertContainerNode.hide();
+
+							connectionStatusIconNode.removeClass(CSS_ICON_PENDING);
+
+							if (ready) {
+								connectButton.hide();
+								disconnectButton.show();
+
+								connectionStatusIconNode.addClass(CSS_ICON_CONNECTED);
+								connectionStatusLabelNode.html(instance._labelConnected);
+								connectionStatusTooltipNode.html(instance._labelConnectedHelp);
+							}
+							else {
+								connectButton.show();
+								disconnectButton.hide();
+
+								connectionStatusIconNode.addClass(CSS_ICON_DISCONNECTED);
+								connectionStatusLabelNode.html(instance._labelDisconnected);
+								connectionStatusTooltipNode.html(instance._labelDisconnectedHelp);
+							}
+						}
 					},
 
 					_refreshFormData: function(data) {
@@ -367,6 +528,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['liferay-util-window', 'aui-io-plugin-deprecated', 'dd', 'liferay-portlet-base', 'liferay-portlet-url', 'resize']
+		requires: ['aui-io-plugin-deprecated', 'aui-tooltip-delegate', 'liferay-portlet-base', 'liferay-portlet-url', 'liferay-util-window', 'resize']
 	}
 );

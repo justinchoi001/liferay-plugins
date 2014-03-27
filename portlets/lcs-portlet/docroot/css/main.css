@@ -120,4 +120,18 @@ span.lcs-alert {
 			word-wrap: break-word;
 		}
 	}
+
+	div.lcs-synchronizing-alert {
+		display: inline-block;
+		position: relative;
+
+		&:after {
+			background: url(@theme_image_path@/aui/loading_indicator.gif) no-repeat center;
+			content: "";
+			padding: 10px;
+			position: absolute;
+			right: -26px;
+			top: 8px;
+		}
+	}
 }

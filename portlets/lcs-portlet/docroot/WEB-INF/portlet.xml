@@ -6,6 +6,10 @@
 		<display-name>Cloud Services</display-name>
 		<portlet-class>com.liferay.lcs.portlet.CloudServicesPortlet</portlet-class>
 		<init-param>
+			<name>add-process-action-success-action</name>
+			<value>false</value>
+		</init-param>
+		<init-param>
 			<name>copy-request-parameters</name>
 			<value>true</value>
 		</init-param>
