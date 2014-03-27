@@ -54,13 +54,9 @@
 	</aui:select>
 
 	<%
-	long corpEntryId = ParamUtil.getLong(request, "corpEntryId");
+	CorpEntryIdentifier corpEntryIdentifier = corpEntryIdentifiers.get(0);
 
-	if (corpEntryId == 0) {
-		CorpEntryIdentifier corpEntryIdentifier = corpEntryIdentifiers.get(0);
-
-		corpEntryId = corpEntryIdentifier.getCorpEntryId();
-	}
+	long corpEntryId = corpEntryIdentifier.getCorpEntryId();
 
 	List<LCSClusterEntry> lcsClusterEntries = LCSClusterEntryServiceUtil.getCorpEntryLCSClusterEntries(corpEntryId);
 	%>
@@ -71,33 +67,21 @@
 				<c:when test="<%= lcsClusterEntries.isEmpty() %>">
 					<liferay-ui:message key="there-are-no-environments-created-yet" />
 				</c:when>
-				<c:when test="<%= lcsClusterEntries.size() == 1 %>">
-
-					<%
-					LCSClusterEntry lcsClusterEntry = lcsClusterEntries.get(0);
-					%>
-
-					<aui:input id="lcsClusterEntryId" name="lcsClusterEntryId" type="hidden" value="<%= lcsClusterEntry.getLcsClusterEntryId() %>" />
-
-					<aui:input label="" name="lcsClusterEntryName" type="text" value="<%= lcsClusterEntry.getName() %>" />
-				</c:when>
-				<c:when test="<%= lcsClusterEntries.size() > 1 %>">
+				<c:otherwise>
 					<aui:select id="lcsClusterEntryId" label="" name="lcsClusterEntryId">
 
 						<%
-						long lcsClusterEntryId = ParamUtil.getLong(request, "lcsClusterEntryId");
-
 						for (LCSClusterEntry lcsClusterEntry : lcsClusterEntries) {
 						%>
 
-							<aui:option label="<%= lcsClusterEntry.getName() %>" selected="<%= lcsClusterEntryId == lcsClusterEntry.getLcsClusterEntryId() %>" value="<%= lcsClusterEntry.getLcsClusterEntryId() %>" />
+							<option value="<%= lcsClusterEntry.getLcsClusterEntryId() %>"><%= lcsClusterEntry.getName() %></option>
 
 						<%
 						}
 						%>
 
 					</aui:select>
-				</c:when>
+				</c:otherwise>
 			</c:choose>
 		</span>
 
@@ -147,6 +131,7 @@
 			errorGenericEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "your-request-failed-to-complete") %>',
 			errorRequiredEnvironmentName: '<%= UnicodeLanguageUtil.get(pageContext, "environment-name-is-required") %>',
 			labelNewEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "new-environment") %>',
+			msgNoEnvironmentsCreated: '<%= UnicodeLanguageUtil.get(pageContext, "there-are-no-environments-created-yet") %>',
 			serveCorpEntryURL: '<portlet:resourceURL id="serveCorpEntry" />',
 			serveLCSClusterEntryURL: '<portlet:resourceURL id="serveLCSClusterEntry" />'
 		}

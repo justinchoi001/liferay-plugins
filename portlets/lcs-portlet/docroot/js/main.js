@@ -23,13 +23,11 @@ AUI.add(
 
 		var TPL_ERROR_MESSAGE = '<span class="alert alert-error lcs-alert">{message}</span>';
 
-		var TPL_FIELD_HIDDEN = '<input class="field-input field-input-text" id="{portletNamespace}lcsClusterEntryId" name="{portletNamespace}lcsClusterEntryId" type="hidden" value="" />';
+		var TPL_OPTION = '<option value="{0}">{1}</option>';
 
-		var TPL_FIELD_OPTION = '<option value="{0}">{1}</option>';
-
-		var TPL_FIELD_SELECT = '<div class="control-group">' +
+		var TPL_SELECT_LCS_CLUSTER_ENTRY = '<div class="control-group">' +
 			'<select class="aui-field-select" id="{portletNamespace}lcsClusterEntryId" name="{portletNamespace}lcsClusterEntryId">' +
-				'{optionalContent}' +
+				'{options}' +
 			'</select>' +
 		'</div>';
 
@@ -146,6 +144,7 @@ AUI.add(
 						instance._errorGenericEnvironment = config.errorGenericEnvironment;
 						instance._errorRequiredEnvironmentName = config.errorRequiredEnvironmentName;
 						instance._labelNewEnvironment = config.labelNewEnvironment;
+						instance._msgNoEnvironmentsCreated = config.msgNoEnvironmentsCreated;
 
 						instance._urlMap = urlMap;
 
@@ -158,6 +157,8 @@ AUI.add(
 						instance.byId('addEnvironmentButton').on(STR_CLICK, instance._createLCSClusterEntryPanel, instance);
 						instance.byId('corpEntryId').on('change', instance._loadData, instance);
 						instance.byId('name').on(STR_INPUT, A.bind('_refreshSubmitDisabled', instance));
+
+						instance._newLCSClusterEntryCreated = false;
 					},
 
 					_initializeLCSClusterEntryPanel: function() {
@@ -197,35 +198,25 @@ AUI.add(
 						);
 					},
 
-					_createHiddenNode: function(value) {
-						var instance = this;
-
-						var auiHiddenNode = instance._nodeFromTemplate(TPL_FIELD_HIDDEN);
-
-						auiHiddenNode.val(value);
-
-						return auiHiddenNode;
-					},
-
-					_createSelectNode: function(optionsArray) {
+					_createSelectLCSClusterEntryHTML: function(optionsArray) {
 						var instance = this;
 
 						var options = A.Array.map(
 							optionsArray,
 							function(item, index, collection) {
-								return Lang.sub(TPL_FIELD_OPTION, [item.lcsClusterEntryId, item.name]);
+								return Lang.sub(TPL_OPTION, [item.lcsClusterEntryId, item.name]);
 							}
 						);
 
 						options = options.join('');
 
-						var templateNode = instance._nodeFromTemplate(TPL_FIELD_SELECT, options);
-
-						var selectNode = templateNode.one('select');
-
-						selectNode.set('selectedIndex', optionsArray.length - 1);
-
-						return templateNode;
+						return Lang.sub(
+							TPL_SELECT_LCS_CLUSTER_ENTRY,
+							{
+								portletNamespace: instance.NS,
+								options: options
+							}
+						);
 					},
 
 					_createLCSClusterEntryPanel: function() {
@@ -346,24 +337,6 @@ AUI.add(
 						errorMessageNode.html(errorMessageHTML);
 					},
 
-					_nodeFromTemplate: function(tpl, parameter) {
-						var instance = this;
-
-						if (!parameter) {
-							parameter = '';
-						}
-
-						var tplHTML = Lang.sub(
-							tpl,
-							{
-								portletNamespace: instance.NS,
-								optionalContent: parameter
-							}
-						);
-
-						return A.Node.create(tplHTML);
-					},
-
 					_onLCSClusterEntryFormSubmit: function(event, form) {
 						var instance = this;
 
@@ -385,6 +358,8 @@ AUI.add(
 
 										if (response.result == 'success') {
 											instance._lcsClusterEntryPanel.hide();
+
+											instance._newLCSClusterEntryCreated = true;
 
 											instance._loadData();
 										}
@@ -486,7 +461,7 @@ AUI.add(
 							var options = A.Array.map(
 								corpEntries,
 								function(item, index, collection) {
-									return Lang.sub(TPL_FIELD_OPTION, [item.corpEntryId, item.name]);
+									return Lang.sub(TPL_OPTION, [item.corpEntryId, item.name]);
 								}
 							);
 
@@ -495,21 +470,28 @@ AUI.add(
 
 						var lcsClusterEntries = data.lcsClusterEntries;
 
-						var lcsClusterEntryIdNode = instance._lcsClusterEntryIdNode;
 						var lcsClusterEntryInputWrapper = instance._lcsClusterEntryInputWrapper;
 
-						if (lcsClusterEntryIdNode) {
-							lcsClusterEntryInputWrapper.empty();
-						}
-
 						if (lcsClusterEntries.length > 0) {
-							lcsClusterEntryIdNode = instance._createSelectNode(lcsClusterEntries);
+							var selectLCSClusterEntryHTML = instance._createSelectLCSClusterEntryHTML(lcsClusterEntries);
 
-							lcsClusterEntryInputWrapper.append(lcsClusterEntryIdNode);
+							lcsClusterEntryInputWrapper.html(selectLCSClusterEntryHTML);
+
+							var lcsClusterEntryIdNode = lcsClusterEntryInputWrapper.one('#' + instance.NS + 'lcsClusterEntryId');
+
+							if (instance._newLCSClusterEntryCreated) {
+								var optionsSize = lcsClusterEntryIdNode.all('option').size();
+
+								lcsClusterEntryIdNode.set('selectedIndex', optionsSize - 1);
+
+								instance._newLCSClusterEntryCreated = false;
+							}
 
 							instance._lcsClusterEntryIdNode = lcsClusterEntryIdNode;
 						}
 						else {
+							lcsClusterEntryInputWrapper.html(instance._msgNoEnvironmentsCreated);
+
 							instance._lcsClusterEntryIdNode = null;
 						}
 
