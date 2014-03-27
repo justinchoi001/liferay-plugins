@@ -59,10 +59,6 @@ public class ServerMetricsTask implements Runnable {
 		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_SERVER);
 		metricsMessage.setPayload(getPayload());
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sending " + metricsMessage);
-		}
-
 		_lcsGatewayService.sendMessage(metricsMessage);
 	}
 

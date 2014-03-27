@@ -174,10 +174,6 @@ public class CacheMetricsTask implements Runnable {
 		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_CACHE);
 		metricsMessage.setPayload(getPayload());
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sending " + metricsMessage);
-		}
-
 		_lcsGatewayService.sendMessage(metricsMessage);
 	}
 

@@ -19,6 +19,8 @@ import com.liferay.lcs.service.LCSGatewayService;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.security.auth.PrincipalException;
 
 import java.util.ArrayList;
@@ -46,6 +48,10 @@ public class LCSGatewayServiceImpl
 			for (String messageJSON : messageJSONs) {
 				Message message = (Message)fromJSON(messageJSON);
 
+				if (_log.isDebugEnabled()) {
+					_log.debug("Getting " + message);
+				}
+
 				messages.add(message);
 			}
 
@@ -68,6 +74,10 @@ public class LCSGatewayServiceImpl
 		try {
 			json = CompressionUtil.compress(json);
 
+			if (_log.isDebugEnabled()) {
+				_log.debug("Sending " + message);
+			}
+
 			doPost(_URL_LCS_GATEWAY_SEND_MESSAGE, "json", json);
 		}
 		catch (CredentialException ce) {
@@ -86,5 +96,8 @@ public class LCSGatewayServiceImpl
 
 	private static final String _URL_LCS_GATEWAY_SEND_MESSAGE =
 		LCSGatewayServiceImpl._URL_LCS_GATEWAY + "/send-message";
+
+	private static Log _log = LogFactoryUtil.getLog(
+		LCSGatewayServiceImpl.class);
 
 }

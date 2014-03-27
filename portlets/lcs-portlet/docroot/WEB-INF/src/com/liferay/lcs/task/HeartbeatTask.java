@@ -51,10 +51,6 @@ public class HeartbeatTask implements Runnable {
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());
 		heartbeatMessage.setKey(_keyGenerator.getKey());
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sending " + heartbeatMessage);
-		}
-
 		_lcsGatewayService.sendMessage(heartbeatMessage);
 	}
 

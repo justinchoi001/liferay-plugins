@@ -62,10 +62,6 @@ public class JVMMetricsTask implements Runnable {
 		metricsMessage.setMetricsType(MetricsMessage.METRICS_TYPE_JVM);
 		metricsMessage.setPayload(getPayload());
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sending " + metricsMessage);
-		}
-
 		_lcsGatewayService.sendMessage(metricsMessage);
 	}
 

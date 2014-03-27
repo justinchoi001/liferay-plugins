@@ -84,10 +84,6 @@ public class PortalMetricsMessageListener implements MessageListener {
 
 		metricsMessage.setPayload(payload);
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sending " + metricsMessage);
-		}
-
 		try {
 			_lcsGatewayService.sendMessage(metricsMessage);
 		}
