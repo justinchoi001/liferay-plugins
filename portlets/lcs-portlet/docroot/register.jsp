@@ -136,12 +136,12 @@
 		}
 	);
 
+	<portlet:renderURL var="addLCSClusterEntryURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+		<portlet:param name="mvcPath" value="/add_lcs_cluster_entry.jsp" />
+	</portlet:renderURL>
+
 	lcsPortlet.initializeRegisterPage(
 		{
-			<portlet:renderURL var="addLCSClusterEntryURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-				<portlet:param name="mvcPath" value="/add_lcs_cluster_entry.jsp" />
-			</portlet:renderURL>
-
 			addLCSClusterEntryURL: '<%= addLCSClusterEntryURL %>',
 			errorDuplicateEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "please-enter-an-unique-environment-name") %>',
 			errorGenericEnvironment: '<%= UnicodeLanguageUtil.get(pageContext, "your-request-failed-to-complete") %>',

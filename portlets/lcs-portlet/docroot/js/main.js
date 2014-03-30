@@ -420,6 +420,7 @@ AUI.add(
 						var resetCredentialsButton = instance._resetCredentialsButton;
 
 						var connectionStatusNode = instance.one('.lcs-connection-status');
+
 						var connectionStatusIconNode = connectionStatusNode.one('.lcs-connection-icon');
 						var connectionStatusLabelNode = connectionStatusNode.one('.lcs-connection-label');
 						var connectionStatusTooltipNode = connectionStatusNode.one('.tooltip-text');
@@ -456,6 +457,7 @@ AUI.add(
 								disconnectButton.show();
 
 								connectionStatusIconNode.addClass(CSS_ICON_CONNECTED);
+
 								connectionStatusLabelNode.html(instance._labelConnected);
 								connectionStatusTooltipNode.html(instance._labelConnectedHelp);
 							}
@@ -464,6 +466,7 @@ AUI.add(
 								disconnectButton.hide();
 
 								connectionStatusIconNode.addClass(CSS_ICON_DISCONNECTED);
+
 								connectionStatusLabelNode.html(instance._labelDisconnected);
 								connectionStatusTooltipNode.html(instance._labelDisconnectedHelp);
 							}

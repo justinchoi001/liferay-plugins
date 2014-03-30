@@ -229,7 +229,7 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 </div>
 
 <aui:button-row>
-	<aui:button cssClass='<%= ready ? "btn-success hide" : "btn-success" %>' disabled="<%= pending %>" name="connect" title='<%= LanguageUtil.get(pageContext, "connect-help") %>' value="connect" />
+	<aui:button cssClass='<%= "btn-success " + (ready ? "hide" : StringPool.BLANK) %>' disabled="<%= pending %>" name="connect" title='<%= LanguageUtil.get(pageContext, "connect-help") %>' value="connect" />
 
 	<aui:button cssClass='<%= ready ? StringPool.BLANK : "hide" %>' disabled="<%= pending %>" name="disconnect" title='<%= LanguageUtil.get(pageContext, "disconnect-help") %>' value="disconnect" />
 
@@ -240,7 +240,7 @@ for (CorpEntryIdentifier currentCorpEntryIdentifier : CorpEntryServiceUtil.getCo
 	<aui:button disabled="<%= pending %>" href="<%= resetCredentialsURL %>" name="resetCredentials" title='<%= LanguageUtil.get(pageContext, "reset-credentials-help") %>' value="reset-credentials" />
 </aui:button-row>
 
-<div class='alert alert-info <%= pending ? StringPool.BLANK : "hide" %> lcs-synchronizing-alert' id="<portlet:namespace />connectionAlertContainer">
+<div class="alert alert-info lcs-synchronizing-alert <%= pending ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />connectionAlertContainer">
 	<liferay-ui:message key="synchronizing-help" />
 </div>
 

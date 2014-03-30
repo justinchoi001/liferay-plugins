@@ -121,7 +121,7 @@ span.lcs-alert {
 		}
 	}
 
-	div.lcs-synchronizing-alert {
+	.lcs-synchronizing-alert {
 		display: inline-block;
 		position: relative;
 
