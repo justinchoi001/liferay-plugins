@@ -42,7 +42,7 @@ span.lcs-alert {
 
 		&:after {
 			clear: both;
-			content: "";
+			content: '';
 			display: block;
 			visibility: hidden;
 		}
@@ -103,7 +103,7 @@ span.lcs-alert {
 	.lcs-info {
 		&:after {
 			clear: both;
-			content: "";
+			content: '';
 			display: block;
 			visibility: hidden;
 		}
@@ -127,7 +127,7 @@ span.lcs-alert {
 
 		&:after {
 			background: url(@theme_image_path@/aui/loading_indicator.gif) no-repeat center;
-			content: "";
+			content: '';
 			padding: 10px;
 			position: absolute;
 			right: -26px;

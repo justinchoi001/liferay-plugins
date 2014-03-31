@@ -67,6 +67,8 @@ AUI.add(
 						var disconnectButton = instance.byId('disconnect');
 						var resetCredentialsButton = instance.byId('resetCredentials');
 
+						var getConnectionStatus = A.bind('_getConnectionStatus', instance);
+
 						connectButton.on(
 							STR_CLICK,
 							function(event) {
@@ -82,7 +84,7 @@ AUI.add(
 												if (response.result == STR_SUCCESS) {
 													instance._refreshConnectionControls(true, false);
 
-													setTimeout(A.bind('_getConnectionStatus', instance), 1000);
+													setTimeout(getConnectionStatus, 1000);
 												}
 											}
 										}
@@ -106,7 +108,7 @@ AUI.add(
 												if (response.result == STR_SUCCESS) {
 													instance._refreshConnectionControls(true, true);
 
-													setTimeout(A.bind('_getConnectionStatus', instance), 1000);
+													setTimeout(getConnectionStatus, 1000);
 												}
 											}
 										}
@@ -141,7 +143,7 @@ AUI.add(
 						urlMap[TYPE_SERVE_LCS_CLUSTER_ENTRY] = config.serveLCSClusterEntryURL;
 
 						instance._errorDuplicateEnvironment = config.errorDuplicateEnvironment;
-						instance._errorGenericEnvironment= config.errorGenericEnvironment;
+						instance._errorGenericEnvironment = config.errorGenericEnvironment;
 						instance._errorRequiredEnvironmentName = config.errorRequiredEnvironmentName;
 						instance._labelNewEnvironment = config.labelNewEnvironment;
 
