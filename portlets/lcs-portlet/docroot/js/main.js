@@ -480,9 +480,9 @@ AUI.add(
 							var lcsClusterEntryIdNode = lcsClusterEntryInputWrapper.one('#' + instance.NS + 'lcsClusterEntryId');
 
 							if (instance._lcsClusterNewEntry) {
-								var optionsSize = lcsClusterEntryIdNode.all('option').size();
+								var lastIndex = lcsClusterEntryIdNode.attr('length') - 1;
 
-								lcsClusterEntryIdNode.set('selectedIndex', optionsSize - 1);
+								lcsClusterEntryIdNode.set('selectedIndex', lastIndex);
 
 								instance._lcsClusterNewEntry = false;
 							}

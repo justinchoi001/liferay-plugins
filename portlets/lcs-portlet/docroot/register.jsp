@@ -68,21 +68,21 @@
 					<liferay-ui:message key="there-are-no-environments-created-yet" />
 				</c:when>
 				<c:otherwise>
-					<div class="control-group">
-						<select id="lcsClusterEntryId" name="lcsClusterEntryId">
+					<aui:select id="lcsClusterEntryId" label="" name="lcsClusterEntryId">
 
-							<%
-							for (LCSClusterEntry lcsClusterEntry : lcsClusterEntries) {
-							%>
+						<%
+						for (LCSClusterEntry lcsClusterEntry : lcsClusterEntries) {
+						%>
 
-								<option value="<%= lcsClusterEntry.getLcsClusterEntryId() %>"><%= lcsClusterEntry.getName() %></option>
+							<aui:option value="<%= lcsClusterEntry.getLcsClusterEntryId() %>">
+								<%= lcsClusterEntry.getName() %>
+							</aui:option>
 
-							<%
-							}
-							%>
+						<%
+						}
+						%>
 
-						</select>
-					</div>
+					</aui:select>
 				</c:otherwise>
 			</c:choose>
 		</span>
