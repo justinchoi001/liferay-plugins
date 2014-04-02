@@ -158,7 +158,7 @@ AUI.add(
 						instance.byId('corpEntryId').on('change', instance._loadData, instance);
 						instance.byId('name').on(STR_INPUT, A.bind('_refreshSubmitDisabled', instance));
 
-						instance._newLCSClusterEntryCreated = false;
+						instance._lcsClusterNewEntry = false;
 					},
 
 					_initializeLCSClusterEntryPanel: function() {
@@ -213,8 +213,8 @@ AUI.add(
 						return Lang.sub(
 							TPL_SELECT_LCS_CLUSTER_ENTRY,
 							{
-								portletNamespace: instance.NS,
-								options: options
+								options: options,
+								portletNamespace: instance.NS
 							}
 						);
 					},
@@ -359,7 +359,7 @@ AUI.add(
 										if (response.result == 'success') {
 											instance._lcsClusterEntryPanel.hide();
 
-											instance._newLCSClusterEntryCreated = true;
+											instance._lcsClusterNewEntry = true;
 
 											instance._loadData();
 										}
@@ -479,12 +479,12 @@ AUI.add(
 
 							var lcsClusterEntryIdNode = lcsClusterEntryInputWrapper.one('#' + instance.NS + 'lcsClusterEntryId');
 
-							if (instance._newLCSClusterEntryCreated) {
+							if (instance._lcsClusterNewEntry) {
 								var optionsSize = lcsClusterEntryIdNode.all('option').size();
 
 								lcsClusterEntryIdNode.set('selectedIndex', optionsSize - 1);
 
-								instance._newLCSClusterEntryCreated = false;
+								instance._lcsClusterNewEntry = false;
 							}
 
 							instance._lcsClusterEntryIdNode = lcsClusterEntryIdNode;
