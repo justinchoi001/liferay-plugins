@@ -117,6 +117,8 @@
 		<property name="assertionXml" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="jSessionId" access="com.liferay.portal.dao.orm.hibernate.CamelCasePropertyAccessor" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="nameIdFormat" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="nameIdNameQualifier" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="nameIdSPNameQualifier" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="nameIdValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="sessionIndex" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="terminated" type="com.liferay.portal.dao.orm.hibernate.BooleanType" column="terminated_" />

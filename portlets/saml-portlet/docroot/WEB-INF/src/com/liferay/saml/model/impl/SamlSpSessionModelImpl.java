@@ -73,11 +73,13 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 			{ "assertionXml", Types.CLOB },
 			{ "jSessionId", Types.VARCHAR },
 			{ "nameIdFormat", Types.VARCHAR },
+			{ "nameIdNameQualifier", Types.VARCHAR },
+			{ "nameIdSPNameQualifier", Types.VARCHAR },
 			{ "nameIdValue", Types.VARCHAR },
 			{ "sessionIndex", Types.VARCHAR },
 			{ "terminated_", Types.BOOLEAN }
 		};
-	public static final String TABLE_SQL_CREATE = "create table SamlSpSession (samlSpSessionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,samlSpSessionKey VARCHAR(75) null,assertionXml TEXT null,jSessionId VARCHAR(200) null,nameIdFormat VARCHAR(1024) null,nameIdValue VARCHAR(1024) null,sessionIndex VARCHAR(75) null,terminated_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table SamlSpSession (samlSpSessionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,samlSpSessionKey VARCHAR(75) null,assertionXml TEXT null,jSessionId VARCHAR(200) null,nameIdFormat VARCHAR(1024) null,nameIdNameQualifier VARCHAR(1024) null,nameIdSPNameQualifier VARCHAR(1024) null,nameIdValue VARCHAR(1024) null,sessionIndex VARCHAR(75) null,terminated_ BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table SamlSpSession";
 	public static final String ORDER_BY_JPQL = " ORDER BY samlSpSession.samlSpSessionId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY SamlSpSession.samlSpSessionId ASC";
@@ -148,6 +150,8 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 		attributes.put("assertionXml", getAssertionXml());
 		attributes.put("jSessionId", getJSessionId());
 		attributes.put("nameIdFormat", getNameIdFormat());
+		attributes.put("nameIdNameQualifier", getNameIdNameQualifier());
+		attributes.put("nameIdSPNameQualifier", getNameIdSPNameQualifier());
 		attributes.put("nameIdValue", getNameIdValue());
 		attributes.put("sessionIndex", getSessionIndex());
 		attributes.put("terminated", getTerminated());
@@ -218,6 +222,20 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 
 		if (nameIdFormat != null) {
 			setNameIdFormat(nameIdFormat);
+		}
+
+		String nameIdNameQualifier = (String)attributes.get(
+				"nameIdNameQualifier");
+
+		if (nameIdNameQualifier != null) {
+			setNameIdNameQualifier(nameIdNameQualifier);
+		}
+
+		String nameIdSPNameQualifier = (String)attributes.get(
+				"nameIdSPNameQualifier");
+
+		if (nameIdSPNameQualifier != null) {
+			setNameIdSPNameQualifier(nameIdSPNameQualifier);
 		}
 
 		String nameIdValue = (String)attributes.get("nameIdValue");
@@ -401,6 +419,36 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 	}
 
 	@Override
+	public String getNameIdNameQualifier() {
+		if (_nameIdNameQualifier == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _nameIdNameQualifier;
+		}
+	}
+
+	@Override
+	public void setNameIdNameQualifier(String nameIdNameQualifier) {
+		_nameIdNameQualifier = nameIdNameQualifier;
+	}
+
+	@Override
+	public String getNameIdSPNameQualifier() {
+		if (_nameIdSPNameQualifier == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _nameIdSPNameQualifier;
+		}
+	}
+
+	@Override
+	public void setNameIdSPNameQualifier(String nameIdSPNameQualifier) {
+		_nameIdSPNameQualifier = nameIdSPNameQualifier;
+	}
+
+	@Override
 	public String getNameIdValue() {
 		if (_nameIdValue == null) {
 			return StringPool.BLANK;
@@ -506,6 +554,8 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 		samlSpSessionImpl.setAssertionXml(getAssertionXml());
 		samlSpSessionImpl.setJSessionId(getJSessionId());
 		samlSpSessionImpl.setNameIdFormat(getNameIdFormat());
+		samlSpSessionImpl.setNameIdNameQualifier(getNameIdNameQualifier());
+		samlSpSessionImpl.setNameIdSPNameQualifier(getNameIdSPNameQualifier());
 		samlSpSessionImpl.setNameIdValue(getNameIdValue());
 		samlSpSessionImpl.setSessionIndex(getSessionIndex());
 		samlSpSessionImpl.setTerminated(getTerminated());
@@ -650,6 +700,24 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 			samlSpSessionCacheModel.nameIdFormat = null;
 		}
 
+		samlSpSessionCacheModel.nameIdNameQualifier = getNameIdNameQualifier();
+
+		String nameIdNameQualifier = samlSpSessionCacheModel.nameIdNameQualifier;
+
+		if ((nameIdNameQualifier != null) &&
+				(nameIdNameQualifier.length() == 0)) {
+			samlSpSessionCacheModel.nameIdNameQualifier = null;
+		}
+
+		samlSpSessionCacheModel.nameIdSPNameQualifier = getNameIdSPNameQualifier();
+
+		String nameIdSPNameQualifier = samlSpSessionCacheModel.nameIdSPNameQualifier;
+
+		if ((nameIdSPNameQualifier != null) &&
+				(nameIdSPNameQualifier.length() == 0)) {
+			samlSpSessionCacheModel.nameIdSPNameQualifier = null;
+		}
+
 		samlSpSessionCacheModel.nameIdValue = getNameIdValue();
 
 		String nameIdValue = samlSpSessionCacheModel.nameIdValue;
@@ -673,7 +741,7 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{samlSpSessionId=");
 		sb.append(getSamlSpSessionId());
@@ -695,6 +763,10 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 		sb.append(getJSessionId());
 		sb.append(", nameIdFormat=");
 		sb.append(getNameIdFormat());
+		sb.append(", nameIdNameQualifier=");
+		sb.append(getNameIdNameQualifier());
+		sb.append(", nameIdSPNameQualifier=");
+		sb.append(getNameIdSPNameQualifier());
 		sb.append(", nameIdValue=");
 		sb.append(getNameIdValue());
 		sb.append(", sessionIndex=");
@@ -708,7 +780,7 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.saml.model.SamlSpSession");
@@ -755,6 +827,14 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 		sb.append(getNameIdFormat());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>nameIdNameQualifier</column-name><column-value><![CDATA[");
+		sb.append(getNameIdNameQualifier());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>nameIdSPNameQualifier</column-name><column-value><![CDATA[");
+		sb.append(getNameIdSPNameQualifier());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>nameIdValue</column-name><column-value><![CDATA[");
 		sb.append(getNameIdValue());
 		sb.append("]]></column-value></column>");
@@ -788,6 +868,8 @@ public class SamlSpSessionModelImpl extends BaseModelImpl<SamlSpSession>
 	private String _jSessionId;
 	private String _originalJSessionId;
 	private String _nameIdFormat;
+	private String _nameIdNameQualifier;
+	private String _nameIdSPNameQualifier;
 	private String _nameIdValue;
 	private String _originalNameIdValue;
 	private String _sessionIndex;

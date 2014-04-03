@@ -40,6 +40,8 @@ public class SamlSpSessionSoap implements Serializable {
 		soapModel.setAssertionXml(model.getAssertionXml());
 		soapModel.setJSessionId(model.getJSessionId());
 		soapModel.setNameIdFormat(model.getNameIdFormat());
+		soapModel.setNameIdNameQualifier(model.getNameIdNameQualifier());
+		soapModel.setNameIdSPNameQualifier(model.getNameIdSPNameQualifier());
 		soapModel.setNameIdValue(model.getNameIdValue());
 		soapModel.setSessionIndex(model.getSessionIndex());
 		soapModel.setTerminated(model.getTerminated());
@@ -175,6 +177,22 @@ public class SamlSpSessionSoap implements Serializable {
 		_nameIdFormat = nameIdFormat;
 	}
 
+	public String getNameIdNameQualifier() {
+		return _nameIdNameQualifier;
+	}
+
+	public void setNameIdNameQualifier(String nameIdNameQualifier) {
+		_nameIdNameQualifier = nameIdNameQualifier;
+	}
+
+	public String getNameIdSPNameQualifier() {
+		return _nameIdSPNameQualifier;
+	}
+
+	public void setNameIdSPNameQualifier(String nameIdSPNameQualifier) {
+		_nameIdSPNameQualifier = nameIdSPNameQualifier;
+	}
+
 	public String getNameIdValue() {
 		return _nameIdValue;
 	}
@@ -213,6 +231,8 @@ public class SamlSpSessionSoap implements Serializable {
 	private String _assertionXml;
 	private String _jSessionId;
 	private String _nameIdFormat;
+	private String _nameIdNameQualifier;
+	private String _nameIdSPNameQualifier;
 	private String _nameIdValue;
 	private String _sessionIndex;
 	private boolean _terminated;

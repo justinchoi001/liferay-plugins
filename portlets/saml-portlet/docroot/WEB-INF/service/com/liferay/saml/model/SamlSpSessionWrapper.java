@@ -60,6 +60,8 @@ public class SamlSpSessionWrapper implements SamlSpSession,
 		attributes.put("assertionXml", getAssertionXml());
 		attributes.put("jSessionId", getJSessionId());
 		attributes.put("nameIdFormat", getNameIdFormat());
+		attributes.put("nameIdNameQualifier", getNameIdNameQualifier());
+		attributes.put("nameIdSPNameQualifier", getNameIdSPNameQualifier());
 		attributes.put("nameIdValue", getNameIdValue());
 		attributes.put("sessionIndex", getSessionIndex());
 		attributes.put("terminated", getTerminated());
@@ -127,6 +129,20 @@ public class SamlSpSessionWrapper implements SamlSpSession,
 
 		if (nameIdFormat != null) {
 			setNameIdFormat(nameIdFormat);
+		}
+
+		String nameIdNameQualifier = (String)attributes.get(
+				"nameIdNameQualifier");
+
+		if (nameIdNameQualifier != null) {
+			setNameIdNameQualifier(nameIdNameQualifier);
+		}
+
+		String nameIdSPNameQualifier = (String)attributes.get(
+				"nameIdSPNameQualifier");
+
+		if (nameIdSPNameQualifier != null) {
+			setNameIdSPNameQualifier(nameIdSPNameQualifier);
 		}
 
 		String nameIdValue = (String)attributes.get("nameIdValue");
@@ -388,6 +404,46 @@ public class SamlSpSessionWrapper implements SamlSpSession,
 	@Override
 	public void setNameIdFormat(java.lang.String nameIdFormat) {
 		_samlSpSession.setNameIdFormat(nameIdFormat);
+	}
+
+	/**
+	* Returns the name ID name qualifier of this saml sp session.
+	*
+	* @return the name ID name qualifier of this saml sp session
+	*/
+	@Override
+	public java.lang.String getNameIdNameQualifier() {
+		return _samlSpSession.getNameIdNameQualifier();
+	}
+
+	/**
+	* Sets the name ID name qualifier of this saml sp session.
+	*
+	* @param nameIdNameQualifier the name ID name qualifier of this saml sp session
+	*/
+	@Override
+	public void setNameIdNameQualifier(java.lang.String nameIdNameQualifier) {
+		_samlSpSession.setNameIdNameQualifier(nameIdNameQualifier);
+	}
+
+	/**
+	* Returns the name ID s p name qualifier of this saml sp session.
+	*
+	* @return the name ID s p name qualifier of this saml sp session
+	*/
+	@Override
+	public java.lang.String getNameIdSPNameQualifier() {
+		return _samlSpSession.getNameIdSPNameQualifier();
+	}
+
+	/**
+	* Sets the name ID s p name qualifier of this saml sp session.
+	*
+	* @param nameIdSPNameQualifier the name ID s p name qualifier of this saml sp session
+	*/
+	@Override
+	public void setNameIdSPNameQualifier(java.lang.String nameIdSPNameQualifier) {
+		_samlSpSession.setNameIdSPNameQualifier(nameIdSPNameQualifier);
 	}
 
 	/**

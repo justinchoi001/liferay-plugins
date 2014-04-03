@@ -278,13 +278,16 @@ public class SamlSpSessionLocalServiceUtil {
 	public static com.liferay.saml.model.SamlSpSession addSamlSpSession(
 		java.lang.String samlSpSessionKey, java.lang.String assertionXml,
 		java.lang.String jSessionId, java.lang.String nameIdFormat,
-		java.lang.String nameIdValue, java.lang.String sessionIndex,
+		java.lang.String nameIdNameQualifier,
+		java.lang.String nameIdSPNameQualifier, java.lang.String nameIdValue,
+		java.lang.String sessionIndex,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()
 				   .addSamlSpSession(samlSpSessionKey, assertionXml,
-			jSessionId, nameIdFormat, nameIdValue, sessionIndex, serviceContext);
+			jSessionId, nameIdFormat, nameIdNameQualifier,
+			nameIdSPNameQualifier, nameIdValue, sessionIndex, serviceContext);
 	}
 
 	public static com.liferay.saml.model.SamlSpSession fetchSamlSpSessionByJSessionId(
@@ -336,15 +339,16 @@ public class SamlSpSessionLocalServiceUtil {
 	public static com.liferay.saml.model.SamlSpSession updateSamlSpSession(
 		long samlSpSessionId, java.lang.String samlSpSessionKey,
 		java.lang.String assertionXml, java.lang.String jSessionId,
-		java.lang.String nameIdFormat, java.lang.String nameIdValue,
+		java.lang.String nameIdFormat, java.lang.String nameIdNameQualifier,
+		java.lang.String nameIdSPNameQualifier, java.lang.String nameIdValue,
 		java.lang.String sessionIndex,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
 		return getService()
 				   .updateSamlSpSession(samlSpSessionId, samlSpSessionKey,
-			assertionXml, jSessionId, nameIdFormat, nameIdValue, sessionIndex,
-			serviceContext);
+			assertionXml, jSessionId, nameIdFormat, nameIdNameQualifier,
+			nameIdSPNameQualifier, nameIdValue, sessionIndex, serviceContext);
 	}
 
 	public static void clearService() {

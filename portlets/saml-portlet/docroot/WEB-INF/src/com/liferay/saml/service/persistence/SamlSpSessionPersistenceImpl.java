@@ -1769,6 +1769,8 @@ public class SamlSpSessionPersistenceImpl extends BasePersistenceImpl<SamlSpSess
 		samlSpSessionImpl.setAssertionXml(samlSpSession.getAssertionXml());
 		samlSpSessionImpl.setJSessionId(samlSpSession.getJSessionId());
 		samlSpSessionImpl.setNameIdFormat(samlSpSession.getNameIdFormat());
+		samlSpSessionImpl.setNameIdNameQualifier(samlSpSession.getNameIdNameQualifier());
+		samlSpSessionImpl.setNameIdSPNameQualifier(samlSpSession.getNameIdSPNameQualifier());
 		samlSpSessionImpl.setNameIdValue(samlSpSession.getNameIdValue());
 		samlSpSessionImpl.setSessionIndex(samlSpSession.getSessionIndex());
 		samlSpSessionImpl.setTerminated(samlSpSession.isTerminated());

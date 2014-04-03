@@ -86,6 +86,8 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 		attributes.put("assertionXml", getAssertionXml());
 		attributes.put("jSessionId", getJSessionId());
 		attributes.put("nameIdFormat", getNameIdFormat());
+		attributes.put("nameIdNameQualifier", getNameIdNameQualifier());
+		attributes.put("nameIdSPNameQualifier", getNameIdSPNameQualifier());
 		attributes.put("nameIdValue", getNameIdValue());
 		attributes.put("sessionIndex", getSessionIndex());
 		attributes.put("terminated", getTerminated());
@@ -156,6 +158,20 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 
 		if (nameIdFormat != null) {
 			setNameIdFormat(nameIdFormat);
+		}
+
+		String nameIdNameQualifier = (String)attributes.get(
+				"nameIdNameQualifier");
+
+		if (nameIdNameQualifier != null) {
+			setNameIdNameQualifier(nameIdNameQualifier);
+		}
+
+		String nameIdSPNameQualifier = (String)attributes.get(
+				"nameIdSPNameQualifier");
+
+		if (nameIdSPNameQualifier != null) {
+			setNameIdSPNameQualifier(nameIdSPNameQualifier);
 		}
 
 		String nameIdValue = (String)attributes.get("nameIdValue");
@@ -422,6 +438,54 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 	}
 
 	@Override
+	public String getNameIdNameQualifier() {
+		return _nameIdNameQualifier;
+	}
+
+	@Override
+	public void setNameIdNameQualifier(String nameIdNameQualifier) {
+		_nameIdNameQualifier = nameIdNameQualifier;
+
+		if (_samlSpSessionRemoteModel != null) {
+			try {
+				Class<?> clazz = _samlSpSessionRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setNameIdNameQualifier",
+						String.class);
+
+				method.invoke(_samlSpSessionRemoteModel, nameIdNameQualifier);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getNameIdSPNameQualifier() {
+		return _nameIdSPNameQualifier;
+	}
+
+	@Override
+	public void setNameIdSPNameQualifier(String nameIdSPNameQualifier) {
+		_nameIdSPNameQualifier = nameIdSPNameQualifier;
+
+		if (_samlSpSessionRemoteModel != null) {
+			try {
+				Class<?> clazz = _samlSpSessionRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setNameIdSPNameQualifier",
+						String.class);
+
+				method.invoke(_samlSpSessionRemoteModel, nameIdSPNameQualifier);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public String getNameIdValue() {
 		return _nameIdValue;
 	}
@@ -575,6 +639,8 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 		clone.setAssertionXml(getAssertionXml());
 		clone.setJSessionId(getJSessionId());
 		clone.setNameIdFormat(getNameIdFormat());
+		clone.setNameIdNameQualifier(getNameIdNameQualifier());
+		clone.setNameIdSPNameQualifier(getNameIdSPNameQualifier());
 		clone.setNameIdValue(getNameIdValue());
 		clone.setSessionIndex(getSessionIndex());
 		clone.setTerminated(getTerminated());
@@ -636,7 +702,7 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{samlSpSessionId=");
 		sb.append(getSamlSpSessionId());
@@ -658,6 +724,10 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 		sb.append(getJSessionId());
 		sb.append(", nameIdFormat=");
 		sb.append(getNameIdFormat());
+		sb.append(", nameIdNameQualifier=");
+		sb.append(getNameIdNameQualifier());
+		sb.append(", nameIdSPNameQualifier=");
+		sb.append(getNameIdSPNameQualifier());
 		sb.append(", nameIdValue=");
 		sb.append(getNameIdValue());
 		sb.append(", sessionIndex=");
@@ -671,7 +741,7 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.saml.model.SamlSpSession");
@@ -718,6 +788,14 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 		sb.append(getNameIdFormat());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>nameIdNameQualifier</column-name><column-value><![CDATA[");
+		sb.append(getNameIdNameQualifier());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>nameIdSPNameQualifier</column-name><column-value><![CDATA[");
+		sb.append(getNameIdSPNameQualifier());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>nameIdValue</column-name><column-value><![CDATA[");
 		sb.append(getNameIdValue());
 		sb.append("]]></column-value></column>");
@@ -746,6 +824,8 @@ public class SamlSpSessionClp extends BaseModelImpl<SamlSpSession>
 	private String _assertionXml;
 	private String _jSessionId;
 	private String _nameIdFormat;
+	private String _nameIdNameQualifier;
+	private String _nameIdSPNameQualifier;
 	private String _nameIdValue;
 	private String _sessionIndex;
 	private boolean _terminated;

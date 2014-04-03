@@ -91,6 +91,8 @@ create table SamlSpSession (
 	assertionXml TEXT null,
 	jSessionId VARCHAR(200) null,
 	nameIdFormat VARCHAR(1024) null,
+	nameIdNameQualifier VARCHAR(1024) null,
+	nameIdSPNameQualifier VARCHAR(1024) null,
 	nameIdValue VARCHAR(1024) null,
 	sessionIndex VARCHAR(75) null,
 	terminated_ BOOLEAN

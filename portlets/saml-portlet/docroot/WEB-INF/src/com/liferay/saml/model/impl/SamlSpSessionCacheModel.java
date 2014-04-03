@@ -38,7 +38,7 @@ public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
 	Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{samlSpSessionId=");
 		sb.append(samlSpSessionId);
@@ -60,6 +60,10 @@ public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
 		sb.append(jSessionId);
 		sb.append(", nameIdFormat=");
 		sb.append(nameIdFormat);
+		sb.append(", nameIdNameQualifier=");
+		sb.append(nameIdNameQualifier);
+		sb.append(", nameIdSPNameQualifier=");
+		sb.append(nameIdSPNameQualifier);
 		sb.append(", nameIdValue=");
 		sb.append(nameIdValue);
 		sb.append(", sessionIndex=");
@@ -128,6 +132,20 @@ public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
 			samlSpSessionImpl.setNameIdFormat(nameIdFormat);
 		}
 
+		if (nameIdNameQualifier == null) {
+			samlSpSessionImpl.setNameIdNameQualifier(StringPool.BLANK);
+		}
+		else {
+			samlSpSessionImpl.setNameIdNameQualifier(nameIdNameQualifier);
+		}
+
+		if (nameIdSPNameQualifier == null) {
+			samlSpSessionImpl.setNameIdSPNameQualifier(StringPool.BLANK);
+		}
+		else {
+			samlSpSessionImpl.setNameIdSPNameQualifier(nameIdSPNameQualifier);
+		}
+
 		if (nameIdValue == null) {
 			samlSpSessionImpl.setNameIdValue(StringPool.BLANK);
 		}
@@ -161,6 +179,8 @@ public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
 		assertionXml = objectInput.readUTF();
 		jSessionId = objectInput.readUTF();
 		nameIdFormat = objectInput.readUTF();
+		nameIdNameQualifier = objectInput.readUTF();
+		nameIdSPNameQualifier = objectInput.readUTF();
 		nameIdValue = objectInput.readUTF();
 		sessionIndex = objectInput.readUTF();
 		terminated = objectInput.readBoolean();
@@ -211,6 +231,20 @@ public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
 			objectOutput.writeUTF(nameIdFormat);
 		}
 
+		if (nameIdNameQualifier == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(nameIdNameQualifier);
+		}
+
+		if (nameIdSPNameQualifier == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(nameIdSPNameQualifier);
+		}
+
 		if (nameIdValue == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
@@ -238,6 +272,8 @@ public class SamlSpSessionCacheModel implements CacheModel<SamlSpSession>,
 	public String assertionXml;
 	public String jSessionId;
 	public String nameIdFormat;
+	public String nameIdNameQualifier;
+	public String nameIdSPNameQualifier;
 	public String nameIdValue;
 	public String sessionIndex;
 	public boolean terminated;

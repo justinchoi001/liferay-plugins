@@ -235,6 +235,36 @@ public interface SamlSpSessionModel extends AuditedModel,
 	public void setNameIdFormat(String nameIdFormat);
 
 	/**
+	 * Returns the name ID name qualifier of this saml sp session.
+	 *
+	 * @return the name ID name qualifier of this saml sp session
+	 */
+	@AutoEscape
+	public String getNameIdNameQualifier();
+
+	/**
+	 * Sets the name ID name qualifier of this saml sp session.
+	 *
+	 * @param nameIdNameQualifier the name ID name qualifier of this saml sp session
+	 */
+	public void setNameIdNameQualifier(String nameIdNameQualifier);
+
+	/**
+	 * Returns the name ID s p name qualifier of this saml sp session.
+	 *
+	 * @return the name ID s p name qualifier of this saml sp session
+	 */
+	@AutoEscape
+	public String getNameIdSPNameQualifier();
+
+	/**
+	 * Sets the name ID s p name qualifier of this saml sp session.
+	 *
+	 * @param nameIdSPNameQualifier the name ID s p name qualifier of this saml sp session
+	 */
+	public void setNameIdSPNameQualifier(String nameIdSPNameQualifier);
+
+	/**
 	 * Returns the name ID value of this saml sp session.
 	 *
 	 * @return the name ID value of this saml sp session

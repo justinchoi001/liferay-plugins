@@ -120,6 +120,7 @@ public class SamlSpSessionLocalServiceClp implements SamlSpSessionLocalService {
 		_methodParameterTypes19 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String",
 				"com.liferay.portal.service.ServiceContext"
 			};
 
@@ -156,7 +157,8 @@ public class SamlSpSessionLocalServiceClp implements SamlSpSessionLocalService {
 		_methodParameterTypes27 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.lang.String", "com.liferay.portal.service.ServiceContext"
+				"java.lang.String", "java.lang.String", "java.lang.String",
+				"com.liferay.portal.service.ServiceContext"
 			};
 	}
 
@@ -714,7 +716,9 @@ public class SamlSpSessionLocalServiceClp implements SamlSpSessionLocalService {
 	public com.liferay.saml.model.SamlSpSession addSamlSpSession(
 		java.lang.String samlSpSessionKey, java.lang.String assertionXml,
 		java.lang.String jSessionId, java.lang.String nameIdFormat,
-		java.lang.String nameIdValue, java.lang.String sessionIndex,
+		java.lang.String nameIdNameQualifier,
+		java.lang.String nameIdSPNameQualifier, java.lang.String nameIdValue,
+		java.lang.String sessionIndex,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
 			com.liferay.portal.kernel.exception.SystemException {
@@ -731,6 +735,10 @@ public class SamlSpSessionLocalServiceClp implements SamlSpSessionLocalService {
 					ClpSerializer.translateInput(jSessionId),
 						
 					ClpSerializer.translateInput(nameIdFormat),
+						
+					ClpSerializer.translateInput(nameIdNameQualifier),
+						
+					ClpSerializer.translateInput(nameIdSPNameQualifier),
 						
 					ClpSerializer.translateInput(nameIdValue),
 						
@@ -993,7 +1001,8 @@ public class SamlSpSessionLocalServiceClp implements SamlSpSessionLocalService {
 	public com.liferay.saml.model.SamlSpSession updateSamlSpSession(
 		long samlSpSessionId, java.lang.String samlSpSessionKey,
 		java.lang.String assertionXml, java.lang.String jSessionId,
-		java.lang.String nameIdFormat, java.lang.String nameIdValue,
+		java.lang.String nameIdFormat, java.lang.String nameIdNameQualifier,
+		java.lang.String nameIdSPNameQualifier, java.lang.String nameIdValue,
 		java.lang.String sessionIndex,
 		com.liferay.portal.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException,
@@ -1013,6 +1022,10 @@ public class SamlSpSessionLocalServiceClp implements SamlSpSessionLocalService {
 					ClpSerializer.translateInput(jSessionId),
 						
 					ClpSerializer.translateInput(nameIdFormat),
+						
+					ClpSerializer.translateInput(nameIdNameQualifier),
+						
+					ClpSerializer.translateInput(nameIdSPNameQualifier),
 						
 					ClpSerializer.translateInput(nameIdValue),
 						
