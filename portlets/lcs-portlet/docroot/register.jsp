@@ -31,6 +31,9 @@
 </portlet:actionURL>
 
 <aui:form action="<%= addLCSClusterNodeURL %>" name="registrationFm">
+	<liferay-ui:error exception="<%= DuplicateLCSClusterNodeNameException.class %>" message="please-enter-an-unique-server-name" />
+	<liferay-ui:error exception="<%= RequiredLCSClusterNodeNameException.class %>" message="server-name-is-required" />
+
 	<aui:model-context model="<%= LCSClusterNode.class %>" />
 
 	<%
