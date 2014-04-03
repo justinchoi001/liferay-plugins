@@ -115,7 +115,7 @@ public class LCSClusterNodeServiceImpl
 		try {
 			remoteLCSClusterNodes = doGetToList(
 				LCSClusterNodeImpl.class,
-				_URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_NODES,
+				_URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_ENTRY_GET_LCS_CLUSTER_NODES,
 				"lcsClusterEntryId", String.valueOf(lcsClusterEntryId));
 		}
 		catch (Exception e) {
@@ -207,10 +207,12 @@ public class LCSClusterNodeServiceImpl
 	private static final String _URL_LCS_CLUSTER_NODE_ADD_LCS_CLUSTER_NODE =
 		_URL_LCS_CLUSTER_NODE + "/add-lcs-cluster-node";
 
+	private static final String
+		_URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_ENTRY_GET_LCS_CLUSTER_NODES =
+			_URL_LCS_CLUSTER_NODE +
+				"/get-lcs-cluster-entry-lcs-cluster-nodes";
+
 	private static final String _URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_NODE =
 		_URL_LCS_CLUSTER_NODE + "/get-lcs-cluster-node";
-
-	private static final String _URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_NODES =
-		_URL_LCS_CLUSTER_NODE + "/get-lcs-cluster-entry-lcs-cluster-nodes";
 
 }
