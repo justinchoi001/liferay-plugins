@@ -15,13 +15,17 @@
 package com.liferay.osb.lcs.service.impl;
 
 import com.liferay.lcs.service.impl.BaseLCSServiceImpl;
+import com.liferay.osb.lcs.DuplicateLCSClusterNodeNameException;
+import com.liferay.osb.lcs.RequiredLCSClusterNodeNameException;
 import com.liferay.osb.lcs.model.LCSClusterNode;
 import com.liferay.osb.lcs.model.impl.LCSClusterNodeImpl;
 import com.liferay.osb.lcs.service.LCSClusterNodeService;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +40,9 @@ public class LCSClusterNodeServiceImpl
 			long lcsClusterEntryId, String name, String description,
 			int buildNumber, String key, String location,
 			ServiceContext serviceContext)
-		throws SystemException {
+		throws PortalException, SystemException {
+
+		validate(lcsClusterEntryId, name);
 
 		if (Validator.isNull(description)) {
 			description = null;
@@ -101,9 +107,29 @@ public class LCSClusterNodeServiceImpl
 
 	@Override
 	public List<LCSClusterNode> getLCSClusterEntryLCSClusterNodes(
-		long lcsClusterEntryId) {
+			long lcsClusterEntryId)
+		throws SystemException {
 
-		throw new UnsupportedOperationException();
+		List<LCSClusterNodeImpl> remoteLCSClusterNodes = null;
+
+		try {
+			remoteLCSClusterNodes = doGetToList(
+				LCSClusterNodeImpl.class,
+				_URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_NODES,
+				"lcsClusterEntryId", String.valueOf(lcsClusterEntryId));
+		}
+		catch (Exception e) {
+			throw new SystemException(e);
+		}
+
+		List<LCSClusterNode> localLCSClusterNodes =
+			new ArrayList<LCSClusterNode>();
+
+		for (LCSClusterNode lcsClusterNode : remoteLCSClusterNodes) {
+			localLCSClusterNodes.add(lcsClusterNode);
+		}
+
+		return localLCSClusterNodes;
 	}
 
 	@Override
@@ -158,6 +184,23 @@ public class LCSClusterNodeServiceImpl
 		throw new UnsupportedOperationException();
 	}
 
+	protected void validate(long lcsClusterEntryId, String lcsClusterNodeName)
+		throws PortalException, SystemException {
+
+		if (Validator.isNull(lcsClusterNodeName)) {
+			throw new RequiredLCSClusterNodeNameException();
+		}
+
+		List<LCSClusterNode> lcsClusterNodes =
+			getLCSClusterEntryLCSClusterNodes(lcsClusterEntryId);
+
+		for (LCSClusterNode lcsClusterNode : lcsClusterNodes) {
+			if (lcsClusterNodeName.equalsIgnoreCase(lcsClusterNode.getName())) {
+				throw new DuplicateLCSClusterNodeNameException();
+			}
+		}
+	}
+
 	private static final String _URL_LCS_CLUSTER_NODE =
 		"/api/secure/jsonws/osb-lcs-portlet.lcsclusternode";
 
@@ -166,5 +209,8 @@ public class LCSClusterNodeServiceImpl
 
 	private static final String _URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_NODE =
 		_URL_LCS_CLUSTER_NODE + "/get-lcs-cluster-node";
+
+	private static final String _URL_LCS_CLUSTER_NODE_GET_LCS_CLUSTER_NODES =
+		_URL_LCS_CLUSTER_NODE + "/get-lcs-cluster-entry-lcs-cluster-nodes";
 
 }
