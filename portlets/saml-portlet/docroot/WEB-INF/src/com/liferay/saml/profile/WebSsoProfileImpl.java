@@ -538,8 +538,8 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 				samlSpSession.getSamlSpSessionId(),
 				samlSpSession.getSamlSpSessionKey(), assertionXml,
 				session.getId(), nameId.getFormat(), nameId.getNameQualifier(),
-				nameId.getSPNameQualifier(), nameId.getValue(),
-				sessionIndex, serviceContext);
+				nameId.getSPNameQualifier(), nameId.getValue(), sessionIndex,
+				serviceContext);
 		}
 		else {
 			String samlSpSessionKey = generateIdentifier(30);

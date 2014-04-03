@@ -27,13 +27,13 @@ public class PortletPropsValues {
 
 	public static final long SAML_METADATA_MAX_REFRESH_DELAY =
 		GetterUtil.getLong(
-			PortletProps.get(
-				PortletPropsKeys.SAML_METADATA_MAX_REFRESH_DELAY), 14400000);
+			PortletProps.get(PortletPropsKeys.SAML_METADATA_MAX_REFRESH_DELAY),
+			14400000);
 
 	public static final int SAML_METADATA_MIN_REFRESH_DELAY =
 		GetterUtil.getInteger(
-			PortletProps.get(
-				PortletPropsKeys.SAML_METADATA_MIN_REFRESH_DELAY), 300000);
+			PortletProps.get(PortletPropsKeys.SAML_METADATA_MIN_REFRESH_DELAY),
+			300000);
 
 	public static final int SAML_REPLAY_CACHE_DURATION = GetterUtil.getInteger(
 		PortletProps.get(PortletPropsKeys.SAML_REPLAY_CACHE_DURATION), 3600000);

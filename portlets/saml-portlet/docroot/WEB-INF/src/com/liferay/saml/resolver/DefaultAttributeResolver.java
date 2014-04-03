@@ -483,7 +483,7 @@ public class DefaultAttributeResolver implements AttributeResolver {
 			PropsUtil.get(
 				PortletPropsKeys.
 					SAML_IDP_METADATA_SALESFORCE_ATTRIBUTES_ENABLED,
-				new Filter(entityId)), false);
+				new Filter(entityId)));
 	}
 
 	private static final String _SALESFORCE_ENTITY_ID =

@@ -309,7 +309,7 @@ public class SingleLogoutProfileImpl
 				samlMessageContext.getInboundSAMLMessage();
 
 			List<SessionIndex> sessionIndexes =
-					logoutRequest.getSessionIndexes();
+				logoutRequest.getSessionIndexes();
 
 			if (!sessionIndexes.isEmpty()) {
 				SessionIndex sessionIndex = sessionIndexes.get(0);

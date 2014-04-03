@@ -592,7 +592,7 @@ public class MetadataManagerImpl implements MetadataManager {
 	@Override
 	public boolean isWantAuthnRequestSigned() {
 		return PortletPrefsPropsUtil.getBoolean(
-				PortletPropsKeys.SAML_IDP_AUTHN_REQUEST_SIGNATURE_REQUIRED);
+			PortletPropsKeys.SAML_IDP_AUTHN_REQUEST_SIGNATURE_REQUIRED);
 	}
 
 	public void setCredentialResolver(CredentialResolver credentialResolver) {
