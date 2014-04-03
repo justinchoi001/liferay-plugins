@@ -84,6 +84,7 @@
 				<include name="**/*LCSClusterEntryService.java" />
 				<include name="**/*LCSClusterNode.java" />
 				<include name="**/*LCSClusterNodeModel.java" />
+				<include name="**/*LCSClusterNodeNameException.java" />
 				<include name="**/*LCSClusterNodeService.java" />
 			</fileset>
 			<fileset dir="${sdk.dir}/portlets/osb-lcs-portlet/docroot/WEB-INF/src">
