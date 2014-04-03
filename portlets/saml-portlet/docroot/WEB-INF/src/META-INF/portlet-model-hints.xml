@@ -129,6 +129,12 @@
 		<field name="nameIdFormat" type="String">
 			<hint-collection name="ENTITY-ID" />
 		</field>
+		<field name="nameIdNameQualifier" type="String">
+			<hint-collection name="ENTITY-ID" />
+		</field>
+		<field name="nameIdSPNameQualifier" type="String">
+			<hint-collection name="ENTITY-ID" />
+		</field>
 		<field name="nameIdValue" type="String">
 			<hint-collection name="ENTITY-ID" />
 		</field>

@@ -537,7 +537,8 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 			SamlSpSessionLocalServiceUtil.updateSamlSpSession(
 				samlSpSession.getSamlSpSessionId(),
 				samlSpSession.getSamlSpSessionKey(), assertionXml,
-				session.getId(), nameId.getFormat(), nameId.getValue(),
+				session.getId(), nameId.getFormat(), nameId.getNameQualifier(),
+				nameId.getSPNameQualifier(), nameId.getValue(),
 				sessionIndex, serviceContext);
 		}
 		else {
@@ -545,7 +546,8 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 			samlSpSession = SamlSpSessionLocalServiceUtil.addSamlSpSession(
 				samlSpSessionKey, assertionXml, session.getId(),
-				nameId.getFormat(), nameId.getValue(), sessionIndex,
+				nameId.getFormat(), nameId.getNameQualifier(),
+				nameId.getSPNameQualifier(), nameId.getValue(), sessionIndex,
 				serviceContext);
 		}
 

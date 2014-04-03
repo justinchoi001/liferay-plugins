@@ -35,8 +35,9 @@ public class SamlSpSessionLocalServiceImpl
 	@Override
 	public SamlSpSession addSamlSpSession(
 			String samlSpSessionKey, String assertionXml, String jSessionId,
-			String nameIdFormat, String nameIdValue, String sessionIndex,
-			ServiceContext serviceContext)
+			String nameIdFormat, String nameIdNameQualifier,
+			String nameIdSPNameQualifier, String nameIdValue,
+			String sessionIndex, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
 		User user = userLocalService.getUserById(serviceContext.getUserId());
@@ -57,6 +58,8 @@ public class SamlSpSessionLocalServiceImpl
 		samlSpSession.setAssertionXml(assertionXml);
 		samlSpSession.setJSessionId(jSessionId);
 		samlSpSession.setNameIdFormat(nameIdFormat);
+		samlSpSession.setNameIdNameQualifier(nameIdNameQualifier);
+		samlSpSession.setNameIdSPNameQualifier(nameIdSPNameQualifier);
 		samlSpSession.setNameIdValue(nameIdValue);
 		samlSpSession.setSessionIndex(sessionIndex);
 		samlSpSession.setTerminated(false);
@@ -130,7 +133,8 @@ public class SamlSpSessionLocalServiceImpl
 	@Override
 	public SamlSpSession updateSamlSpSession(
 			long samlSpSessionId, String samlSpSessionKey, String assertionXml,
-			String jSessionId, String nameIdFormat, String nameIdValue,
+			String jSessionId, String nameIdFormat, String nameIdNameQualifier,
+			String nameIdSPNameQualifier, String nameIdValue,
 			String sessionIndex, ServiceContext serviceContext)
 		throws PortalException, SystemException {
 
@@ -147,6 +151,8 @@ public class SamlSpSessionLocalServiceImpl
 		samlSpSession.setAssertionXml(assertionXml);
 		samlSpSession.setJSessionId(jSessionId);
 		samlSpSession.setNameIdFormat(nameIdFormat);
+		samlSpSession.setNameIdNameQualifier(nameIdNameQualifier);
+		samlSpSession.setNameIdSPNameQualifier(nameIdSPNameQualifier);
 		samlSpSession.setNameIdValue(nameIdValue);
 		samlSpSession.setSessionIndex(sessionIndex);
 

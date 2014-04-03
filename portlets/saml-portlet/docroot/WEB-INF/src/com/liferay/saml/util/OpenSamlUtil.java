@@ -324,11 +324,12 @@ public class OpenSamlUtil {
 	}
 
 	public static NameID buildNameId(String nameIdFormat, String nameIdValue) {
-		return buildNameId(nameIdFormat, nameIdValue, null);
+		return buildNameId(nameIdFormat, null, null, nameIdValue);
 	}
 
 	public static NameID buildNameId(
-		String nameIdFormat, String nameIdValue, String spNameIdQualifier) {
+		String nameIdFormat, String nameIdNameQualifier,
+		String nameIdSPNameQualifier, String nameIdValue) {
 
 		SAMLObjectBuilder<NameID> samlObjectBuilder =
 			(SAMLObjectBuilder<NameID>)_getBuilder(NameID.DEFAULT_ELEMENT_NAME);
@@ -338,8 +339,12 @@ public class OpenSamlUtil {
 		nameId.setFormat(nameIdFormat);
 		nameId.setValue(nameIdValue);
 
-		if (Validator.isNotNull(spNameIdQualifier)) {
-			nameId.setSPNameQualifier(spNameIdQualifier);
+		if (Validator.isNotNull(nameIdNameQualifier)) {
+			nameId.setNameQualifier(nameIdNameQualifier);
+		}
+
+		if (Validator.isNotNull(nameIdSPNameQualifier)) {
+			nameId.setSPNameQualifier(nameIdSPNameQualifier);
 		}
 
 		return nameId;

@@ -973,9 +973,13 @@ public class SingleLogoutProfileImpl
 		logoutRequest.setIssuer(issuer);
 
 		String nameIdFormat = samlSpSession.getNameIdFormat();
+		String nameIdNameQualifier = samlSpSession.getNameIdNameQualifier();
+		String nameIdSPNameQualifier = samlSpSession.getNameIdSPNameQualifier();
 		String nameIdValue = samlSpSession.getNameIdValue();
 
-		NameID nameId = OpenSamlUtil.buildNameId(nameIdFormat, nameIdValue);
+		NameID nameId = OpenSamlUtil.buildNameId(
+			nameIdFormat, nameIdNameQualifier, nameIdSPNameQualifier,
+			nameIdValue);
 
 		logoutRequest.setNameID(nameId);
 
