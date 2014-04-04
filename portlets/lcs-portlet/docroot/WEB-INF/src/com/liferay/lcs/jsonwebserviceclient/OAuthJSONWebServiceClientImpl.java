@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.jsonwebserviceclient;
 
-import com.liferay.lcs.json.JSONWebServiceClientImpl;
+import com.liferay.jsonwebserviceclient.JSONWebServiceClientImpl;
 import com.liferay.lcs.oauth.OAuthUtil;
 
 import java.io.IOException;
