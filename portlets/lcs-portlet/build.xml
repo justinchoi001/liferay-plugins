@@ -47,13 +47,6 @@
 			<arg value="checkout" />
 			<arg value="upstream/ee-6.1.x" />
 			<arg value="--" />
-			<arg value="../../shared/json-web-service-client-shared" />
-		</exec>
-
-		<exec executable="git">
-			<arg value="checkout" />
-			<arg value="upstream/ee-6.1.x" />
-			<arg value="--" />
 			<arg value="../../shared/lcs-shared" />
 		</exec>
 	</target>
@@ -109,23 +102,11 @@
 		<exec executable="git">
 			<arg value="rm" />
 			<arg value="--cached" />
-			<arg value="../../shared/json-web-service-client-shared/*" />
-		</exec>
-
-		<exec executable="git">
-			<arg value="rm" />
-			<arg value="--cached" />
 			<arg value="../../shared/lcs-shared/*" />
 		</exec>
 
 		<delete
 			dir="../osb-lcs-portlet"
-			failonerror="false"
-			includeemptydirs="true"
-		/>
-
-		<delete
-			dir="../../shared/json-web-service-client-shared"
 			failonerror="false"
 			includeemptydirs="true"
 		/>
