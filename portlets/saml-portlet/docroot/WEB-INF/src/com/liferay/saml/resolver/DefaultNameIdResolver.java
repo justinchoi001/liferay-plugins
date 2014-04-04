@@ -45,7 +45,7 @@ public class DefaultNameIdResolver implements NameIdResolver {
 		}
 
 		return OpenSamlUtil.buildNameId(
-			nameIdFormat, nameIdValue, spNameQualifier);
+			nameIdFormat, null, spNameQualifier, nameIdValue);
 	}
 
 	protected String getNameIdAttributeName(String entityId) {
