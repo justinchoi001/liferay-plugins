@@ -201,6 +201,7 @@ public class LCSServletContextListener
 		updateMonitoringPortletEventRequest();
 		updateMonitoringPortletRenderRequest();
 		updateMonitoringPortletResourceRequest();
+		updateMonitoringPortletManager();
 	}
 
 	protected void updateMonitoringPortalRequest() throws Exception {
@@ -301,6 +302,20 @@ public class LCSServletContextListener
 		configuration.set(configurationKey, String.valueOf(value));
 
 		return value;
+	}
+
+	private void updateMonitoringPortletManager() throws Exception {
+		Object monitoringPortletManager = PortalBeanLocatorUtil.locate(
+			"com.liferay.portlet.MonitoringPortletManager");
+
+		Class<?> monitoringPortletManagerClass =
+			monitoringPortletManager.getClass();
+
+		Method setActiveMethod =
+			monitoringPortletManagerClass.getDeclaredMethod(
+				"setActive", boolean.class);
+
+		setActiveMethod.invoke(monitoringPortletManager, true);
 	}
 
 	private MessageListener _messageListener;
