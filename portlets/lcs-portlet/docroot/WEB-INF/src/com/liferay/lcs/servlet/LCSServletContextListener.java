@@ -199,9 +199,9 @@ public class LCSServletContextListener
 		updateMonitoringPortalRequest();
 		updateMonitoringPortletActionRequest();
 		updateMonitoringPortletEventRequest();
+		updateMonitoringPortletManager();
 		updateMonitoringPortletRenderRequest();
 		updateMonitoringPortletResourceRequest();
-		updateMonitoringPortletManager();
 	}
 
 	protected void updateMonitoringPortalRequest() throws Exception {
