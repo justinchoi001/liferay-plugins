@@ -197,11 +197,8 @@ public class LCSServletContextListener
 	protected void updateMonitoring() throws Exception {
 		updateHibernateGenerateStatistics();
 		updateMonitoringPortalRequest();
-		updateMonitoringPortletActionRequest();
-		updateMonitoringPortletEventRequest();
 		updateMonitoringPortletManager();
-		updateMonitoringPortletRenderRequest();
-		updateMonitoringPortletResourceRequest();
+		updateMonitoringPortletRequest();
 	}
 
 	protected void updateMonitoringPortalRequest() throws Exception {
@@ -219,25 +216,26 @@ public class LCSServletContextListener
 			monitoringFilterClass, monitoringPortalRequest);
 	}
 
-	protected void updateMonitoringPortletActionRequest() throws Exception {
+	protected void updateMonitoringPortletRequest() throws Exception {
 		updateMonitoringPortletRequest(
 			"_monitoringPortletActionRequest",
 			"MONITORING_PORTLET_ACTION_REQUEST",
 			PropsKeys.MONITORING_PORTLET_ACTION_REQUEST);
-	}
 
-	protected void updateMonitoringPortletEventRequest() throws Exception {
 		updateMonitoringPortletRequest(
 			"_monitoringPortletEventRequest",
 			"MONITORING_PORTLET_EVENT_REQUEST",
 			PropsKeys.MONITORING_PORTLET_EVENT_REQUEST);
-	}
 
-	protected void updateMonitoringPortletRenderRequest() throws Exception {
 		updateMonitoringPortletRequest(
 			"_monitoringPortletRenderRequest",
 			"MONITORING_PORTLET_RENDER_REQUEST",
 			PropsKeys.MONITORING_PORTLET_RENDER_REQUEST);
+
+		updateMonitoringPortletRequest(
+			"_monitoringPortletResourceRequest",
+			"MONITORING_PORTLET_RESOURCE_REQUEST",
+			PropsKeys.MONITORING_PORTLET_RESOURCE_REQUEST);
 	}
 
 	protected void updateMonitoringPortletRequest(
@@ -256,13 +254,6 @@ public class LCSServletContextListener
 		monitoringPortletRenderRequestField.setAccessible(true);
 		monitoringPortletRenderRequestField.setBoolean(
 			monitoringPortletClass, monitoringPortletRenderRequest);
-	}
-
-	protected void updateMonitoringPortletResourceRequest() throws Exception {
-		updateMonitoringPortletRequest(
-			"_monitoringPortletResourceRequest",
-			"MONITORING_PORTLET_RESOURCE_REQUEST",
-			PropsKeys.MONITORING_PORTLET_RESOURCE_REQUEST);
 	}
 
 	protected boolean updatePropsValues(
