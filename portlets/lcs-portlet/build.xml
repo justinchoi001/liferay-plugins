@@ -4,7 +4,7 @@
 <project name="lcs-portlet" basedir="." default="deploy">
 	<import file="../build-common-portlet.xml" />
 
-	<property name="import.shared" value="lcs-json-shared,lcs-shared,portal-patcher-shared" />
+	<property name="import.shared" value="json-web-service-client-shared,lcs-shared,portal-patcher-shared" />
 
 	<target name="build-lang">
 		<antcall target="build-lang-cmd">
@@ -47,7 +47,7 @@
 			<arg value="checkout" />
 			<arg value="upstream/ee-6.1.x" />
 			<arg value="--" />
-			<arg value="../../shared/lcs-json-shared" />
+			<arg value="../../shared/json-web-service-client-shared" />
 		</exec>
 
 		<exec executable="git">
@@ -109,7 +109,7 @@
 		<exec executable="git">
 			<arg value="rm" />
 			<arg value="--cached" />
-			<arg value="../../shared/lcs-json-shared/*" />
+			<arg value="../../shared/json-web-service-client-shared/*" />
 		</exec>
 
 		<exec executable="git">
@@ -125,7 +125,7 @@
 		/>
 
 		<delete
-			dir="../../shared/lcs-json-shared"
+			dir="../../shared/json-web-service-client-shared"
 			failonerror="false"
 			includeemptydirs="true"
 		/>

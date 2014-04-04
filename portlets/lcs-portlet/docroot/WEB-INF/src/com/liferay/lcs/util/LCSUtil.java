@@ -14,7 +14,7 @@
 
 package com.liferay.lcs.util;
 
-import com.liferay.lcs.json.JSONWebServiceClient;
+import com.liferay.jsonwebserviceclient.JSONWebServiceClient;
 import com.liferay.osb.lcs.service.LCSClusterNodeServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

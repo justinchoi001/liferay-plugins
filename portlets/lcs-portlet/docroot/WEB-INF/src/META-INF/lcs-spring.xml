@@ -25,7 +25,7 @@
 
 	<!-- JSON -->
 
-	<bean id="osbLCSGatewayWebJSONWebServiceClient" class="com.liferay.lcs.json.JSONWebServiceClientImpl">
+	<bean id="osbLCSGatewayWebJSONWebServiceClient" class="com.liferay.jsonwebserviceclient.JSONWebServiceClientImpl">
 		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('osb.lcs.gateway.web.host.name')}" />
 		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('osb.lcs.gateway.web.host.port')}" />
 		<property name="login" value="#{T(com.liferay.util.portlet.PortletProps).get('osb.lcs.gateway.web.login')}" />
